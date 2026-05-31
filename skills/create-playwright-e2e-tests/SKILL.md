@@ -17,9 +17,9 @@ Do not implement tests unless the user explicitly provides a concrete E2E target
 
 Valid targets include:
 
-- A local HTML file, such as `sample_app/retirement_simulator.html`.
+- A local HTML file, such as `src/example.html`.
 - A URL, such as `http://127.0.0.1:4173/`.
-- A route or app entrypoint, such as `/retirement-simulator`.
+- A route or app entrypoint, such as `/example-feature`.
 - A page/component path when the repository already has a running app convention.
 
 If the user does not provide the target, stop before editing files and ask for it. Do not infer the target only from `テストケース_E2E自動.md`, README, or existing files.

@@ -17,7 +17,7 @@ Do not implement tests unless the user provides a concrete test target.
 
 A valid target is a specific file, module, class, function, component, or package path, such as:
 
-- `sample_app/retirement_simulator.html`
+- `src/example.html`
 - `src/calc.ts`
 - `app/services/tax_calculator.py`
 - `calculateNetMonthly()`

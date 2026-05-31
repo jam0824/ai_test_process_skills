@@ -26,7 +26,7 @@ Run code-based tests, map the output back to `TC-CB-*` test cases, and save huma
 3. Run the recorder script with the chosen command. Prefer this shape:
 
 ```powershell
-python skills\execute-codebase-tests\scripts\record_codebase_test_run.py --command-name "node --test sample_app\retirement_simulator.test.js" -- node --test sample_app\retirement_simulator.test.js
+python skills\execute-codebase-tests\scripts\record_codebase_test_run.py --command-name "node --test tests\example.test.js" -- node --test tests\example.test.js
 ```
 
 4. Review the generated artifacts:
