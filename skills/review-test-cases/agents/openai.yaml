@@ -1,4 +1,4 @@
 interface:
   display_name: "テストケースレビュー"
-  short_description: "テストケースをレビューし高優先度問題を改善して保存する支援"
-  default_prompt: "Use $review-test-cases to review, fix, re-review, and save the final Markdown review result for test cases."
+  short_description: "分割されたテストケースファイルをレビューし高優先度問題を改善して保存する支援"
+  default_prompt: "Use $review-test-cases to review separate test case files, fix high-priority issues, re-review, and save the final Markdown review result."

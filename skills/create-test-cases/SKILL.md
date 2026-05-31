@@ -1,6 +1,6 @@
 ---
 name: create-test-cases
-description: Create Japanese Markdown test case tables from test design artifacts, design questionnaires, test analysis, test plans, specifications, README files, existing tests, and implementation notes. Use when Codex needs to expand each TDxxx design pattern into traceable human-readable test cases, split cases by execution category such as code-based tests, E2E automated tests, and human-executed tests, and preserve coverage from test design to test cases.
+description: Create Japanese Markdown test case tables from test design artifacts, design questionnaires, test analysis, test plans, specifications, README files, existing tests, and implementation notes. Use when Codex needs to expand each TDxxx design pattern into traceable human-readable test cases, output separate files for code-based tests, E2E automated tests, human-executed tests, and question-wait cases, and preserve coverage from test design to test cases.
 ---
 
 # Create Test Cases
@@ -26,29 +26,78 @@ Default to Japanese output. Preserve traceability from each test case back to th
    - Existing tests and implementation files only when they clarify testability, inputs, outputs, or existing coverage.
 4. Extract every test design ID, such as `TD001`, and its linked `TVxxx`, `TAxxx`, level/type, priority, pattern, condition/input, execution method, expected-result judgment, specification reference, risk ID, and status.
 5. Expand every `TDxxx` into at least one test case. Split the design into multiple cases when its condition/input contains multiple representative values, boundary values, abnormal values, browser targets, scenarios, or question-wait conditions.
-6. Classify each test case into one execution category: code-based, E2E automated, or human-executed.
-7. Keep `質問待ち` designs as test cases. Set `状態` to `質問待ち`, set `期待結果` to `要確認` where needed, and link the relevant `DQxxx`.
-8. If test case creation reveals a missing design, missing question, missing viewpoint, or plan-level gap, update the appropriate upstream artifact when supported by source material. Record all changes in the test case document.
-9. Save the test case document. If the user does not specify a path, save it next to the design as `テストケース.md`.
+6. Classify each test case into one planned execution category: code-based, E2E automated, or human-executed.
+7. Separate question-wait cases from executable cases. Put `状態=質問待ち` cases in the question-wait file, keep their planned `実行区分`, set `期待結果` to `要確認` where needed, and link the relevant `DQxxx`.
+8. If test case creation reveals a missing design, missing question, missing viewpoint, or plan-level gap, update the appropriate upstream artifact when supported by source material. Record all changes in the affected test case files.
+9. Save the test case files. If the user does not specify paths, save the four files next to the design:
+   - `テスト成果物/テストケース_コードベース.md`
+   - `テスト成果物/テストケース_E2E自動.md`
+   - `テスト成果物/テストケース_人間実行.md`
+   - `テスト成果物/テストケース_質問待ち.md`
 
-## Output: Test Cases
+## Output: Test Case Files
 
-Use this Markdown structure:
+Use four Markdown files by default. Do not create or update a single combined `テストケース.md` unless the user explicitly asks for a consolidated file.
+
+### Code-Based Test Case File
+
+Save code-based cases to `テスト成果物/テストケース_コードベース.md` using this structure:
 
 ```markdown
-# テストケース
+# テストケース（コードベース）
 
 ## 1. 作成対象
 ## 2. 参照資料
 ## 3. コードベースで実行するテストケース
-## 4. E2E自動テストで実行するテストケース
-## 5. 人間が実行する必要があるテストケース
-## 6. 質問待ちケース
-## 7. 上流成果物への追記・更新
-## 8. カバレッジ確認
+## 4. 上流成果物への追記・更新
+## 5. カバレッジ確認
 ```
 
-Each test case section must use this table:
+### E2E Automated Test Case File
+
+Save E2E automated cases to `テスト成果物/テストケース_E2E自動.md` using this structure:
+
+```markdown
+# テストケース（E2E自動）
+
+## 1. 作成対象
+## 2. 参照資料
+## 3. E2E自動テストで実行するテストケース
+## 4. 上流成果物への追記・更新
+## 5. カバレッジ確認
+```
+
+### Human-Executed Test Case File
+
+Save human-executed cases to `テスト成果物/テストケース_人間実行.md` using this structure:
+
+```markdown
+# テストケース（人間実行）
+
+## 1. 作成対象
+## 2. 参照資料
+## 3. 人間が実行する必要があるテストケース
+## 4. 上流成果物への追記・更新
+## 5. カバレッジ確認
+```
+
+### Question-Wait Test Case File
+
+Save question-wait cases to `テスト成果物/テストケース_質問待ち.md` using this structure:
+
+```markdown
+# テストケース（質問待ち）
+
+## 1. 作成対象
+## 2. 参照資料
+## 3. 質問待ちケース
+## 4. 質問一覧
+## 5. 回答後の反映方針
+## 6. 上流成果物への追記・更新
+## 7. カバレッジ確認
+```
+
+Use the same test case table in every file:
 
 ```markdown
 | テストケースID | 元テスト設計ID | テスト観点ID | テストアプローチID | 実行区分 | テストレベル/タイプ | 優先度 | テストケース名 | 前提条件 | 入力/データ | 手順 | 期待結果 | 確認方法/証跡 | 関連質問ID | 仕様 | リスクID | 状態 |
@@ -77,6 +126,14 @@ Column guidance:
 - **仕様**: Reference specification sections, feature IDs, README sections, existing tests, or `要確認`.
 - **リスクID**: Reference product risk IDs. Use `なし` when no direct risk exists.
 - **状態**: Use `作成済み`, `質問待ち`, or `上流更新済み`.
+
+File placement:
+
+- Put `状態=作成済み` or `状態=上流更新済み` code-based cases in `テストケース_コードベース.md`.
+- Put `状態=作成済み` or `状態=上流更新済み` E2E automated cases in `テストケース_E2E自動.md`.
+- Put `状態=作成済み` or `状態=上流更新済み` human-executed cases in `テストケース_人間実行.md`.
+- Put every `状態=質問待ち` case only in `テストケース_質問待ち.md` by default, regardless of planned execution category. Keep the planned `実行区分` and ID prefix so the case can be moved to the appropriate execution file after the question is answered.
+- Do not duplicate `質問待ち` rows into the three execution files unless the user explicitly requests duplicate listing.
 
 ## Classification Rules
 
@@ -109,11 +166,20 @@ Use condition-by-condition splitting:
 Handle unanswered design questions without losing coverage:
 
 - Create a test case for each `質問待ち` design row.
-- Put the case in the most appropriate execution category and also list it under `## 6. 質問待ちケース`.
+- Put the case in `テストケース_質問待ち.md`.
+- Keep the planned `実行区分` as `コードベース`, `E2E自動`, or `人間実行` so the destination after answering is clear.
 - Set `関連質問ID` to the linked `DQxxx`.
 - Set `状態` to `質問待ち`.
 - Use `要確認` for the part of the expected result, environment, threshold, or evidence that cannot be decided.
 - Do not silently assume stakeholder answers.
+- In `## 4. 質問一覧`, include a compact table that maps `DQxxx` to related `TC-*` and `TDxxx` IDs:
+
+```markdown
+| 質問ID | 関連テストケースID | 関連テスト設計ID | 質問概要 | 優先度 |
+|---|---|---|---|---|
+```
+
+- In `## 5. 回答後の反映方針`, state that answered cases should be updated from `質問待ち` to `作成済み` and moved to `テストケース_コードベース.md`, `テストケース_E2E自動.md`, or `テストケース_人間実行.md` according to `実行区分`.
 
 ## Upstream Updates
 
@@ -128,23 +194,25 @@ When updating:
 
 - Preserve existing file names, section order, ID style, and table style.
 - Add new IDs sequentially, such as `TD064`, `DQ018`, `TV064`, `TA019`, or `R012`.
-- Record each update under `## 7. 上流成果物への追記・更新`.
+- Record each update under the `上流成果物への追記・更新` section of the affected output file.
 - Prefer explicit `要確認` and questionnaire entries over unsupported assumptions.
 - Do not edit product specifications, README files, product code, existing tests, or unrelated artifacts unless the user explicitly asks.
 
 ## Coverage Requirements
 
-In `## 8. カバレッジ確認`, include a table that maps each `TDxxx` to one or more `TC-*` IDs and its coverage status:
+In the `カバレッジ確認` section of each file, include a table that maps relevant `TDxxx` IDs to one or more `TC-*` IDs and its coverage status:
 
 ```markdown
-| テスト設計ID | 対応テストケースID | 実行区分 | 状態 | カバー状況 |
-|---|---|---|---|---|
+| テスト設計ID | 対応テストケースID | 実行区分 | 状態 | 出力ファイル | カバー状況 |
+|---|---|---|---|---|---|
 ```
 
 Before finishing:
 
-- Confirm every `TDxxx` from the test design appears in the coverage table.
+- Confirm every `TDxxx` from the test design appears in the combined coverage across the four files.
 - Confirm every `質問待ち` test case has a `DQxxx`.
-- Confirm all three execution categories exist, even if one category has few cases.
+- Confirm all three execution-category files exist, even if one category has few cases.
+- Confirm the question-wait file exists, even if there are no question-wait cases; in that case, state that there are none.
 - Confirm test cases are readable by humans and do not contain automation code.
 - Confirm source-supported expected results are concrete, and unsupported expectations are explicitly `要確認`.
+- Confirm no `TC-*` row is duplicated across files unless the user explicitly requested duplication.
