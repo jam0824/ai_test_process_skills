@@ -1,4 +1,4 @@
 interface:
   display_name: "テスト実行レポート作成"
-  short_description: "テスト成果物と実行結果をHTMLレポートに固定する支援"
-  default_prompt: "Use $create-test-report to snapshot current test artifacts and execution results into an HTML test report."
+  short_description: "テスト成果物、レビュー結果、実行証跡、manifestをHTMLレポートに固定する支援"
+  default_prompt: "Use $create-test-report to snapshot current test artifacts, review results, questionnaires, execution results, raw evidence, and source manifest into an HTML test report."

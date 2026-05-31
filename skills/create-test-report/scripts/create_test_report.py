@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import html
 import json
 import os
@@ -19,14 +20,28 @@ TC_RE = re.compile(r"\bTC-[A-Z0-9]+-\d+\b")
 
 CORE_MD_FILES = [
     ("テスト計画", "テスト計画書.md"),
+    ("テスト計画レビュー", "テスト計画レビュー結果.md"),
     ("テスト分析", "テスト分析.md"),
+    ("テスト分析質問票", "テスト分析_質問票.md"),
+    ("テスト分析レビュー", "テスト分析レビュー結果.md"),
     ("テスト設計", "テスト設計.md"),
+    ("テスト設計質問票", "テスト設計_質問票.md"),
+    ("テスト設計レビュー", "テスト設計レビュー結果.md"),
     ("テストケース（コードベース）", "テストケース_コードベース.md"),
     ("テストケース（E2E自動）", "テストケース_E2E自動.md"),
     ("テストケース（人間実行）", "テストケース_人間実行.md"),
     ("テストケース（質問待ち）", "テストケース_質問待ち.md"),
+    ("テストケースレビュー", "テストケースレビュー結果.md"),
+    ("テスト成果物横断レビュー", "テスト成果物横断レビュー結果.md"),
     ("未実装テストケース（コードベース）", "未実装テストケース_コードベース.md"),
     ("未実装テストケース（E2E自動）", "未実装テストケース_E2E自動.md"),
+    ("テストコードレビュー", "テストコードレビュー結果.md"),
+    ("Playwright E2Eテストレビュー", "Playwright_E2Eテストレビュー結果.md"),
+    ("テストレポートレビュー", "テストレポートレビュー結果.md"),
+]
+
+CORE_RAW_FILES = [
+    ("テストケース（人間実行CSV）", "テストケース_人間実行.csv"),
 ]
 
 STATUS_RANK = {"N/A": 1, "Pass": 2, "Fail": 3}
@@ -135,6 +150,32 @@ def all_rows_with(path: Path, columns: list[str]) -> list[dict[str, str]]:
     return rows
 
 
+def all_test_case_rows(path: Path) -> list[dict[str, str]]:
+    """Return only primary case rows, not traceability or coverage helper tables."""
+    rows: list[dict[str, str]] = []
+    primary_markers = {
+        "テストケース名",
+        "テスト名",
+        "実行区分",
+        "前提条件",
+        "入力/データ",
+        "手順",
+        "期待結果",
+        "未実装理由",
+    }
+    helper_markers = {"対応状況", "理由", "カバレッジ", "対応テストケースID"}
+    for table in load_tables(path):
+        if "テストケースID" not in table.header:
+            continue
+        header_set = set(table.header)
+        if not (header_set & primary_markers):
+            continue
+        if (header_set & helper_markers) and "テストケース名" not in header_set:
+            continue
+        rows.extend(table.rows)
+    return rows
+
+
 def priority_to_issue(priority: str) -> str:
     normalized = priority.strip()
     if normalized == "高":
@@ -187,6 +228,21 @@ def copy_raw(label: str, source: Path, raw_dir: Path) -> CopiedFile | None:
     destination = make_unique_path(raw_dir, source.name)
     shutil.copy2(source, destination)
     return CopiedFile(label=label, source=source, raw_path=destination)
+
+
+def file_fingerprint(path: Path) -> dict[str, object]:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    stat_result = path.stat()
+    return {
+        "path": str(path),
+        "name": path.name,
+        "size": stat_result.st_size,
+        "mtime": datetime.fromtimestamp(stat_result.st_mtime).isoformat(timespec="seconds"),
+        "sha256": digest.hexdigest(),
+    }
 
 
 def relative_url(from_dir: Path, target: Path) -> str:
@@ -427,15 +483,15 @@ def link(url: str, label: str) -> str:
 def collect_test_cases(artifacts_dir: Path) -> dict[str, dict[str, str]]:
     cases: dict[str, dict[str, str]] = {}
     sources = [
-        ("コードベース", artifacts_dir / "テストケース_コードベース.md"),
-        ("E2E自動", artifacts_dir / "テストケース_E2E自動.md"),
-        ("人間実行", artifacts_dir / "テストケース_人間実行.md"),
-        ("質問待ち", artifacts_dir / "テストケース_質問待ち.md"),
-        ("未実装コードベース", artifacts_dir / "未実装テストケース_コードベース.md"),
-        ("未実装E2E自動", artifacts_dir / "未実装テストケース_E2E自動.md"),
+        ("コードベース", "実行対象", artifacts_dir / "テストケース_コードベース.md"),
+        ("E2E自動", "実行対象", artifacts_dir / "テストケース_E2E自動.md"),
+        ("人間実行", "実行対象", artifacts_dir / "テストケース_人間実行.md"),
+        ("質問待ち", "質問待ち", artifacts_dir / "テストケース_質問待ち.md"),
+        ("未実装コードベース", "未実装", artifacts_dir / "未実装テストケース_コードベース.md"),
+        ("未実装E2E自動", "未実装", artifacts_dir / "未実装テストケース_E2E自動.md"),
     ]
-    for category, path in sources:
-        for row in all_rows_with(path, ["テストケースID"]):
+    for category, report_category, path in sources:
+        for row in all_test_case_rows(path):
             tc_id = row.get("テストケースID", "")
             if not TC_RE.fullmatch(tc_id):
                 continue
@@ -448,6 +504,7 @@ def collect_test_cases(artifacts_dir: Path) -> dict[str, dict[str, str]]:
                     "状態": row.get("状態", ""),
                     "関連質問ID": row.get("関連質問ID", ""),
                     "未実装理由": row.get("未実装理由", ""),
+                    "report_category": report_category,
                     "source_file": path.name,
                 }
             else:
@@ -455,7 +512,10 @@ def collect_test_cases(artifacts_dir: Path) -> dict[str, dict[str, str]]:
                     cases[tc_id]["関連質問ID"] = row.get("関連質問ID", "")
                 if row.get("未実装理由"):
                     cases[tc_id]["未実装理由"] = row.get("未実装理由", "")
-                if "未実装" in category:
+                if report_category in {"質問待ち", "未実装"}:
+                    cases[tc_id]["report_category"] = report_category
+                    cases[tc_id]["source_file"] = path.name
+                if report_category == "未実装":
                     cases[tc_id]["状態"] = row.get("状態", cases[tc_id].get("状態", ""))
     return cases
 
@@ -529,6 +589,10 @@ def copy_artifacts(
         copied = copy_markdown(label, artifacts_dir / filename, md_dir)
         if copied:
             markdown_files.append(copied)
+    for label, filename in CORE_RAW_FILES:
+        copied = copy_raw(label, artifacts_dir / filename, raw_dir)
+        if copied:
+            raw_files.append(copied)
 
     for label, run_dir in [("コードベース実行結果", codebase_run_dir), ("E2E自動実行結果", e2e_run_dir)]:
         if not run_dir:
@@ -558,6 +622,41 @@ def copy_artifacts(
         copied.html_path = html_path
 
     return markdown_files, raw_files
+
+
+def write_manifest(
+    report_dir: Path,
+    timestamp: str,
+    artifacts_dir: Path,
+    codebase_run_dir: Path | None,
+    e2e_run_dir: Path | None,
+    copied_md: list[CopiedFile],
+    raw_files: list[CopiedFile],
+) -> CopiedFile:
+    raw_dir = report_dir / "raw"
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    manifest_path = raw_dir / "manifest.json"
+    inputs = []
+    for copied in [*copied_md, *raw_files]:
+        source = copied.source
+        if source.exists() and source.is_file():
+            item = file_fingerprint(source)
+            item["label"] = copied.label
+            if copied.md_path:
+                item["copied_to"] = str(copied.md_path.relative_to(report_dir))
+            elif copied.raw_path:
+                item["copied_to"] = str(copied.raw_path.relative_to(report_dir))
+            inputs.append(item)
+    manifest = {
+        "generated_at": datetime.now().isoformat(timespec="seconds"),
+        "report_timestamp": timestamp,
+        "artifacts_dir": str(artifacts_dir),
+        "codebase_run_dir": str(codebase_run_dir) if codebase_run_dir else "",
+        "e2e_run_dir": str(e2e_run_dir) if e2e_run_dir else "",
+        "inputs": inputs,
+    }
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+    return CopiedFile(label="レポート入力manifest", source=manifest_path, raw_path=manifest_path)
 
 
 def prepare_report_dir(report_dir: Path) -> None:
@@ -604,7 +703,19 @@ def summarize(
     na_ids = {tc_id for tc_id, row in executed.items() if row.get("実行結果") == "N/A"}
     executed_count = len(pass_ids) + len(fail_ids)
     pass_rate = (len(pass_ids) / executed_count * 100) if executed_count else None
-    not_run_ids = sorted(set(all_cases) - set(executed))
+    question_wait_ids = {
+        tc_id
+        for tc_id, row in all_cases.items()
+        if row.get("report_category") == "質問待ち"
+    }
+    unimplemented_ids = {
+        tc_id
+        for tc_id, row in all_cases.items()
+        if row.get("report_category") == "未実装"
+    }
+    not_run_ids = sorted(set(all_cases) - set(executed) - question_wait_ids - unimplemented_ids)
+    question_wait_executed_ids = sorted(question_wait_ids & set(executed))
+    unimplemented_executed_ids = sorted(unimplemented_ids & set(executed))
 
     fail_priority_counts = {"P0": 0, "P1": 0, "P2": 0, "P3": 0, "優先度未設定": 0}
     for tc_id in fail_ids:
@@ -623,6 +734,10 @@ def summarize(
         "executed": executed_count,
         "pass_rate": pass_rate,
         "not_run_ids": not_run_ids,
+        "question_wait_ids": sorted(question_wait_ids),
+        "unimplemented_ids": sorted(unimplemented_ids),
+        "question_wait_executed_ids": question_wait_executed_ids,
+        "unimplemented_executed_ids": unimplemented_executed_ids,
         "fail_priority_counts": fail_priority_counts,
         "issue_count": len(issues),
     }
@@ -640,7 +755,7 @@ def testcase_rows(
         source_name = case.get("source_file", "")
         source_link = ""
         if source_name in html_files_by_name:
-            source_link = link(root_relative_url(report_dir, html_files_by_name[source_name]), source_name)
+            source_link = link(relative_url(report_dir / "html", html_files_by_name[source_name]), source_name)
         rows.append(
             [
                 html.escape(tc_id),
@@ -664,11 +779,15 @@ def rows_from_markdown_cases(
     rows: list[list[str]] = []
     source_link = ""
     if path.name in html_files_by_name:
-        source_link = link(root_relative_url(report_dir, html_files_by_name[path.name]), path.name)
-    for row in all_rows_with(path, ["テストケースID"]):
+        source_link = link(relative_url(report_dir / "html", html_files_by_name[path.name]), path.name)
+    seen: set[str] = set()
+    for row in all_test_case_rows(path):
         tc_id = row.get("テストケースID", "")
         if not TC_RE.fullmatch(tc_id):
             continue
+        if tc_id in seen:
+            continue
+        seen.add(tc_id)
         rows.append(
             [
                 html.escape(tc_id),
@@ -705,6 +824,18 @@ def build_index_html(
     total = int(summary["total"])
     executed_count = int(summary["executed"])
     execution_rate = "-" if total == 0 else f"{executed_count / total * 100:.1f}%"
+    overlap_notes: list[str] = []
+    if summary["question_wait_executed_ids"]:
+        overlap_notes.append(f"質問待ちかつ実行結果あり: {len(summary['question_wait_executed_ids'])}件")
+    if summary["unimplemented_executed_ids"]:
+        overlap_notes.append(f"未実装かつ実行結果あり: {len(summary['unimplemented_executed_ids'])}件")
+    overlap_note_html = ""
+    if overlap_notes:
+        overlap_note_html = (
+            "<p>注記: 質問待ちまたは未実装のケースに実行結果がある場合、"
+            "実行結果カテゴリと未完了カテゴリの両方に表示する。"
+            f"{html.escape('、'.join(overlap_notes))}。</p>"
+        )
 
     issue_rows: list[list[str]] = []
     issue_file_counts: dict[str, int] = {}
@@ -779,9 +910,13 @@ def build_index_html(
       <div class="metric"><div class="label">Pass率</div><div class="value pass">{pass_rate_text}</div></div>
       <div class="metric"><div class="label">Fail</div><div class="value fail">{summary["fail"]}</div></div>
       <div class="metric"><div class="label">N/A</div><div class="value na">{summary["na"]}</div></div>
-      <div class="metric"><div class="label">未実行</div><div class="value">{len(summary["not_run_ids"])}</div></div>
+      <div class="metric"><div class="label">未実行（実行対象）</div><div class="value">{len(summary["not_run_ids"])}</div></div>
+      <div class="metric"><div class="label">質問待ち</div><div class="value">{len(question_rows)}</div></div>
+      <div class="metric"><div class="label">未実装</div><div class="value">{len(unimplemented_rows)}</div></div>
     </div>
     <p>Pass率 = Pass / (Pass + Fail)。N/Aは分母に含めない。</p>
+    <p>未実行（実行対象）は、質問待ちと未実装を除いた未実行ケース数。</p>
+    {overlap_note_html}
   </section>
 
   <section>
@@ -847,6 +982,8 @@ def main(argv: list[str] | None = None) -> int:
     e2e_run_dir = Path(args.e2e_run_dir) if args.e2e_run_dir else find_latest_run_dir(report_root, "e2e自動テスト")
 
     copied_md, raw_files = copy_artifacts(artifacts_dir, report_dir, codebase_run_dir, e2e_run_dir)
+    manifest = write_manifest(report_dir, timestamp, artifacts_dir, codebase_run_dir, e2e_run_dir, copied_md, raw_files)
+    raw_files.append(manifest)
     all_cases = collect_test_cases(artifacts_dir)
     executed = {}
     executed.update(collect_executed(codebase_run_dir))
@@ -886,7 +1023,9 @@ def main(argv: list[str] | None = None) -> int:
     print(f"report_html={report_html}")
     print(
         f"summary=Total:{summary['total']} Executed:{summary['executed']} "
-        f"Pass:{summary['pass']} Fail:{summary['fail']} N/A:{summary['na']} PassRate:{pass_rate_text}"
+        f"Pass:{summary['pass']} Fail:{summary['fail']} N/A:{summary['na']} "
+        f"NotRun:{len(summary['not_run_ids'])} QuestionWait:{len(summary['question_wait_ids'])} "
+        f"Unimplemented:{len(summary['unimplemented_ids'])} PassRate:{pass_rate_text}"
     )
     print(f"codebase_run_dir={codebase_run_dir if codebase_run_dir else ''}")
     print(f"e2e_run_dir={e2e_run_dir if e2e_run_dir else ''}")

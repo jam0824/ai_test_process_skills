@@ -1,0 +1,74 @@
+﻿テストケースID,元テスト設計ID,テスト観点ID,テストアプローチID,実行区分,テストレベル/タイプ,優先度,テストケース名,前提条件,入力/データ,手順,期待結果,確認方法/証跡,関連質問ID,仕様,リスクID,状態,実行結果,実行日時,実行コマンド,ブラウザ/プロジェクト結果,Bug ID,実行メモ
+TC-E2E-001,TD021,TV014,TA004,E2E自動,Integration,高,給与変更UIの表示追加削除,HTMLをブラウザで開ける,なし,トグル、追加、削除を操作,設定領域、入力行、削除後DOMが操作に追従する,Playwrightログ/スクリーンショット,なし,F008、3.1.2,R004,作成済み,Pass,20260531180935,npx playwright test --reporter=json,"chromium:Pass(passed), firefox:Pass(passed), webkit:Pass(passed)",,Playwright JSONで対象テストケースIDの全実行成功を確認
+TC-E2E-002,TD022,TV016,TA004,E2E自動,Integration,高,給与変更UIから計算反映,同上,"35歳、4,000,000円",給与変更を追加して開始,"35歳以降の出力に年収4,000,000円が表示される",Playwrightログ,なし,F008,"R004, R006",作成済み,Pass,20260531180935,npx playwright test --reporter=json,"chromium:Pass(passed), firefox:Pass(passed), webkit:Pass(passed)",,Playwright JSONで対象テストケースIDの全実行成功を確認
+TC-E2E-003,TD023,TV024,TA006,E2E自動,Integration,中,入力変更後の連続実行,同上,給与、生活費などを変更,開始を複数回実行,`#output` が都度置換され、古い条件の結果が混入しない,Playwrightログ,なし,6.2,"R006, R009",作成済み,Pass,20260531180935,npx playwright test --reporter=json,"chromium:Pass(passed), firefox:Pass(passed), webkit:Pass(passed)",,Playwright JSONで対象テストケースIDの全実行成功を確認
+TC-E2E-004,TD024,TV037,TA011,E2E自動,Integration,高,デフォルト基本フロー,同上,デフォルト入力,開始ボタンを押す,30歳1月から100歳12月までの結果を確認できる,Playwrightログ/スクリーンショット,なし,1.2、F006、F007,"R002, R006",作成済み,Pass,20260531180935,npx playwright test --reporter=json,"chromium:Pass(passed), firefox:Pass(passed), webkit:Pass(passed)",,Playwright JSONで対象テストケースIDの全実行成功を確認
+TC-E2E-005,TD025,TV038,TA011,E2E自動,Integration,高,複数給与変更シナリオ,同上,"35歳4,000,000円、40歳7,000,000円",2件の給与変更を追加して開始,35歳以降と40歳以降で変更後年収が表示される,Playwrightログ,なし,F008、README 使用例,"R004, R006",作成済み,Pass,20260531180935,npx playwright test --reporter=json,"chromium:Pass(passed), firefox:Pass(passed), webkit:Pass(passed)",,Playwright JSONで対象テストケースIDの全実行成功を確認
+TC-E2E-006,TD027,TV021,TA006,E2E自動,E2E,高,初期値確認,同上,初期画面,各入力値を読む,仕様表の初期値と一致する,Playwrightログ,なし,3.1.2、3.1.3,R006,作成済み,Pass,20260531180935,npx playwright test --reporter=json,"chromium:Pass(passed), firefox:Pass(passed), webkit:Pass(passed)",,Playwright JSONで対象テストケースIDの全実行成功を確認
+TC-E2E-007,TD028,TV022,TA006,E2E自動,E2E,中,結果表示スタイル,同上,デフォルト入力,開始後に `#output` のスタイルを取得,等幅、pre-wrap、最大高さ400px、背景色、ボーダー、スクロール可能,Playwrightログ,なし,3.1.3,R006,作成済み,Pass,20260531180935,npx playwright test --reporter=json,"chromium:Pass(passed), firefox:Pass(passed), webkit:Pass(passed)",,Playwright JSONで対象テストケースIDの全実行成功を確認
+TC-E2E-008,TD029,TV023,TA006,E2E自動,Security,高,出力のHTML解釈防止,同上,DOM経由でHTML断片相当の数値欄操作,開始後に `#output` DOMを検査,`#output` はテキストとして表示され、DOM注入やスクリプト実行がない,Playwrightログ,なし,3.1.3、8.2,R006,作成済み,Pass,20260531180935,npx playwright test --reporter=json,"chromium:Pass(passed), firefox:Pass(passed), webkit:Pass(passed)",,Playwright JSONで対象テストケースIDの全実行成功を確認
+TC-E2E-009,TD030,TV041,TA006,E2E自動,E2E,高,固定入力属性確認,同上,各固定数値入力,属性値を取得,`min`、`max`、`step` が仕様表と一致する,Playwrightログ,なし,3.1.2、7.1,"R006, R008",作成済み,Fail,20260531180935,npx playwright test --reporter=json,"chromium:Fail(failed), firefox:Fail(failed), webkit:Fail(failed)",E2E-BUG-001,"Playwright JSONで対象テストケースIDの失敗を確認: chromium: Error: eventProb.max
+
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+Expected: [32m""100""[39m
+Received: [31mnull[39m Error: eventProb.max
+
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+Expected: [32m""100""[39m
+Received: [31mnull[39m
+
+  175 |     for (const [name, value] of Object.entries(attrs)) {
+  176 |       const actual = await page.locator(`#${id}`).getAttribute(name);
+> 177 |       expect(actual, `${id}.${name}`).toBe(value);
+      |                                       ^
+  178 |     }
+  179 |   }
+  180 | });
+    at D:\codes\RetirementSimulatorWithAITe"
+TC-E2E-010,TD030,TV041,TA006,E2E自動,E2E,高,動的給与変更入力属性確認,同上,追加した給与変更入力,給与変更を追加し属性値を取得,年齢入力はmin=1/max=100、年収入力はmin=0,Playwrightログ,なし,3.1.2、7.1,"R006, R008",作成済み,Fail,20260531180935,npx playwright test --reporter=json,"chromium:Fail(failed), firefox:Fail(failed), webkit:Fail(failed)",E2E-BUG-002,"Playwright JSONで対象テストケースIDの失敗を確認: chromium: Error: salaryChangeAge.min
+
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+Expected: [32m""1""[39m
+Received: [31m""0""[39m Error: salaryChangeAge.min
+
+[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+Expected: [32m""1""[39m
+Received: [31m""0""[39m
+
+  186 |   await page.locator('#addSalaryChange').click();
+  187 |   const item = page.locator('.salary-change-item').last();
+> 188 |   expect(await item.locator('.salary-change-age').getAttribute('min'), 'salaryChangeAge.min').toBe('1');
+      |                                                                                "
+TC-E2E-011,TD031,TV034,TA010,E2E自動,E2E,中,注意表示の必須3要素,同上,初期画面,注意表示のテキストを確認,外部送信なし、金融/税務助言ではない、制度差や個人差確認が必要、が表示される,Playwrightログ/スクリーンショット,なし,3.1.4、11.1,R010,作成済み,Fail,20260531180935,npx playwright test --reporter=json,"chromium:Fail(failed), firefox:Fail(failed), webkit:Fail(failed)",E2E-BUG-003,"Playwright JSONで対象テストケースIDの失敗を確認: chromium: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoMatch[2m([22m[32mexpected[39m[2m)[22m
+
+Expected pattern: [32m/金融助言|投資助言/[39m
+Received string:  [31m""老後資金シミュレーター·[39m
+[31m🔒 プライバシー重視: このアプリケーションはネットワーク通信をせずローカルで動くので安心してください。あなたの財務情報が外部に送信されることはありません。·[39m
+[31mシミュレーション開始年齢:·[39m
+[31m退職年齢:·[39m
+[31m年金開始年齢:·[39m
+[31m退職後収入(月額):·[39m
+[31m給与(年収):·[39m
+[31m📈 給与変更設定を表示/非表示[39m
+[31m年金月額:·[39m
+[31m開始時貯金:·[39m
+[31m開始時投資残高:·[39m
+[31m現役時生活費(月額):·[39m
+[31m退職～年金開始期間の生活費(月額):·[39m
+[31m老後生活費(月額):·[39m
+[31m投資率(%):·[39m
+[31m利回り(年%):·[39m
+[31mイベント発生率(月%):·[39m
+[31m開始""[39m Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoMatch[2m([22m[32mexpected[39m[2m)["
+TC-E2E-012,TD033,TV025,TA007,E2E自動,Security,高,外部通信なし,ネットワーク監視可能,起動、入力、給与変更、開始,requestイベントを監視しながら操作,外部HTTP(S)リクエストが発生しない,Playwright networkログ,なし,1.3、8.1,R007,作成済み,Pass,20260531180935,npx playwright test --reporter=json,"chromium:Pass(passed), firefox:Pass(passed), webkit:Pass(passed)",,Playwright JSONで対象テストケースIDの全実行成功を確認
+TC-E2E-013,TD035,TV027,TA007,E2E自動,Security,高,ストレージ永続化なし,同上,入力変更、開始,操作前後のlocalStorage/sessionStorage/Cookieを確認,入力データが永続化されない,Playwrightログ,なし,4.2、8.1,R007,作成済み,Pass,20260531180935,npx playwright test --reporter=json,"chromium:Pass(passed), firefox:Pass(passed), webkit:Pass(passed)",,Playwright JSONで対象テストケースIDの全実行成功を確認
+TC-E2E-014,TD037,TV031,TA009,E2E自動,Performance,中,計算時間100ms以下,Chromium、1280×720以上,デフォルト入力、イベント0%、ウォームアップ3回、10回測定,`simulateRetirement()` 前後を測定,95パーセンタイルが100ms以下,Playwright測定ログ,なし,6.2,R009,作成済み,N/A,20260531180935,npx playwright test --reporter=json,"chromium:Pass(passed), firefox:N/A(skipped), webkit:N/A(skipped)",,Playwright結果がskippedまたは実行結果なしのためN/A
+TC-E2E-015,TD038,TV032,TA009,E2E自動,Performance,中,描画時間200ms以下,Chromium、1280×720以上,デフォルト入力、イベント0%,開始操作から`#output`更新完了までを測定,95パーセンタイルが200ms以下,Playwright測定ログ,なし,6.2,R009,作成済み,N/A,20260531180935,npx playwright test --reporter=json,"chromium:Pass(passed), firefox:N/A(skipped), webkit:N/A(skipped)",,Playwright結果がskippedまたは実行結果なしのためN/A
+TC-E2E-016,TD039,TV033,TA009,E2E自動,Performance,中,10回連続実行,Chromium、1280×720以上,入力値を変えながら10回,連続で開始する,例外、古い結果混入、明確な遅延がない,Playwrightログ,なし,6.2,R009,作成済み,N/A,20260531180935,npx playwright test --reporter=json,"chromium:Pass(passed), firefox:N/A(skipped), webkit:N/A(skipped)",,Playwright結果がskippedまたは実行結果なしのためN/A
+TC-E2E-017,TD040,TV028,TA008,E2E自動,Compatibility,中,代表3ブラウザ主要フロー,Playwright projects有効,Chromium、Firefox、WebKit,各ブラウザでデフォルト開始,主要フロー完了、JavaScript例外なし,Playwrightレポート,なし,7.3,R008,作成済み,Pass,20260531180935,npx playwright test --reporter=json,"chromium:Pass(passed), firefox:Pass(passed), webkit:Pass(passed)",,Playwright JSONで対象テストケースIDの全実行成功を確認
+TC-E2E-018,TD041,TV029,TA008,E2E自動,Compatibility,中,number input差異確認,代表3ブラウザ,主要数値入力の変更,値を入力して開始,ブラウザ差異があっても結果生成が止まらない,Playwrightレポート,なし,7.1、9.4,R008,作成済み,Pass,20260531180935,npx playwright test --reporter=json,"chromium:Pass(passed), firefox:Pass(passed), webkit:Pass(passed)",,Playwright JSONで対象テストケースIDの全実行成功を確認
+TC-E2E-019,TD042,TV030,TA008,E2E自動,Compatibility,中,viewport境界確認,Chromium,800×600、1280×720、799×599,viewportを変えて開始,800×600以上は操作可能、799×599はベストエフォートとして状態記録,Playwrightスクリーンショット,なし,11.2、13,R008,作成済み,N/A,20260531180935,npx playwright test --reporter=json,"chromium:Pass(passed), firefox:N/A(skipped), webkit:N/A(skipped)",,Playwright結果がskippedまたは実行結果なしのためN/A

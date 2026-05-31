@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テスト成果物横断レビュー</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テスト成果物横断レビュー結果</h2>
+<h3>1. レビュー対象</h3>
+<ul>
+<li><code>テスト成果物/テスト計画書.md</code></li>
+<li><code>テスト成果物/テスト分析.md</code></li>
+<li><code>テスト成果物/テスト分析_質問票.md</code></li>
+<li><code>テスト成果物/テスト設計.md</code></li>
+<li><code>テスト成果物/テスト設計_質問票.md</code></li>
+<li><code>テスト成果物/テストケース_コードベース.md</code></li>
+<li><code>テスト成果物/テストケース_E2E自動.md</code></li>
+<li><code>テスト成果物/テストケース_人間実行.md</code></li>
+<li><code>テスト成果物/テストケース_質問待ち.md</code></li>
+<li>レビュー結果: <code>テスト成果物/テスト成果物横断レビュー結果.md</code></li>
+</ul>
+<h3>2. 参照資料</h3>
+<ul>
+<li><code>spec/仕様書.md</code></li>
+<li><code>sample_app/README.md</code></li>
+<li><code>sample_app/retirement_simulator.html</code></li>
+<li><code>package.json</code></li>
+<li><code>playwright.config.js</code></li>
+</ul>
+<h3>3. レビュー観点</h3>
+<ul>
+<li>仕様、リスク、テストアプローチ、観点、設計、テストケースのエンドツーエンドトレーサビリティ。</li>
+<li>高リスク領域の深さと、後続のコードベース/E2E実装可能性。</li>
+<li>質問待ち、未実行、人間実行、仕様前提外ケースの扱い。</li>
+<li>成果物の抽象度、ファイル分割、ID体系、期待結果の判定可能性。</li>
+<li>テスト計画の終了条件に対して、Fail/N/A/未実装/未実行を可視化できる構造になっているか。</li>
+</ul>
+<h3>4. レビュー・修正サマリー</h3>
+<h4>1回目レビュー</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>優先度</th><th>観点</th><th>問題</th><th>場所</th><th>影響</th><th>修正方針</th></tr></thead>
+<tbody>
+<tr><td>なし</td><td>-</td><td><code>P0</code> / <code>P1</code> の修正すべき指摘なし</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table></div>
+<p>確認結果:</p>
+<ul>
+<li><code>TA001</code> から <code>TA011</code> はすべて <code>TVxxx</code>、<code>TDxxx</code>、<code>TC-*</code> に接続されている。</li>
+<li><code>TV001</code> から <code>TV042</code> はすべて <code>TDxxx</code> に接続され、<code>TD001</code> から <code>TD046</code> はすべていずれかのテストケースに接続されている。</li>
+<li>質問待ちケースはなく、質問待ちファイルは空管理ファイルとして存在する。</li>
+<li>人間実行テストは、通し実行では未実行として残す方針と整合している。</li>
+</ul>
+<h3>5. 最終レビュー結果</h3>
+<p><code>P0</code> / <code>P1</code> の修正すべき指摘は残っていない。</p>
+<p>最終カバレッジ概要:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>項目</th><th>件数</th><th>例外/補足</th></tr></thead>
+<tbody>
+<tr><td>プロダクトリスク</td><td>10</td><td><code>R001</code> から <code>R010</code></td></tr>
+<tr><td>テストアプローチ</td><td>11</td><td><code>TA001</code> から <code>TA011</code>、全件下流接続済み</td></tr>
+<tr><td>テスト観点</td><td>42</td><td><code>TV001</code> から <code>TV042</code>、全件設計接続済み</td></tr>
+<tr><td>テスト設計</td><td>46</td><td><code>TD001</code> から <code>TD046</code>、全件テストケース接続済み</td></tr>
+<tr><td>コードベーステストケース</td><td>21</td><td><code>TC-CB-001</code> から <code>TC-CB-021</code></td></tr>
+<tr><td>E2E自動テストケース</td><td>19</td><td><code>TC-E2E-001</code> から <code>TC-E2E-019</code></td></tr>
+<tr><td>人間実行テストケース</td><td>7</td><td><code>TC-MAN-001</code> から <code>TC-MAN-007</code>、本プロセスでは未実行</td></tr>
+<tr><td>質問待ちテストケース</td><td>0</td><td>質問待ちなし</td></tr>
+</tbody></table></div>
+<p>主な高リスクチェーン:</p>
+<ul>
+<li><code>R001 -&gt; TA001 -&gt; TV001-TV004 -&gt; TD001-TD004 -&gt; TC-CB-001-TC-CB-005</code></li>
+<li><code>R002 -&gt; TA002/TA011 -&gt; TV005-TV009/TV037/TV039/TV042 -&gt; TD005-TD009/TD024/TD026/TD020 -&gt; TC-CB/TC-E2E</code></li>
+<li><code>R003 -&gt; TA003/TA011 -&gt; TV010-TV013/TV039 -&gt; TD010-TD013/TD026 -&gt; TC-CB</code></li>
+<li><code>R004 -&gt; TA004/TA011 -&gt; TV014-TV017/TV038 -&gt; TD014-TD016/TD021-TD025 -&gt; TC-CB/TC-E2E</code></li>
+<li><code>R007 -&gt; TA007 -&gt; TV025-TV027 -&gt; TD033-TD035 -&gt; TC-E2E/TC-MAN</code></li>
+</ul>
+<h3>6. 残課題</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>優先度</th><th>内容</th><th>推奨対応</th></tr></thead>
+<tbody>
+<tr><td>P2</td><td>人間実行テストは未実行として残る</td><td>最終レポートで未実行を明示し、別途実行する場合は実行日時・環境・証跡を追記する</td></tr>
+<tr><td>P2</td><td>仕様前提外のイベント種別空配列ケースは、実行時にFailではなく制約/N/Aとして扱う可能性がある</td><td>実行記録で合否分母から外すか、観察結果としてissue化する</td></tr>
+</tbody></table></div>
+</body>
+</html>

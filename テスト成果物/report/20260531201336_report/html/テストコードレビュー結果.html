@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テストコードレビュー</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テストコードレビュー結果</h2>
+<h3>1. レビュー対象</h3>
+<ul>
+<li>テストコード: <code>tests/codebase/retirement_simulator.test.js</code></li>
+<li>実装結果: <code>テスト成果物/テストコード実装結果.md</code></li>
+<li>未実装一覧: <code>テスト成果物/未実装テストケース_コードベース.md</code></li>
+<li>入力テストケース: <code>テスト成果物/テストケース_コードベース.md</code></li>
+<li>対象コード: <code>sample_app/retirement_simulator.html</code></li>
+<li>レビュー結果: <code>テスト成果物/テストコードレビュー結果.md</code></li>
+</ul>
+<h3>2. 参照資料</h3>
+<ul>
+<li><code>spec/仕様書.md</code></li>
+<li><code>テスト成果物/テストケース_コードベース.md</code></li>
+<li><code>テスト成果物/テスト設計.md</code></li>
+<li><code>package.json</code></li>
+</ul>
+<h3>3. レビュー観点</h3>
+<ul>
+<li>実装済み <code>TC-CB-*</code> と未実装 <code>TC-CB-*</code> の管理。</li>
+<li>対象HTMLの実コードを読み込んで検証しているか。</li>
+<li>仕様式から独立した期待値、許容差、乱数固定、外部依存なし。</li>
+<li>各テストの <code>TC</code>、<code>TD</code>、<code>TV</code>、<code>TA</code>、<code>Risk</code>、<code>Spec</code> トレーサビリティ。</li>
+<li>失敗診断の読みやすさと、仕様不一致Failをテストコード欠陥と混同しない記録。</li>
+</ul>
+<h3>4. レビュー・修正サマリー</h3>
+<h4>1回目レビュー</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>優先度</th><th>観点</th><th>問題</th><th>場所</th><th>影響</th><th>修正方針</th></tr></thead>
+<tbody>
+<tr><td>P2</td><td>失敗診断</td><td><code>TC-CB-004</code> の失敗時にシミュレーション出力全体が表示され、ログが非常に長くなる</td><td><code>tests/codebase/retirement_simulator.test.js</code></td><td>実行記録の可読性が落ち、主要な失敗理由を追いにくい</td><td>正規表現不一致の巨大出力を避け、真偽値比較に変更</td></tr>
+</tbody></table></div>
+<p>対応:</p>
+<ul>
+<li><code>TC-CB-004</code> のアサーションを <code>assert.equal(/NaN|Infinity/.test(output), false, ...)</code> に変更した。</li>
+</ul>
+<h4>2回目レビュー</h4>
+<p><code>P0</code> / <code>P1</code> のテストコード上の問題はなし。テストは対象HTMLの実コードをVMで読み込み、仕様式による期待値と比較している。乱数はスコープ内で差し替え、復元している。</p>
+<h3>5. 最終レビュー結果</h3>
+<p><code>P0</code> / <code>P1</code> の修正すべきテストコード指摘は残っていない。</p>
+<p>実装状況:</p>
+<ul>
+<li>実装済みコードベースケース: 20件。</li>
+<li>未実装コードベースケース: 1件（<code>TC-CB-019</code>、仕様前提外条件）。</li>
+<li>テスト失敗6件は、テストコードの実行不能ではなく、対象実装と仕様の差分として検出されたもの。</li>
+</ul>
+<h3>6. 実行結果</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>実行タイミング</th><th>コマンド</th><th>結果</th><th>Pass</th><th>Fail</th><th>備考</th></tr></thead>
+<tbody>
+<tr><td>レビュー前</td><td><code>npm run test:codebase</code></td><td>Fail</td><td>14</td><td>6</td><td>初回実行</td></tr>
+<tr><td>レビュー後</td><td><code>npm run test:codebase</code></td><td>Fail</td><td>14</td><td>6</td><td>失敗診断改善後。Fail内容は同一</td></tr>
+</tbody></table></div>
+<p>失敗中の実装済みテスト:</p>
+<ul>
+<li><code>TC-CB-004</code>: 非有限値の0フォールバック不足。</li>
+<li><code>TC-CB-012</code>: 投資補填の最大取り崩し計算不一致。</li>
+<li><code>TC-CB-014</code>: 無効な給与変更設定の除外不足。</li>
+<li><code>TC-CB-015</code>: 給与変更の年齢降順評価不足。</li>
+<li><code>TC-CB-016</code>: 同一年齢給与変更の後勝ち不足。</li>
+<li><code>TC-CB-020</code>: 仕様上の正式回帰資産が存在しない。</li>
+</ul>
+<h3>7. 残課題</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>優先度</th><th>内容</th><th>推奨対応</th></tr></thead>
+<tbody>
+<tr><td>P2</td><td>失敗している6件は対象実装側の仕様不一致として残る</td><td>実行記録と最終レポートにFailとして掲載し、必要に応じて別途プロダクト修正を行う</td></tr>
+</tbody></table></div>
+</body>
+</html>

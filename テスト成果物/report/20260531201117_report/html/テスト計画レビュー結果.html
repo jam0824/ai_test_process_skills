@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テスト計画レビュー</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テスト計画レビュー結果</h2>
+<h3>1. レビュー対象</h3>
+<ul>
+<li>レビュー対象: <code>テスト成果物/テスト計画書.md</code></li>
+<li>レビュー結果: <code>テスト成果物/テスト計画レビュー結果.md</code></li>
+</ul>
+<h3>2. 参照資料</h3>
+<ul>
+<li><code>spec/仕様書.md</code></li>
+<li><code>sample_app/README.md</code></li>
+<li><code>sample_app/retirement_simulator.html</code></li>
+<li><code>package.json</code></li>
+<li><code>playwright.config.js</code></li>
+<li><code>skills/create-test-plan/SKILL.md</code></li>
+<li><code>skills/review-test-plan/SKILL.md</code></li>
+</ul>
+<h3>3. レビュー観点</h3>
+<ul>
+<li>目的妥当性、仕様トレーサビリティ、リスク分析妥当性、スコープ明確性。</li>
+<li>Unit、Integration、E2E、Security、Performance、Compatibility、Accessibility、Exploratory、Regression/formal assetのアプローチ妥当性。</li>
+<li>主要ユーザーフローに対するユースケース/シナリオ戦略。</li>
+<li>境界値、異常値、状態遷移、組み合わせ、セキュリティ/プライバシー、性能、互換性、アクセシビリティ、証跡の計画レベル網羅性。</li>
+<li>仕様上の正式テスト資産/回帰資産、未決事項、対象外/残リスク、実行経路/証跡が計画レベルで扱われているか。</li>
+<li>後続分析・設計へ渡す深さ、終了条件、成果物レビューの品質ゲート。</li>
+</ul>
+<h3>4. レビュー・修正サマリー</h3>
+<h4>1回目レビュー</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>優先度</th><th>観点</th><th>問題</th><th>場所</th><th>影響</th><th>修正方針</th></tr></thead>
+<tbody>
+<tr><td>なし</td><td>-</td><td>P0/P1の修正すべき指摘はなし</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table></div>
+<p>確認結果:</p>
+<ul>
+<li><code>## 3. テストアイテム</code> と <code>TA012</code> で、仕様上の正式回帰テスト資産 <code>sample_app/test_retirement_simulator.html</code> が計画対象になっている。</li>
+<li><code>## 8. 正式テスト資産/回帰資産</code> で、正式回帰テスト資産の根拠、計画上の扱い、欠落時の扱いが明示されている。</li>
+<li><code>## 9. テスト環境・実行経路・証跡</code> で、<code>npm run test:codebase</code>、<code>npm run test:e2e</code>、Playwright代表環境、正式回帰HTMLテスト、人間実行確認の証跡方針が示されている。</li>
+<li><code>## 10. 未決事項</code> で、リリース可否判断者、承認プロセス、Safari実機確認範囲、正式回帰テスト資産の現物未検出が集約されている。</li>
+<li>800×600未満、JavaScript無効環境、Safari実機差異、人間実行未実行、依存関係不足時の扱いは、対象外または制約として理由と代替確認/記録方針が示されている。</li>
+</ul>
+<p>修正:</p>
+<ul>
+<li>レビューで修正すべき <code>P0</code> / <code>P1</code> は検出されなかったため、追加修正は行っていない。</li>
+</ul>
+<h3>5. 最終レビュー結果</h3>
+<p><code>P0</code> / <code>P1</code> の修正すべき指摘は残っていない。</p>
+<p>必要十分性の確認:</p>
+<ul>
+<li>高リスクの <code>R001</code> から <code>R004</code> は、Unit/Integration/E2E/Regression/formal assetを組み合わせて、後続分析・設計で境界、異常、状態遷移、組み合わせ、正式回帰資産確認を深掘りできる。</li>
+<li>主要ユーザーフローは <code>TA011</code> でシナリオベース確認として計画に含まれている。</li>
+<li>セキュリティ/プライバシー、性能、互換性、アクセシビリティ、証跡の計画レベル観点が含まれている。</li>
+<li>正式回帰テスト資産、未決事項、対象外/残リスク、実行経路/証跡は、先ほど修正したスキル意図どおり計画に反映されている。</li>
+<li>終了条件は、レビュー品質ゲート、Fail/N/A/未実装/未実行/質問待ち/正式テスト資産欠落の可視化、実行証跡保存を含んでいる。</li>
+</ul>
+<h3>6. 残課題</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>優先度</th><th>内容</th><th>推奨対応</th></tr></thead>
+<tbody>
+<tr><td>P2</td><td>最終的なリリース可否判断者と正式な承認プロセスは未確定</td><td>プロダクト側で決定し、必要に応じて終了条件へ反映する</td></tr>
+<tr><td>P2</td><td>Safari実機確認の正式範囲は未確定</td><td>Playwright WebKit代表確認で十分か、実機確認が必要かを決め、人間実行テスト範囲へ反映する</td></tr>
+<tr><td>P2</td><td><code>sample_app/test_retirement_simulator.html</code> は仕様上の正式回帰テスト資産だが、現行リポジトリでは未検出</td><td>資産を復元するか、欠落を正式な発見issue/未決事項として記録する</td></tr>
+</tbody></table></div>
+</body>
+</html>

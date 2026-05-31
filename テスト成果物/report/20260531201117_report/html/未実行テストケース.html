@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>まだ実行していないテストケース</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>まだ実行していないテストケース</h1>
+  <p>件数: <strong>108</strong></p>
+  <p><a href="../index.html">テスト実行レポートへ戻る</a></p>
+</header>
+<main>
+  <div class="table-wrap"><table><thead><tr><th>テストケースID</th><th>区分</th><th>優先度</th><th>テストケース名</th><th>状態</th><th>関連質問ID</th><th>リンク</th></tr></thead><tbody><tr><td>TC-CB-022</td><td>コードベース</td><td>高</td><td>現役期間の収入種別</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-023</td><td>コードベース</td><td>高</td><td>退職後期間の収入種別</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-024</td><td>コードベース</td><td>高</td><td>年金受給期間の収入種別</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-025</td><td>コードベース</td><td>高</td><td>退職年齢直前の境界</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-026</td><td>コードベース</td><td>高</td><td>退職年齢到達月の境界</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-027</td><td>コードベース</td><td>高</td><td>年金開始年齢直前の境界</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-028</td><td>コードベース</td><td>高</td><td>年金開始年齢到達月の境界</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-029</td><td>コードベース</td><td>高</td><td>年齢逆転時の退職前給与優先</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-030</td><td>コードベース</td><td>中</td><td>startAge 30の生成期間</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-031</td><td>コードベース</td><td>中</td><td>startAge 100の生成期間</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-032</td><td>コードベース</td><td>中</td><td>startAge 101の生成期間</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-033</td><td>コードベース</td><td>高</td><td>開始年1月は年初利息なし</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-034</td><td>コードベース</td><td>高</td><td>現金不足83000円の投資補填</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-035</td><td>コードベース</td><td>高</td><td>投資残高が補填に十分</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-036</td><td>コードベース</td><td>高</td><td>投資残高が補填にちょうど足りる</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-037</td><td>コードベース</td><td>高</td><td>投資残高が補填に不足</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-038</td><td>コードベース</td><td>高</td><td>資産枯渇後の処理継続</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-039</td><td>コードベース</td><td>高</td><td>最大補填式の適用</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-040</td><td>コードベース</td><td>高</td><td>給与変更年齢0は無効</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-041</td><td>コードベース</td><td>高</td><td>給与変更年齢1は有効</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-042</td><td>コードベース</td><td>高</td><td>給与変更年齢100は有効</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-043</td><td>コードベース</td><td>高</td><td>給与変更年齢101は無効</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-044</td><td>コードベース</td><td>高</td><td>給与変更後年収0は無効</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-045</td><td>コードベース</td><td>高</td><td>給与変更後年収正値は有効</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-046</td><td>コードベース</td><td>高</td><td>給与変更後年収非有限値は無効</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-047</td><td>コードベース</td><td>高</td><td>開始年齢前の給与変更適用</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-048</td><td>コードベース</td><td>高</td><td>開始年齢同年の給与変更適用</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-049</td><td>コードベース</td><td>高</td><td>退職年齢以降の給与変更無視</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-050</td><td>コードベース</td><td>高</td><td>給与変更の年齢降順優先</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-051</td><td>コードベース</td><td>高</td><td>同一年齢の給与変更は後勝ち</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-052</td><td>コードベース</td><td>中</td><td>イベント発生率0</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-053</td><td>コードベース</td><td>中</td><td>イベント発生率1</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-054</td><td>コードベース</td><td>中</td><td>固定乱数で末尾イベント選択</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-055</td><td>コードベース</td><td>高</td><td>正式回帰HTML資産の存在</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-056</td><td>コードベース</td><td>高</td><td>高リスク組み合わせシナリオ</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-058</td><td>コードベース</td><td>高</td><td>年齢逆転時の退職後年金切替</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-CB-059</td><td>コードベース</td><td>高</td><td>翌年1月は年初利息あり</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E3%82%B3%E3%83%BC%E3%83%89%E3%83%99%E3%83%BC%E3%82%B9.html">テストケース_コードベース.md</a></td></tr>
+<tr><td>TC-E2E-020</td><td>E2E自動</td><td>高</td><td>初期値 expenseGap</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-021</td><td>E2E自動</td><td>高</td><td>初期値 expenseRetired</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-022</td><td>E2E自動</td><td>高</td><td>初期値 investRate</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-023</td><td>E2E自動</td><td>高</td><td>初期値 interest</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-024</td><td>E2E自動</td><td>高</td><td>初期値 eventProb</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-025</td><td>E2E自動</td><td>高</td><td>初期値で開始結果が表示される</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-026</td><td>E2E自動</td><td>中</td><td>結果表示の等幅フォント</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-027</td><td>E2E自動</td><td>中</td><td>結果表示のpre-wrap</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-028</td><td>E2E自動</td><td>中</td><td>結果表示の最大高さ</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-029</td><td>E2E自動</td><td>中</td><td>結果表示の背景色</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-030</td><td>E2E自動</td><td>中</td><td>結果表示のボーダー</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-031</td><td>E2E自動</td><td>中</td><td>結果表示のスクロール可能性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-032</td><td>E2E自動</td><td>高</td><td>HTML断片が結果で実行されない</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-033</td><td>E2E自動</td><td>高</td><td>startAge属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-034</td><td>E2E自動</td><td>高</td><td>retirementAge属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-035</td><td>E2E自動</td><td>高</td><td>pensionStartAge属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-036</td><td>E2E自動</td><td>高</td><td>gapIncome属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-037</td><td>E2E自動</td><td>高</td><td>salary属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-038</td><td>E2E自動</td><td>高</td><td>monthlyPension属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-039</td><td>E2E自動</td><td>高</td><td>initialCash属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-040</td><td>E2E自動</td><td>高</td><td>initialInv属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-041</td><td>E2E自動</td><td>高</td><td>expenseCurrent属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-042</td><td>E2E自動</td><td>高</td><td>expenseGap属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-043</td><td>E2E自動</td><td>高</td><td>expenseRetired属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-044</td><td>E2E自動</td><td>高</td><td>investRate min属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-045</td><td>E2E自動</td><td>高</td><td>investRate max属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-046</td><td>E2E自動</td><td>高</td><td>interest min属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-047</td><td>E2E自動</td><td>高</td><td>interest step属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-048</td><td>E2E自動</td><td>高</td><td>eventProb min属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-049</td><td>E2E自動</td><td>高</td><td>eventProb max属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-050</td><td>E2E自動</td><td>高</td><td>salaryChangeAge min属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-051</td><td>E2E自動</td><td>高</td><td>salaryChangeAge max属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-052</td><td>E2E自動</td><td>高</td><td>salaryChangeSalary min属性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-053</td><td>E2E自動</td><td>中</td><td>注意表示の外部送信なし</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-054</td><td>E2E自動</td><td>中</td><td>注意表示の助言非該当</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-055</td><td>E2E自動</td><td>中</td><td>注意表示の制度差と個人差</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-056</td><td>E2E自動</td><td>高</td><td>起動時の外部通信なし</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-057</td><td>E2E自動</td><td>高</td><td>入力開始時の外部通信なし</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-058</td><td>E2E自動</td><td>高</td><td>給与変更操作時の外部通信なし</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-059</td><td>E2E自動</td><td>高</td><td>localStorageに永続化しない</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-060</td><td>E2E自動</td><td>高</td><td>sessionStorageに永続化しない</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-061</td><td>E2E自動</td><td>高</td><td>Cookieに永続化しない</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-062</td><td>E2E自動</td><td>中</td><td>計算処理95パーセンタイル</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-063</td><td>E2E自動</td><td>中</td><td>描画処理95パーセンタイル</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-064</td><td>E2E自動</td><td>中</td><td>10回連続実行の信頼性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-065</td><td>E2E自動</td><td>中</td><td>Chromium主要フロー</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-066</td><td>E2E自動</td><td>中</td><td>Firefox主要フロー</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-067</td><td>E2E自動</td><td>中</td><td>WebKit主要フロー</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-068</td><td>E2E自動</td><td>中</td><td>Chromium数値入力差異</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-069</td><td>E2E自動</td><td>中</td><td>Firefox数値入力差異</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-070</td><td>E2E自動</td><td>中</td><td>WebKit数値入力差異</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-071</td><td>E2E自動</td><td>中</td><td>viewport 800x600の操作可能性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-E2E-072</td><td>E2E自動</td><td>中</td><td>viewport 1280x720の操作可能性</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_E2E%E8%87%AA%E5%8B%95.html">テストケース_E2E自動.md</a></td></tr>
+<tr><td>TC-MAN-001</td><td>人間実行</td><td>低</td><td>結果過信につながる導線観察</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E4%BA%BA%E9%96%93%E5%AE%9F%E8%A1%8C.html">テストケース_人間実行.md</a></td></tr>
+<tr><td>TC-MAN-002</td><td>人間実行</td><td>高</td><td>外部script参照なし</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E4%BA%BA%E9%96%93%E5%AE%9F%E8%A1%8C.html">テストケース_人間実行.md</a></td></tr>
+<tr><td>TC-MAN-003</td><td>人間実行</td><td>高</td><td>外部link参照なし</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E4%BA%BA%E9%96%93%E5%AE%9F%E8%A1%8C.html">テストケース_人間実行.md</a></td></tr>
+<tr><td>TC-MAN-004</td><td>人間実行</td><td>高</td><td>外部img参照なし</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E4%BA%BA%E9%96%93%E5%AE%9F%E8%A1%8C.html">テストケース_人間実行.md</a></td></tr>
+<tr><td>TC-MAN-005</td><td>人間実行</td><td>高</td><td>外部送信formなし</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E4%BA%BA%E9%96%93%E5%AE%9F%E8%A1%8C.html">テストケース_人間実行.md</a></td></tr>
+<tr><td>TC-MAN-006</td><td>人間実行</td><td>高</td><td>innerHTMLの静的テンプレート限定</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E4%BA%BA%E9%96%93%E5%AE%9F%E8%A1%8C.html">テストケース_人間実行.md</a></td></tr>
+<tr><td>TC-MAN-007</td><td>人間実行</td><td>低</td><td>viewport 799x599のベストエフォート観察</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E4%BA%BA%E9%96%93%E5%AE%9F%E8%A1%8C.html">テストケース_人間実行.md</a></td></tr>
+<tr><td>TC-MAN-008</td><td>人間実行</td><td>中</td><td>Tabで主要操作へ到達できる</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E4%BA%BA%E9%96%93%E5%AE%9F%E8%A1%8C.html">テストケース_人間実行.md</a></td></tr>
+<tr><td>TC-MAN-009</td><td>人間実行</td><td>中</td><td>Shift+Tabで逆方向移動できる</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E4%BA%BA%E9%96%93%E5%AE%9F%E8%A1%8C.html">テストケース_人間実行.md</a></td></tr>
+<tr><td>TC-MAN-010</td><td>人間実行</td><td>中</td><td>Enterで開始できる</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E4%BA%BA%E9%96%93%E5%AE%9F%E8%A1%8C.html">テストケース_人間実行.md</a></td></tr>
+<tr><td>TC-MAN-011</td><td>人間実行</td><td>中</td><td>Spaceで給与変更表示を操作できる</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E4%BA%BA%E9%96%93%E5%AE%9F%E8%A1%8C.html">テストケース_人間実行.md</a></td></tr>
+<tr><td>TC-MAN-012</td><td>人間実行</td><td>中</td><td>入力ラベルの意味が推測できる</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E4%BA%BA%E9%96%93%E5%AE%9F%E8%A1%8C.html">テストケース_人間実行.md</a></td></tr>
+<tr><td>TC-MAN-013</td><td>人間実行</td><td>中</td><td>ボタン文言の意味が推測できる</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E4%BA%BA%E9%96%93%E5%AE%9F%E8%A1%8C.html">テストケース_人間実行.md</a></td></tr>
+<tr><td>TC-MAN-014</td><td>人間実行</td><td>中</td><td>結果表示の意味が推測できる</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E4%BA%BA%E9%96%93%E5%AE%9F%E8%A1%8C.html">テストケース_人間実行.md</a></td></tr>
+<tr><td>TC-MAN-015</td><td>人間実行</td><td>低</td><td>スマートフォン幅390x844観察</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E4%BA%BA%E9%96%93%E5%AE%9F%E8%A1%8C.html">テストケース_人間実行.md</a></td></tr>
+<tr><td>TC-MAN-016</td><td>人間実行</td><td>低</td><td>Safari実機観察</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E4%BA%BA%E9%96%93%E5%AE%9F%E8%A1%8C.html">テストケース_人間実行.md</a></td></tr>
+<tr><td>TC-MAN-017</td><td>人間実行</td><td>中</td><td>プライバシー注意表示の精読</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E4%BA%BA%E9%96%93%E5%AE%9F%E8%A1%8C.html">テストケース_人間実行.md</a></td></tr>
+<tr><td>TC-MAN-018</td><td>人間実行</td><td>中</td><td>シミュレーション限界の精読</td><td>作成済み</td><td>なし</td><td><a href="%E3%83%86%E3%82%B9%E3%83%88%E3%82%B1%E3%83%BC%E3%82%B9_%E4%BA%BA%E9%96%93%E5%AE%9F%E8%A1%8C.html">テストケース_人間実行.md</a></td></tr></tbody></table></div>
+</main>
+
+</body>
+</html>

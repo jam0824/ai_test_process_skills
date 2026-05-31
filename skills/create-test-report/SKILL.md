@@ -1,6 +1,6 @@
 ---
 name: create-test-report
-description: Create a frozen HTML test execution report from current Japanese test artifacts and latest execution result folders. Use when Codex needs to snapshot test plans, analysis, design, test cases, executed results, bug lists, unanswered/question-wait cases, unimplemented cases, and raw evidence into `テスト成果物/report/yyyyMMddHHmmss_report/`.
+description: Create a frozen HTML test execution report from current Japanese test artifacts and latest execution result folders. Use when Codex needs to snapshot test plans, analysis, design, test cases, review results, questionnaires, executed results, bug lists, unanswered/question-wait cases, unimplemented cases, source freshness metadata, and raw evidence into `テスト成果物/report/yyyyMMddHHmmss_report/`.
 ---
 
 # Create Test Report
@@ -14,10 +14,14 @@ Create a human-readable HTML test execution report and freeze the current test a
 1. Gather source material in this order:
    - User instructions, especially timestamp, report root, or explicit execution result folders.
    - `テスト成果物/テスト計画書.md`.
-   - `テスト成果物/テスト分析.md`.
-   - `テスト成果物/テスト設計.md`.
+   - `テスト成果物/テスト計画レビュー結果.md` when present.
+   - `テスト成果物/テスト分析.md`, `テスト分析_質問票.md`, and `テスト分析レビュー結果.md` when present.
+   - `テスト成果物/テスト設計.md`, `テスト設計_質問票.md`, and `テスト設計レビュー結果.md` when present.
    - `テスト成果物/テストケース_コードベース.md`, `テストケース_E2E自動.md`, `テストケース_人間実行.md`, `テストケース_質問待ち.md`.
+   - `テスト成果物/テストケース_人間実行.csv` when present.
+   - `テスト成果物/テストケースレビュー結果.md` and `テスト成果物/テスト成果物横断レビュー結果.md` when present.
    - `テスト成果物/未実装テストケース_コードベース.md`, `未実装テストケース_E2E自動.md`.
+   - `テスト成果物/テストコードレビュー結果.md`, `Playwright_E2Eテストレビュー結果.md`, and any previous `テストレポートレビュー結果.md` when present.
    - Latest `テスト成果物/report/*_コードベーステスト` and `テスト成果物/report/*_e2e自動テスト`, unless the user specifies folders.
    - Codebase bug list `コードベース_発見issue一覧.md`; fall back to legacy `発見issue一覧.md` only when the new file is absent.
    - E2E bug list `e2e_発見issue一覧.md`.
@@ -32,6 +36,7 @@ python skills\create-test-report\scripts\create_test_report.py
    - `md/` copies of Markdown artifacts.
    - `html/` HTML views of Markdown artifacts.
    - `raw/` copies of CSV, JSON, and log evidence.
+   - `raw/manifest.json` with selected input paths, sizes, mtimes, hashes, and execution folders.
 4. Report the `report_dir`, `report_html`, selected execution folders, and summary counts.
 
 ## Report Structure
@@ -74,22 +79,26 @@ Expected stdout:
 ```text
 report_dir=...
 report_html=...
-summary=Total:... Executed:... Pass:... Fail:... N/A:... PassRate:...
+summary=Total:... Executed:... Pass:... Fail:... N/A:... NotRun:... QuestionWait:... Unimplemented:... PassRate:...
 codebase_run_dir=...
 e2e_run_dir=...
 ```
 
 ## Aggregation Rules
 
-- Total test cases: unique `テストケースID` values found in imported test case and unimplemented-case Markdown files.
+- Total test cases: unique `テストケースID` values found in imported primary test case and unimplemented-case Markdown tables.
+- Primary test case tables are tables that represent actual cases. Do not count traceability, coverage, summary, or review helper tables merely because they contain `テストケースID`.
 - `Pass`: executed Markdown rows with `実行結果=Pass`.
 - `Fail`: executed Markdown rows with `実行結果=Fail`.
 - `N/A`: executed Markdown rows with `実行結果=N/A`.
+- If the same `TC-*` appears in multiple selected execution results, apply a documented deterministic policy. The bundled script uses the most severe status by default: `Fail` over `Pass` over `N/A`.
 - Executed test cases: `Pass + Fail`.
 - Pass rate: `Pass / (Pass + Fail)`. Do not include `N/A` in the denominator.
-- Not-yet-executed test cases: total test case IDs that do not appear in selected executed Markdown files.
+- Not-yet-executed test cases: implemented or otherwise executable total test case IDs that do not appear in selected executed Markdown files. Keep question-wait and unimplemented cases in their own categories so the same case is not double-counted as ordinary not-run.
 - Question-wait cases: rows from `テストケース_質問待ち.md`.
 - Unimplemented cases: rows from `未実装テストケース_コードベース.md` and `未実装テストケース_E2E自動.md`.
+- Human-execution-pending, skipped, blocked, N/A, question-wait, and unimplemented states should remain distinguishable when the source artifacts distinguish them.
+- If a question-wait or unimplemented case also appears in selected execution results, make that overlap explicit so readers know summary categories are not strictly additive.
 - Fail priority summary:
   - Prefer priority recorded in the issue list.
   - If no issue priority exists, convert test case priority as `高=P1`, `中=P2`, `低=P3`.
@@ -102,18 +111,21 @@ e2e_run_dir=...
 - Keep Markdown copies in `md/`.
 - Convert Markdown artifacts to HTML in `html/`.
 - Create dedicated detail HTML pages for not-yet-executed, question-wait, and unimplemented test cases.
-- Copy CSV, JSON, and log evidence to `raw/`.
+- Copy CSV, JSON, and log evidence to `raw/`, including human-executed CSV artifacts when present.
+- Create `raw/manifest.json` so the frozen report can be compared against later source artifacts.
 - HTML conversion must strip ANSI color codes from Playwright output.
 - Links in `index.html` should point to files inside the generated report folder.
 - For codebase bugs, prefer `コードベース_発見issue一覧.md`; keep compatibility with old `発見issue一覧.md` execution folders.
+- Link review result artifacts and questionnaires when they exist. The current report review result may not exist yet during first report creation; include previous report review results only when present.
 - Do not edit source artifacts, test code, product code, specifications, or execution-result folders.
 
 ## Before Finishing
 
 - Confirm `index.html` exists.
 - Confirm Markdown copies exist under `md/`.
-- Confirm HTML views exist for bug lists, executed test cases, test plan, test analysis, and test design.
-- Confirm CSV, JSON, and logs are copied under `raw/` when available.
+- Confirm HTML views exist for bug lists, executed test cases, test plan, test analysis, test design, review results, and questionnaires when those sources exist.
+- Confirm CSV, JSON, logs, and `manifest.json` are copied under `raw/` when available.
 - Confirm the top sections appear in the required order.
 - Confirm Pass rate uses `Pass / (Pass + Fail)` and excludes `N/A`.
+- Confirm ordinary not-run, question-wait, and unimplemented counts are not accidental duplicates of the same source table row.
 - Mention the generated report path and summary in the final response.
