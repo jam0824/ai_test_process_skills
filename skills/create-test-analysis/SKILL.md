@@ -26,7 +26,12 @@ Default to Japanese output. Preserve traceability from each analysis viewpoint b
    - README and user-facing documentation.
    - Existing tests and implementation files only when they clarify behavior or missing viewpoints.
 3. Extract every test approach ID from the test plan, such as `TA001`, `TA002`, and its content, specification reference, risk ID, related scope, and exit-condition implications.
-4. Inventory source-defined structures before writing viewpoints. Look for finite lists, enums, state sets, decision tables, pricing/tax/rate tiers, role/permission sets, supported environments, input ranges, boundary values, thresholds, defaults, and explicitly documented exclusions.
+4. Create a **Source Structure Inventory（仕様構造インベントリ）** before writing viewpoints. Look for input fields, finite lists, enums, state sets, events, decision tables, pricing/tax/rate tiers, role/permission sets, supported environments, input ranges, boundary values, thresholds, formal/regression assets, performance thresholds, exception conditions, defaults, and explicitly documented exclusions.
+   - Assign each structure one expansion policy: `全件展開`, `境界展開`, `組み合わせ展開`, `代表抽出`, or `質問待ち`.
+   - Do not use a fixed minimum number of future cases. Preserve enough source structure for later skills to calculate the expected case yield from the source itself.
+   - Source-defined finite sets are `全件展開` by default. Use `代表抽出` only for low-risk, large, same-judgment sets, and record the rationale and residual risk.
+   - Boundary sets are `境界展開` by default when the boundary is meaningful; preserve `直前 / 境界 / 直後` or equivalent `below / at / above` hints when applicable.
+   - Environment matrices are `組み合わせ展開` or `全件展開` when each environment can independently Pass/Fail. If aggregation may be acceptable, record the aggregate judgment rule needed downstream.
 5. Run **Pass 1: Specification-Driven Viewpoints**. Derive viewpoints that cover all test approaches from explicitly documented specifications, README behavior, existing tests, product risks, constraints, acceptance thresholds, and the source-defined structures found above.
 6. Run **Pass 2: Generic QA Viewpoints**. Classify the test target type in generic terms, such as Web UI, API, CLI, library/module, batch/job, data pipeline, mobile app, document/report output, integration, infrastructure, or configuration-driven system. Compare the Pass 1 viewpoints against the Generic QA Viewpoint Catalog below and add source-supported or generally necessary viewpoints that are missing.
 7. Mark each viewpoint's origin in the existing `備考` column. Use phrases such as `由来: 仕様準拠`, `由来: 汎用QA`, and `ケース分解候補: 境界直前/境界/境界直後`. Do not add new table columns.
@@ -55,6 +60,28 @@ When a source document defines a finite structure, preserve enough of that struc
 - For ranges, thresholds, tiers, brackets, service levels, performance limits, date/time cutovers, or validity rules, include the relevant boundary set or point to the exact source section in `仕様` and add a case-splitting hint such as `ケース分解候補: 最小/最大/境界直前/境界/境界直後`.
 - Do not convert the analysis into detailed cases. Preserve the structure compactly so downstream design can decide representative, pairwise, risk-based, or exhaustive coverage intentionally.
 - If the source-defined structure is too large to list in the table, summarize its category and cite the source section precisely.
+
+### Source Structure Inventory Contract
+
+The analysis must include a `Source Structure Inventory` section. It is the upstream source for later expected test-case counts, so do not replace it with prose.
+
+Use this table:
+
+```markdown
+| 構造ID | 種別 | 仕様 | 構造内容 | 展開方針 | 関連リスクID | 代表抽出理由/残留リスク | 下流分割ヒント |
+|---|---|---|---|---|---|---|---|
+```
+
+Guidance:
+
+- **構造ID**: Use stable IDs such as `SSI001`, `SSI002`, `SSI003`.
+- **種別**: Use values such as `入力項目`, `有限リスト`, `境界値`, `状態`, `イベント`, `環境マトリクス`, `正式資産`, `性能閾値`, `例外条件`, `デフォルト`, or `除外`.
+- **構造内容**: List concrete values, ranges, boundaries, states, events, environments, or cite the exact source section when the structure is too large.
+- **展開方針**: Use only `全件展開`, `境界展開`, `組み合わせ展開`, `代表抽出`, or `質問待ち`.
+- **代表抽出理由/残留リスク**: Required when `展開方針=代表抽出`, and especially required for any high-risk structure. High-risk representative extraction without rationale is a creation defect.
+- **下流分割ヒント**: State the expected split shape, such as `全要素`, `直前/境界/直後`, `各環境別`, `ペアワイズ候補`, `1つでも失敗ならFail`, or `要確認`.
+
+Broad words such as `代表値`, `異常値`, `各`, `複数`, `など`, and `適切` are blocker smells in this inventory unless concrete values, expected split shape, or `質問待ち` are also present.
 
 ### Pass 2: Generic QA Viewpoints
 
@@ -134,13 +161,16 @@ Use this Markdown structure:
 
 ## 1. 分析対象
 ## 2. 参照資料
-## 3. テスト観点
-## 4. テスト計画への追記・更新
-## 5. カバレッジ確認
-## 6. 未決事項
+## 3. Source Structure Inventory（仕様構造インベントリ）
+## 4. テスト観点
+## 5. テスト計画への追記・更新
+## 6. カバレッジ確認
+## 7. 未決事項
 ```
 
-The `## 3. テスト観点` section must use a traceability table:
+The `## 3. Source Structure Inventory（仕様構造インベントリ）` section must use the table defined in the `Source Structure Inventory Contract` section.
+
+The `## 4. テスト観点` section must use a traceability table:
 
 ```markdown
 | テスト観点ID | テストアプローチID | 観点カテゴリ | テスト観点 | 仕様 | リスクID | 備考 |
@@ -159,6 +189,7 @@ Column guidance:
 
 Coverage requirements:
 
+- Every source-defined structure that can affect coverage must appear in `Source Structure Inventory`, or be explicitly listed as out of scope with a source reference.
 - Every test approach in the test plan must have at least one test viewpoint.
 - Every analysis should show that both Pass 1 and Pass 2 were performed, either through viewpoint `備考` values or coverage notes.
 - High-risk approaches should usually have multiple viewpoints across normal, boundary, abnormal, state/interaction, and relevant non-functional or security concerns.
@@ -208,6 +239,9 @@ Before finishing:
 - Confirm all test approach IDs from the test plan appear in the analysis coverage.
 - Confirm Pass 1 and Pass 2 were both performed.
 - Confirm each test viewpoint has a viewpoint ID, approach traceability, specification reference, and risk ID or `なし`.
+- Confirm `Source Structure Inventory` exists and every row has a concrete expansion policy.
+- Confirm source-defined finite lists default to `全件展開`, boundary sets preserve below/at/above-style split hints when meaningful, and environment matrices state whether each environment can fail independently.
+- Confirm any `代表抽出` row contains risk rationale and residual risk, and any unknown structure is marked `質問待ち`.
 - Confirm each viewpoint records its origin in `備考` without adding new columns.
 - Confirm normal, boundary, abnormal, default value, compatibility, security/privacy, performance, and exploratory concerns are considered when relevant.
 - Confirm high-risk `TAxxx` entries have sufficient viewpoint density across normal, boundary, abnormal, state/combination, and relevant non-functional or security categories.

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>コードベース実行結果: コードベース_発見issue一覧.md</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>コードベース_発見issue一覧</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Bug ID</th><th>要約</th><th>優先度</th><th>何がどうなったか</th><th>期待結果</th><th>トレーサビリティ</th><th>発見日時</th><th>関連実行済みテストケース</th></tr></thead>
+<tbody>
+<tr><td>BUG-001</td><td>TC-CB-006 投資補填の残高不足ケース がFail</td><td>P1</td><td>TC-CB-006 がテスト実行でFailになった。詳細は実行ログを参照。</td><td>最大補填100000円、税金20000円、現金-100000円、投資0円になる</td><td>TC-CB-006 / 元テスト設計ID: TD006 / テスト観点ID: TV008 / テストアプローチID: TA002 / 仕様: 5.2 / リスクID: R003</td><td>20260531203655</td><td>テスト成果物\report\20260531203655_コードベーステスト\20260531203655_テストケース_コードベース_実行済み.md</td></tr>
+<tr><td>BUG-002</td><td>TC-CB-009 同一年齢給与変更は最後を優先 がFail</td><td>P1</td><td>TC-CB-009 がテスト実行でFailになった。詳細は実行ログを参照。</td><td>年収5000000円を採用する</td><td>TC-CB-009 / 元テスト設計ID: TD009 / テスト観点ID: TV011 / テストアプローチID: TA003 / 仕様: 2.2 F008 / リスクID: R004</td><td>20260531203655</td><td>テスト成果物\report\20260531203655_コードベーステスト\20260531203655_テストケース_コードベース_実行済み.md</td></tr>
+<tr><td>BUG-003</td><td>TC-CB-010 年齢0の給与変更は無効 がFail</td><td>P2</td><td>TC-CB-010 がテスト実行でFailになった。詳細は実行ログを参照。</td><td>年収5000000円の表示がない</td><td>TC-CB-010 / 元テスト設計ID: TD010 / テスト観点ID: TV012 / テストアプローチID: TA003 / 仕様: 2.2 F008、7.2 / リスクID: R004、R006</td><td>20260531203655</td><td>テスト成果物\report\20260531203655_コードベーステスト\20260531203655_テストケース_コードベース_実行済み.md</td></tr>
+<tr><td>BUG-004</td><td>TC-CB-014 正式回帰テスト資産の存在 がFail</td><td>P2</td><td>TC-CB-014 がテスト実行でFailになった。詳細は実行ログを参照。</td><td>ファイルが存在する</td><td>TC-CB-014 / 元テスト設計ID: TD014 / テスト観点ID: TV024 / テストアプローチID: TA008 / 仕様: 9.4 / リスクID: R010</td><td>20260531203655</td><td>テスト成果物\report\20260531203655_コードベーステスト\20260531203655_テストケース_コードベース_実行済み.md</td></tr>
+</tbody></table></div>
+</body>
+</html>

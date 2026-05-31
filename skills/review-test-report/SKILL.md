@@ -7,7 +7,7 @@ description: Review Japanese HTML/Markdown test execution reports against QA art
 
 ## Overview
 
-Review and improve a generated test execution report so it is a trustworthy final visibility artifact. Focus on whether the report accurately snapshots the intended QA artifacts, execution results, issue lists, review results, unresolved states, and raw evidence without hiding failures or over-stating release quality.
+Review and improve a generated test execution report so it is a trustworthy final visibility artifact. Focus on whether the report accurately snapshots the intended QA artifacts, execution results, issue lists, review results, unresolved states, coverage-count meta information, and raw evidence without hiding failures, case shortfalls, or over-stating release quality.
 
 Default to Japanese output. This skill may edit the generated report, report generator, or report inputs when the user asks for the full review-and-fix workflow and the fix is clearly supported by available artifacts. Prefer fixing the repeatable source of a report defect, such as the report generator or selected input folders, then regenerating the report. Do not edit product specifications, README files, product code, or unrelated artifacts unless the user explicitly asks.
 
@@ -23,19 +23,20 @@ Default to Japanese output. This skill may edit the generated report, report gen
    - Product specifications and README only when needed to verify required formal assets, evidence, security, or reporting obligations.
    - Report generator scripts or templates only when the report appears generated or a repeatable fix is needed.
 3. Independently recalculate the main counts from the selected source artifacts and execution results. Do not rely only on the report's displayed numbers.
-4. Check static links from `index.html` and detail pages to copied Markdown, HTML, raw evidence, and manifest files.
-5. Review the report using the review perspectives below.
-6. List findings with priority, grounded in concrete report files and source artifacts.
-7. Fix all `P0`, `P1`, and `P2` findings that are actually fixable from available information. Fix `P3` findings only when the correction is low-risk and clearly supported.
-8. Re-review the edited or regenerated report. Repeat the review and fix loop until no `P0`, `P1`, or `P2` findings remain, except when a finding cannot be fixed because required information is unavailable. In that case, record the unresolved item clearly.
-9. Save the final review result as Markdown. If the user does not specify a path, save it as `テスト成果物/テストレポートレビュー結果.md`.
+4. Independently recalculate `期待TC数`, `実TC数`, and `不足数` from `Case Expansion Ledger` tables and compare them with the report's coverage meta display.
+5. Check static links from `index.html` and detail pages to copied Markdown, HTML, raw evidence, and manifest files.
+6. Review the report using the review perspectives below.
+7. List findings with priority, grounded in concrete report files and source artifacts.
+8. Fix all `P0`, `P1`, and `P2` findings that are actually fixable from available information. Fix `P3` findings only when the correction is low-risk and clearly supported.
+9. Re-review the edited or regenerated report. Repeat the review and fix loop until no `P0`, `P1`, or `P2` findings remain, except when a finding cannot be fixed because required information is unavailable. In that case, record the unresolved item clearly.
+10. Save the final review result as Markdown. If the user does not specify a path, save it as `テスト成果物/テストレポートレビュー結果.md`.
 
 ## Priority Rules
 
 Use these priorities consistently:
 
 - **P0 - Blocker**: The report cannot be trusted or used. Examples: `index.html` is missing or cannot open, the report uses the wrong execution result folder, major counts are materially wrong, Fail results are hidden, required raw evidence is missing while results are presented as supported, links to core report pages are broken, or sensitive secrets are exposed.
-- **P1 - High**: The report is usable but has a problem that should be fixed before relying on it. Examples: required top-level sections are missing, Pass rate or execution rate uses the wrong denominator, P0/P1/P2 Fail or issue counts are wrong, not-run/question-wait/unimplemented cases are invisible, review result artifacts with remaining P0/P1/P2 findings are omitted, issue lists cannot be traced to failed cases, required formal/regression assets are not reported, or source freshness is misleading.
+- **P1 - High**: The report is usable but has a problem that should be fixed before relying on it. Examples: required top-level sections are missing, Pass rate or execution rate uses the wrong denominator, P0/P1/P2 Fail or issue counts are wrong, not-run/question-wait/unimplemented cases are invisible, expected/actual test-case yield and shortages are invisible or materially wrong, review result artifacts with remaining P0/P1/P2 findings are omitted, issue lists cannot be traced to failed cases, required formal/regression assets are not reported, or source freshness is misleading.
 - **P2 - Medium**: The report can be used, but clarity, completeness, or maintainability should be improved. Examples: minor count mismatch, duplicate rows that do not hide severity, optional review/questionnaire artifact missing from links, weak source timestamp/select-folder disclosure, unclear link labels, non-critical raw evidence omitted, minor traceability weakness, or display/readability issues.
 - **P3 - Low**: Nice-to-have cleanup. Examples: wording polish, table styling improvement, optional grouping, or cosmetic ordering.
 
@@ -49,12 +50,14 @@ Review from these perspectives:
 - **Source freshness and selection**: Confirm the report states or clearly implies generation timestamp, selected artifact root, selected execution folders, and whether the snapshot is expected to reflect the current source artifacts.
 - **Required section order**: Confirm top sections appear in the expected order when the report standard defines one, such as summary, Fail summary, bug list, not-run cases, question-wait cases, unimplemented cases, artifact links, and execution evidence.
 - **Summary count accuracy**: Reconcile total cases, executed cases, Pass, Fail, N/A, execution rate, Pass rate, not-run, question-wait, and unimplemented counts against source Markdown/CSV/JSON. Count unique test case IDs unless the report explicitly defines another rule.
+- **Coverage meta accuracy**: Reconcile `期待TC数`, `実TC数`, `不足数`, representative extraction reasons, aggregation rules, and `質問待ち` from `Case Expansion Ledger` against the report summary and `html/網羅性メタ情報.html`.
 - **Aggregation semantics**: Confirm formulas are documented and correct. Pass rate should exclude `N/A` when defined as `Pass / (Pass + Fail)`. Distinguish not-run, N/A, question-wait, unimplemented, skipped, blocked, excluded, infrastructure-failed, and human-run-not-yet-executed states when the source artifacts distinguish them.
 - **Multiple execution result policy**: Confirm repeated executions or environment/browser matrix rows for the same `TC-*` are handled by an explicit policy, such as latest result, most severe result, or environment-separated result. The report should not silently merge contradictory `Pass` and `Fail` outcomes.
 - **Duplicate and table extraction integrity**: Confirm the report does not double-count the same `TC-*` because a source artifact contains multiple tables, coverage tables, traceability tables, or summary tables. Detail pages should not contain empty duplicate rows.
 - **Fail and issue visibility**: Confirm every failed case is visible in summary/detail views, maps to a bug or issue entry when available, preserves priority, and can be traced back to execution evidence.
 - **Priority aggregation**: Confirm `P0`, `P1`, `P2`, `P3`, and unset priority counts reflect issue lists or documented fallback rules, and do not downgrade high-severity failures.
 - **Unfinished work visibility**: Confirm not-run, question-wait, unimplemented, N/A, human-execution pending, infrastructure-blocked, and manually excluded cases are visible and not silently treated as Pass.
+- **Undercoverage visibility**: Confirm case shortages are visible at the same practical level as Fail, N/A, question-wait, and unimplemented work. A report that only shows total created test cases while hiding `期待TC数` shortfall is not acceptable.
 - **Review gate visibility**: Confirm available review result artifacts are linked or summarized, especially any remaining `P0`, `P1`, or `P2` findings from planning, analysis, design, case, code, E2E, cross-artifact, or prior report reviews.
 - **Artifact link completeness**: Confirm links exist for current plan, analysis, questionnaires, design, test cases, human CSV, unimplemented lists, issue lists, executed-case results, review results, and report details when those artifacts exist.
 - **Raw evidence completeness**: Confirm expected CSV, JSON, logs, screenshots, traces, videos, or browser outputs are copied or linked, and the links resolve inside the report package or to clearly documented external paths.
@@ -74,11 +77,12 @@ Use this procedure when the source artifacts are available:
 3. Parse executed-case tables from selected run folders or copied report `md/` files. Use rows with both `テストケースID` and `実行結果`.
 4. For duplicate execution rows with the same `TC-*`, determine whether the report documents a policy. If no policy is documented, raise a finding. If a policy is documented, recalculate using that policy and compare.
 5. Recalculate `Pass`, `Fail`, `N/A`, `Executed`, `PassRate`, ordinary not-run, question-wait, and unimplemented counts. Keep unfinished categories mutually understandable; do not let question-wait or unimplemented cases disappear into generic not-run without explanation.
-6. Parse issue lists and recalculate priority counts using the report's documented priority source and fallback. Confirm failed cases can be traced to issue IDs when issue artifacts exist.
-7. Compare recalculated values with `index.html` and detail pages. A small display-only mismatch can be `P2`; a mismatch that changes risk perception is `P1` or `P0`.
-8. Check every local `href` in `index.html` and important detail pages. The target should exist under the report folder unless the link is intentionally external and labeled as such.
-9. Review any review result artifacts that exist. If they contain remaining `P0`, `P1`, or `P2`, confirm the report surfaces that fact or links the artifact prominently enough for final readers.
-10. Scan copied Markdown, HTML, JSON, CSV, and logs for practical secret patterns such as `api_key`, `secret`, `token`, `Authorization: Bearer`, `password`, cookies, private email addresses, and `.env`-style assignments. Do not over-report harmless test dummy values.
+6. Parse `Case Expansion Ledger` tables from source or copied Markdown. Recalculate total expected, total actual, shortage, and any representative/aggregation rationale counts.
+7. Parse issue lists and recalculate priority counts using the report's documented priority source and fallback. Confirm failed cases can be traced to issue IDs when issue artifacts exist.
+8. Compare recalculated values with `index.html` and detail pages. A small display-only mismatch can be `P2`; a mismatch that changes risk perception is `P1` or `P0`.
+9. Check every local `href` in `index.html` and important detail pages, including `html/網羅性メタ情報.html`. The target should exist under the report folder unless the link is intentionally external and labeled as such.
+10. Review any review result artifacts that exist. If they contain remaining `P0`, `P1`, or `P2`, confirm the report surfaces that fact or links the artifact prominently enough for final readers.
+11. Scan copied Markdown, HTML, JSON, CSV, and logs for practical secret patterns such as `api_key`, `secret`, `token`, `Authorization: Bearer`, `password`, cookies, private email addresses, and `.env`-style assignments. Do not over-report harmless test dummy values.
 
 ## Finding Format
 
@@ -100,6 +104,9 @@ Guidelines:
 - Treat missing or undocumented handling of contradictory repeated results for the same `TC-*` as `P1` when it can hide a failure, otherwise `P2`.
 - Treat hidden Fail results, missing P0/P1/P2 issue visibility, or broken evidence for failed cases as at least `P1`; raise to `P0` when failures are effectively concealed.
 - Treat not-run, question-wait, unimplemented, N/A, or human-run-pending cases that are absent from the report as at least `P1`.
+- Treat missing coverage meta (`期待TC数`, `実TC数`, `不足数`) as `P1` when `Case Expansion Ledger` exists in source artifacts.
+- Treat hidden or materially incorrect case shortage as `P1`; raise to `P0` when the report implies completeness while ledger shows major unexplained shortage.
+- Treat missing representative extraction or aggregation rationale in the coverage meta detail page as `P2`; raise to `P1` when the rationale hides high-risk undercoverage.
 - Treat duplicate rows or duplicate counts caused by parsing coverage/traceability tables as `P2`; raise to `P1` if the duplication materially changes status, priority, or release-risk perception.
 - Treat missing review result links as `P1` when the review artifact contains or may contain remaining `P0`, `P1`, or `P2` findings; otherwise usually `P2`.
 - Treat missing questionnaire or unresolved-item links as `P2`, or `P1` when they block execution or judgment.
@@ -123,6 +130,7 @@ When fixing the report or its generation:
 - De-duplicate by stable IDs and source section intent. For example, count rows from execution/case tables, not from traceability, coverage, or summary tables unless the report explicitly reports those tables.
 - If duplicate execution rows exist, either preserve environment-separated detail or document and apply a deterministic aggregation policy.
 - Keep `Fail`, `N/A`, not-run, question-wait, unimplemented, skipped, and human-run-pending statuses distinct when the source artifacts distinguish them.
+- Keep expected-case shortage distinct from execution status. Shortage must not be hidden as merely not-run, N/A, or unimplemented unless the source artifact explicitly says that is the state.
 - Preserve original failure messages, issue IDs, priorities, test case IDs, and evidence paths when summarizing.
 - Redact secrets or sensitive personal data; if redaction would alter evidence meaning, document the redaction.
 - Do not edit product specifications, README files, product code, or unrelated test code unless explicitly requested.
@@ -150,6 +158,7 @@ Final result requirements:
 - Include the review perspectives applied.
 - Summarize each review/fix iteration.
 - State the result of summary-count reconciliation, including Pass-rate denominator, duplicate-ID handling, and unfinished-work visibility.
+- State the result of coverage meta reconciliation, including expected case total, actual case total, shortage total, and representative/aggregate rationale visibility.
 - State whether review result artifacts, questionnaires, formal/regression assets, issue lists, and raw evidence were linked or intentionally absent.
 - State whether static links, readability, and security/privacy checks passed.
 - State clearly that no `P0`, `P1`, or `P2` findings remain, or explain any remaining fix-worthy finding that could not be fixed because required information was unavailable.

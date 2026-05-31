@@ -1,0 +1,196 @@
+Command: npm run test:codebase
+ExitCode: 1
+Timestamp: 20260531203655
+
+
+> test:codebase
+> node --test tests/codebase/*.test.js
+
+TAP version 13
+# Subtest: TC-CB-001 年収0円の月手取り
+ok 1 - TC-CB-001 年収0円の月手取り
+  ---
+  duration_ms: 2.0907
+  type: 'test'
+  ...
+# Subtest: TC-CB-002 年収3000000円の仕様式一致
+ok 2 - TC-CB-002 年収3000000円の仕様式一致
+  ---
+  duration_ms: 0.605
+  type: 'test'
+  ...
+# Subtest: TC-CB-003 課税所得1950000円境界の仕様式一致
+ok 3 - TC-CB-003 課税所得1950000円境界の仕様式一致
+  ---
+  duration_ms: 0.5222
+  type: 'test'
+  ...
+# Subtest: TC-CB-004 年初投資利息4%
+ok 4 - TC-CB-004 年初投資利息4%
+  ---
+  duration_ms: 13.8717
+  type: 'test'
+  ...
+# Subtest: TC-CB-005 投資補填の残高十分ケース
+ok 5 - TC-CB-005 投資補填の残高十分ケース
+  ---
+  duration_ms: 1.6354
+  type: 'test'
+  ...
+# Subtest: TC-CB-006 投資補填の残高不足ケース
+not ok 6 - TC-CB-006 投資補填の残高不足ケース
+  ---
+  duration_ms: 5.9188
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:143:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(block.includes('  🔄 投資から補填: ¥100,000 (税金: ¥20,000)'))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:150:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-007 資産枯渇後も計算継続
+ok 7 - TC-CB-007 資産枯渇後も計算継続
+  ---
+  duration_ms: 0.7227
+  type: 'test'
+  ...
+# Subtest: TC-CB-008 開始前給与変更の適用
+ok 8 - TC-CB-008 開始前給与変更の適用
+  ---
+  duration_ms: 3.1559
+  type: 'test'
+  ...
+# Subtest: TC-CB-009 同一年齢給与変更は最後を優先
+not ok 9 - TC-CB-009 同一年齢給与変更は最後を優先
+  ---
+  duration_ms: 4.0569
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:177:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(monthBlock(lines, 35, 1).some((line) => line.includes('[年収: ¥5,000,000]')))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:189:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-010 年齢0の給与変更は無効
+not ok 10 - TC-CB-010 年齢0の給与変更は無効
+  ---
+  duration_ms: 3.2264
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:192:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(!monthBlock(lines, 30, 1).some((line) => line.includes('[年収: ¥5,000,000]')))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:201:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-011 年齢101の給与変更は無効
+ok 11 - TC-CB-011 年齢101の給与変更は無効
+  ---
+  duration_ms: 0.804
+  type: 'test'
+  ...
+# Subtest: TC-CB-012 イベント発生率0%
+ok 12 - TC-CB-012 イベント発生率0%
+  ---
+  duration_ms: 1.1735
+  type: 'test'
+  ...
+# Subtest: TC-CB-013 イベント発生率100%
+ok 13 - TC-CB-013 イベント発生率100%
+  ---
+  duration_ms: 0.536
+  type: 'test'
+  ...
+# Subtest: TC-CB-014 正式回帰テスト資産の存在
+not ok 14 - TC-CB-014 正式回帰テスト資産の存在
+  ---
+  duration_ms: 0.1394
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:238:1'
+  failureType: 'testCodeFailure'
+  error: 'sample_app/test_retirement_simulator.html exists'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:241:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-015 外部参照なしの静的確認
+ok 15 - TC-CB-015 外部参照なしの静的確認
+  ---
+  duration_ms: 0.2563
+  type: 'test'
+  ...
+# Subtest: TC-CB-016 100歳開始は12か月分
+ok 16 - TC-CB-016 100歳開始は12か月分
+  ---
+  duration_ms: 0.5234
+  type: 'test'
+  ...
+# Subtest: TC-CB-017 年金開始が退職以前でも給与が優先
+ok 17 - TC-CB-017 年金開始が退職以前でも給与が優先
+  ---
+  duration_ms: 1.5459
+  type: 'test'
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 13
+# fail 4
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 106.9741

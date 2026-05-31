@@ -7,7 +7,7 @@ description: Review Japanese Markdown test analysis artifacts and questionnaires
 
 ## Overview
 
-Review and improve a test analysis artifact by checking whether it can feed good test design. Focus on coverage, traceability, viewpoint quality, risk-based depth, necessary-and-sufficient viewpoint coverage, open questions, and whether the analysis stays at viewpoint level instead of becoming detailed test cases.
+Review and improve a test analysis artifact by checking whether it can feed good test design. Focus on coverage, traceability, viewpoint quality, risk-based depth, necessary-and-sufficient viewpoint coverage, open questions, the `Source Structure Inventory`, and whether the analysis stays at viewpoint level instead of becoming detailed test cases.
 
 Default to Japanese output. This skill may edit the reviewed test analysis and questionnaire when the user asks for the full review-and-fix workflow. Do not edit product specifications, README files, product code, or unrelated artifacts unless the user explicitly asks. Edit the test plan only when the analysis review uncovers a clear plan-level gap that should be fixed and the user request allows fixing related artifacts.
 
@@ -21,7 +21,9 @@ Default to Japanese output. This skill may edit the reviewed test analysis and q
    - Test plan, especially test approaches, product risks, scope, and exit criteria.
    - Product specifications such as `spec/`, `docs/`, files named `仕様書`, requirement IDs, or feature lists.
    - README, existing tests, QA artifacts, and implementation files only when they clarify the analysis.
-4. Inventory source-defined structures before judging the analysis: finite lists, enums, state sets, decision tables, pricing/tax/rate tiers, role/permission sets, supported environments, input ranges, boundary values, thresholds, defaults, and explicitly documented exclusions.
+4. Inventory source-defined structures before judging the analysis: input fields, finite lists, enums, state sets, events, decision tables, pricing/tax/rate tiers, role/permission sets, supported environments, input ranges, boundary values, thresholds, formal/regression assets, performance thresholds, exception conditions, defaults, and explicitly documented exclusions.
+   - Cross-check this independent inventory against the analysis `Source Structure Inventory`.
+   - Treat missing expansion policy, unexplained representative sampling, or unknown expected split shape as review findings.
 5. Review the test analysis using the review perspectives below.
 6. List findings with priority, grounded in the analysis and source material.
 7. Fix all `P0`, `P1`, and `P2` findings that are actually fixable from available information. Fix `P3` findings only when the correction is low-risk and clearly supported by the source material.
@@ -32,8 +34,8 @@ Default to Japanese output. This skill may edit the reviewed test analysis and q
 
 Use these priorities consistently:
 
-- **P0 - Blocker**: The analysis cannot be used for test design. Examples: missing analysis target, missing viewpoint table, no traceability to test approaches, or severe contradiction with the test plan.
-- **P1 - High**: The analysis is usable but has a problem that should be fixed before relying on it. Examples: missing coverage for a test approach, high-risk area too thin, generic QA viewpoints not considered for a relevant target type, missing required question, major specification traceability gap, viewpoint granularity that prevents test design, boundary or abnormal behavior compressed into one vague row for a high-risk area, or formal `TAxxx` coverage that still leaves important defect classes untested.
+- **P0 - Blocker**: The analysis cannot be used for test design. Examples: missing analysis target, missing viewpoint table, missing `Source Structure Inventory`, no traceability to test approaches, or severe contradiction with the test plan.
+- **P1 - High**: The analysis is usable but has a problem that should be fixed before relying on it. Examples: missing coverage for a test approach, high-risk area too thin, generic QA viewpoints not considered for a relevant target type, missing required question, major specification traceability gap, viewpoint granularity that prevents test design, boundary or abnormal behavior compressed into one vague row for a high-risk area, source-defined finite/boundary/environment structures missing from `Source Structure Inventory`, high-risk `代表抽出` without rationale/residual risk, or formal `TAxxx` coverage that still leaves important defect classes untested.
 - **P2 - Medium**: The analysis can be used, but clarity, completeness, or maintainability should be improved. Examples: minor duplication, unclear wording, weak categorization, or non-critical missing references.
 - **P3 - Low**: Nice-to-have cleanup. Examples: formatting polish, wording consistency, or optional extra examples.
 
@@ -52,6 +54,7 @@ For each high-risk product risk or high-risk `TAxxx`, check whether the analysis
 - Relevant generic QA concerns for the target type, such as security/privacy, performance/reliability, compatibility, accessibility/usability, persistence/data integrity, concurrency/timing, configuration/environment, observability, or locale/time/numeric display.
 - Case-splitting hints in `備考` when one viewpoint contains many meaningful values or conditions.
 - Preservation of source-defined finite lists, boundaries, tiers, thresholds, supported environments, defaults, and exclusions so later design does not have to rediscover them.
+- A complete `Source Structure Inventory` with a concrete `展開方針` for each source-defined finite set, boundary set, state/event set, environment matrix, input item, performance threshold, formal asset, and exception condition.
 
 If a high-risk area has only a normal-flow viewpoint, only representative values, or a single broad boundary row that would collapse many cases downstream, record a `P1` finding and add or request additional viewpoints. For medium or low-risk areas, minor thinness is usually `P2` unless it blocks test design or hides a likely serious defect.
 
@@ -64,6 +67,9 @@ Review from these perspectives:
 - **Test plan alignment**: Confirm all test approaches from the plan, such as `TA001`, are covered and that related product risks, scope, and exit conditions are respected.
 - **Specification traceability**: Confirm each viewpoint links to a specification section, feature ID, README section, existing test, or is explicitly marked `要確認`.
 - **Source structure preservation**: Confirm source-defined finite lists, enums, states, roles, supported environments, boundary sets, thresholds, defaults, and exclusions are represented in viewpoints, `備考`, or precise source references.
+- **Source Structure Inventory completeness**: Confirm the analysis includes `Source Structure Inventory`, and that every row has `構造ID`, `種別`, source reference, concrete structure content or precise citation, `展開方針`, and downstream split hints.
+- **Expansion policy quality**: Confirm finite sets default to `全件展開`, meaningful boundaries preserve `直前 / 境界 / 直後` or equivalent split hints, environments that can fail independently are not silently aggregated, and `質問待ち` is used when expected values or supported environments are unknown.
+- **Representative sampling control**: Confirm `代表抽出` appears only with low-risk/large/same-judgment rationale and residual risk. For high-risk structures, require strong rationale or change to full/boundary/combination expansion.
 - **Viewpoint granularity**: Confirm viewpoints are more concrete than test-plan approaches but not detailed test cases. They should be ready to become test design conditions.
 - **Viewpoint category coverage**: Confirm normal, default value, boundary, abnormal, state transition, calculation, compatibility, usability, accessibility, security, performance, regression, and exploratory concerns are included when relevant.
 - **Risk-based depth**: Confirm high-risk areas have enough viewpoints and low-risk areas are not over-expanded at the expense of critical behavior.
@@ -95,6 +101,10 @@ Guidelines:
 - Ground every finding in the analysis, questionnaire, test plan, or source material.
 - Do not create a finding merely because optional detail is absent.
 - Treat missing coverage for any test approach as at least `P1`.
+- Treat missing `Source Structure Inventory` as `P0`.
+- Treat a source-defined finite list, boundary set, event/state set, input item, formal asset, performance threshold, exception condition, or independently failing environment matrix that is absent from the inventory as `P1` when it can affect downstream case yield.
+- Treat `代表抽出` without concrete rationale and residual risk as `P1`; raise to `P0` when it hides a high-risk structure so thoroughly that design cannot calculate expected cases.
+- Treat broad inventory wording such as `代表値`, `異常値`, `各`, `複数`, `など`, or `適切` as `P1` unless concrete values, expected count/split shape, or `質問待ち` are also present.
 - Treat high-risk viewpoint thinness as `P1` when the analysis would allow important defects to escape, even if the `TAxxx` appears in the table.
 - Treat missing consideration of relevant generic QA categories as `P1` for high-risk areas and usually `P2` for medium or low-risk areas.
 - Treat boundary, abnormal, or combination viewpoints that are too broad to become useful test design as `P1` when attached to high-risk functionality.
@@ -147,6 +157,7 @@ Final result requirements:
 - Include the review perspectives applied.
 - Summarize each review/fix iteration.
 - Include a short summary of the necessary/sufficient review, especially high-risk viewpoint density and any bug-escape concerns found.
+- Include the result of the `Source Structure Inventory` review, including any representative extraction, question-wait structures, and residual undercoverage risk.
 - State clearly that no `P0`, `P1`, or `P2` findings remain, or explain any remaining fix-worthy finding that could not be fixed because required information was unavailable.
 - List remaining `P3` issues, if any, with recommended next actions.
 - Mention any updates made to the test analysis, questionnaire, or test plan.

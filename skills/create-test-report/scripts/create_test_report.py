@@ -802,6 +802,134 @@ def rows_from_markdown_cases(
     return rows
 
 
+def parse_count(value: str) -> int | None:
+    normalized = value.replace(",", "")
+    match = re.search(r"-?\d+", normalized)
+    if not match:
+        return None
+    return int(match.group(0))
+
+
+def collect_case_expansion_ledgers(artifacts_dir: Path) -> list[dict[str, str]]:
+    rows: list[dict[str, str]] = []
+    if not artifacts_dir.exists():
+        return rows
+    for path in sorted(artifacts_dir.glob("*.md")):
+        for table in load_tables(path):
+            if not all(column in table.header for column in ["テスト設計ID", "期待TC数", "実TC数"]):
+                continue
+            for row in table.rows:
+                td_id = row.get("テスト設計ID", "")
+                if not re.fullmatch(r"TD\d+", td_id):
+                    continue
+                copied = dict(row)
+                copied["source_file"] = path.name
+                rows.append(copied)
+    return rows
+
+
+def summarize_case_expansion_ledgers(rows: list[dict[str, str]]) -> dict[str, object]:
+    by_td: dict[str, dict[str, object]] = {}
+    for row in rows:
+        td_id = row.get("テスト設計ID", "")
+        expected = parse_count(row.get("期待TC数", ""))
+        actual = parse_count(row.get("実TC数", ""))
+        shortage_value = row.get("不足数", "") or row.get("差分", "")
+        shortage = parse_count(shortage_value)
+        if expected is not None and actual is not None:
+            computed_shortage = max(expected - actual, 0)
+            shortage = computed_shortage if shortage is None else max(shortage, computed_shortage)
+        entry = by_td.setdefault(
+            td_id,
+            {
+                "expected": None,
+                "actual": None,
+                "shortage": None,
+                "reasons": set(),
+                "sources": set(),
+            },
+        )
+        if expected is not None:
+            entry["expected"] = expected if entry["expected"] is None else max(int(entry["expected"]), expected)
+        if actual is not None:
+            entry["actual"] = actual if entry["actual"] is None else max(int(entry["actual"]), actual)
+        if shortage is not None:
+            entry["shortage"] = shortage if entry["shortage"] is None else max(int(entry["shortage"]), shortage)
+        for key in ["代表抽出理由", "集約判定ルール", "理由", "状態"]:
+            value = row.get(key, "").strip()
+            if value:
+                entry["reasons"].add(value)
+        entry["sources"].add(row.get("source_file", ""))
+
+    total_expected = 0
+    total_actual = 0
+    total_shortage = 0
+    unknown_count = 0
+    rationale_count = 0
+    for entry in by_td.values():
+        expected = entry["expected"]
+        actual = entry["actual"]
+        shortage = entry["shortage"]
+        if expected is None:
+            unknown_count += 1
+        else:
+            total_expected += int(expected)
+        if actual is None:
+            unknown_count += 1
+        else:
+            total_actual += int(actual)
+        if shortage is None:
+            if expected is not None and actual is not None:
+                total_shortage += max(int(expected) - int(actual), 0)
+            else:
+                unknown_count += 1
+        else:
+            total_shortage += int(shortage)
+        if entry["reasons"]:
+            rationale_count += 1
+
+    return {
+        "available": bool(rows),
+        "ledger_rows": len(rows),
+        "td_count": len(by_td),
+        "expected": total_expected,
+        "actual": total_actual,
+        "shortage": total_shortage,
+        "unknown_count": unknown_count,
+        "rationale_count": rationale_count,
+    }
+
+
+def case_expansion_rows(
+    ledger_rows: list[dict[str, str]],
+    report_dir: Path,
+    html_files_by_name: dict[str, Path],
+) -> list[list[str]]:
+    rows: list[list[str]] = []
+    for row in ledger_rows:
+        source_name = row.get("source_file", "")
+        source_link = html.escape(source_name)
+        if source_name in html_files_by_name:
+            source_link = link(relative_url(report_dir / "html", html_files_by_name[source_name]), source_name)
+        shortage_text = row.get("不足数", "") or row.get("差分", "")
+        reason_text = row.get("代表抽出理由", "") or row.get("理由", "")
+        rows.append(
+            [
+                source_link,
+                html.escape(row.get("テスト設計ID", "")),
+                html.escape(row.get("期待TC数", "")),
+                html.escape(row.get("実TC数", "")),
+                html.escape(shortage_text),
+                html.escape(row.get("対応テストケースID", "")),
+                html.escape(row.get("分割方針", "")),
+                html.escape(reason_text),
+                html.escape(row.get("集約判定ルール", "")),
+                html.escape(row.get("状態", "")),
+            ]
+        )
+    return rows
+
+
 def build_index_html(
     timestamp: str,
     report_dir: Path,
@@ -815,6 +943,8 @@ def build_index_html(
     issues: list[dict[str, str]],
     selected_issue_file_names: set[str],
     summary: dict[str, object],
+    coverage_ledger_rows: list[dict[str, str]],
+    coverage_summary: dict[str, object],
 ) -> str:
     html_files_by_name = {copied.md_path.name: copied.html_path for copied in copied_md if copied.md_path and copied.html_path}
     artifact_rows = artifact_link_rows(report_dir, copied_md)
@@ -892,6 +1022,38 @@ def build_index_html(
         ["テストケースID", "区分", "優先度", "テストケース名", "状態", "未実装理由", "関連質問ID", "リンク"],
         unimplemented_rows,
     )
+    coverage_rows = case_expansion_rows(coverage_ledger_rows, report_dir, html_files_by_name)
+    coverage_page = write_detail_page(
+        report_dir,
+        "網羅性メタ情報.html",
+        "網羅性メタ情報",
+        ["成果物", "テスト設計ID", "期待TC数", "実TC数", "不足数", "対応テストケースID", "分割方針", "代表抽出理由", "集約判定ルール", "状態"],
+        coverage_rows,
+    )
+    if coverage_summary["available"]:
+        coverage_notice = ""
+        if int(coverage_summary["shortage"]) > 0:
+            coverage_notice = '<p class="fail">Case Expansion Ledger に不足があります。代表抽出理由、集約判定ルール、または質問待ちを確認してください。</p>'
+        if int(coverage_summary["unknown_count"]) > 0:
+            coverage_notice += '<p class="na">数値化できない網羅性メタ情報があります。元成果物の ledger を確認してください。</p>'
+        coverage_meta_html = f"""
+    <h3>網羅性メタ情報</h3>
+    <div class="grid">
+      <div class="metric"><div class="label">期待TC数</div><div class="value">{coverage_summary["expected"]}</div></div>
+      <div class="metric"><div class="label">実TC数</div><div class="value">{coverage_summary["actual"]}</div></div>
+      <div class="metric"><div class="label">不足数</div><div class="value fail">{coverage_summary["shortage"]}</div></div>
+      <div class="metric"><div class="label">Ledger行数</div><div class="value">{coverage_summary["ledger_rows"]}</div></div>
+      <div class="metric"><div class="label">代表/集約理由ありTD</div><div class="value">{coverage_summary["rationale_count"]}</div></div>
+    </div>
+    <p>{link(root_relative_url(report_dir, coverage_page), "網羅性メタ情報の詳細HTML")}</p>
+    {coverage_notice}
+"""
+    else:
+        coverage_meta_html = f"""
+    <h3>網羅性メタ情報</h3>
+    <p class="na">Case Expansion Ledger が見つかりません。期待TC数、実TC数、不足数は算出できません。</p>
+    <p>{link(root_relative_url(report_dir, coverage_page), "網羅性メタ情報の詳細HTML")}</p>
+"""
 
     body = f"""
 <header>
@@ -916,6 +1078,7 @@ def build_index_html(
     </div>
     <p>Pass率 = Pass / (Pass + Fail)。N/Aは分母に含めない。</p>
     <p>未実行（実行対象）は、質問待ちと未実装を除いた未実行ケース数。</p>
+    {coverage_meta_html}
     {overlap_note_html}
   </section>
 
@@ -996,6 +1159,8 @@ def main(argv: list[str] | None = None) -> int:
             issue_files.append(issue_path)
     issues, priority_by_bug, priority_by_tc = collect_issues(issue_files)
     summary = summarize(all_cases, executed, issues, priority_by_bug, priority_by_tc)
+    coverage_ledger_rows = collect_case_expansion_ledgers(artifacts_dir)
+    coverage_summary = summarize_case_expansion_ledgers(coverage_ledger_rows)
     selected_issue_file_names = {path.name for path in issue_files}
 
     report_html = report_dir / "index.html"
@@ -1013,6 +1178,8 @@ def main(argv: list[str] | None = None) -> int:
             issues=issues,
             selected_issue_file_names=selected_issue_file_names,
             summary=summary,
+            coverage_ledger_rows=coverage_ledger_rows,
+            coverage_summary=coverage_summary,
         ),
         encoding="utf-8",
     )
@@ -1026,6 +1193,10 @@ def main(argv: list[str] | None = None) -> int:
         f"Pass:{summary['pass']} Fail:{summary['fail']} N/A:{summary['na']} "
         f"NotRun:{len(summary['not_run_ids'])} QuestionWait:{len(summary['question_wait_ids'])} "
         f"Unimplemented:{len(summary['unimplemented_ids'])} PassRate:{pass_rate_text}"
+    )
+    print(
+        f"coverage=ExpectedTC:{coverage_summary['expected']} ActualTC:{coverage_summary['actual']} "
+        f"Shortage:{coverage_summary['shortage']} LedgerRows:{coverage_summary['ledger_rows']}"
     )
     print(f"codebase_run_dir={codebase_run_dir if codebase_run_dir else ''}")
     print(f"e2e_run_dir={e2e_run_dir if e2e_run_dir else ''}")

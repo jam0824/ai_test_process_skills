@@ -33,14 +33,15 @@ Run these steps in this exact order:
 7. `$create-test-cases`
 8. `$review-test-cases`
 9. `$review-test-artifacts`
-10. `$create-test-code`
-11. `$review-test-code`
-12. `$execute-codebase-tests`
-13. `$create-playwright-e2e-tests`
-14. `$review-playwright-e2e-tests`
-15. `$execute-playwright-e2e-tests`
-16. `$create-test-report`
-17. `$review-test-report`
+10. **Implementation Entry Gate** (use `$review-test-artifacts` gate output; do not implement tests until it passes)
+11. `$create-test-code`
+12. `$review-test-code`
+13. `$execute-codebase-tests`
+14. `$create-playwright-e2e-tests`
+15. `$review-playwright-e2e-tests`
+16. `$execute-playwright-e2e-tests`
+17. `$create-test-report`
+18. `$review-test-report`
 
 For each step:
 
@@ -55,6 +56,13 @@ For each step:
 - Review steps must repeat review/fix/re-review until each child review skill's stop condition is met. For review skills that define `P0`, `P1`, and `P2` as fix-worthy, continue until no fix-worthy `P0`, `P1`, or `P2` findings remain.
 - If a review uncovers a clear upstream gap, allow the relevant child review skill to update upstream QA artifacts as defined by that skill.
 - If a question-wait or `要確認` item appears, do not guess. Keep it in the questionnaire, question-wait test cases, or unimplemented test case list.
+- Before `$create-test-code`, run the **Implementation Entry Gate**:
+  - Confirm `Source Structure Inventory`, `Expected Case Yield`, and `Case Expansion Ledger` exist.
+  - Cross-check `Source Structure Inventory -> Expected Case Yield -> Case Expansion Ledger` by `SSIxxx`/`TDxxx`.
+  - Confirm every `TDxxx` has `期待TC数`, `実TC数`, and `不足数`.
+  - If `実TC数 < 期待TC数` without a concrete representative extraction reason, aggregate judgment rule, or linked `質問待ち`, return to `$create-test-design`, `$review-test-design`, `$create-test-cases`, and `$review-test-cases` as needed.
+  - If high-risk source structures are compressed without rationale/residual risk, return upstream before implementation.
+  - Do not accept "one or more `TC-*` per `TDxxx`" as sufficient unless the expected-vs-actual ledger also passes.
 - If a codebase or E2E implementation target is missing, skip only that implementation/execution lane, update the unimplemented or unexecuted records, and continue to `$create-test-report`.
 - If dependencies, Playwright browsers, or execution environments are missing, do not install them without user approval. Let the execution-recording skills capture `N/A` or infrastructure issues when appropriate.
 - Do not execute human-run test cases. Keep `テストケース_人間実行.md` as a created and reviewed artifact, and let the final report show those cases as not yet executed.
@@ -72,6 +80,7 @@ For each step:
 - `$create-test-cases` creates split test case files for codebase, E2E automated, human execution, and question-wait cases.
 - `$review-test-cases` saves `テスト成果物/テストケースレビュー結果.md`.
 - `$review-test-artifacts` reviews plan, analysis, design, and test cases together, then saves `テスト成果物/テスト成果物横断レビュー結果.md`.
+- The Implementation Entry Gate must explicitly state whether implementation may start. It must surface total expected cases, total actual cases, shortages, question-wait counts, and accepted representative/aggregate rationales.
 
 ### Implementation And Execution
 

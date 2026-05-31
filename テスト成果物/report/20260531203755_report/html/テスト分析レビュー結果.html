@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テスト分析レビュー</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テスト分析レビュー結果</h2>
+<h3>1. レビュー対象</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>項目</th><th>パス</th></tr></thead>
+<tbody>
+<tr><td>テスト分析</td><td><code>テスト成果物/テスト分析.md</code></td></tr>
+<tr><td>質問票</td><td><code>テスト成果物/テスト分析_質問票.md</code></td></tr>
+<tr><td>レビュー結果</td><td><code>テスト成果物/テスト分析レビュー結果.md</code></td></tr>
+</tbody></table></div>
+<h3>2. 参照資料</h3>
+<ul>
+<li><code>テスト成果物/テスト計画書.md</code></li>
+<li><code>spec/仕様書.md</code></li>
+<li><code>sample_app/README.md</code></li>
+<li><code>sample_app/retirement_simulator.html</code></li>
+</ul>
+<h3>3. レビュー観点</h3>
+<p>テスト計画整合、仕様トレーサビリティ、有限リスト・境界保持、観点粒度、カテゴリ網羅、リスクベース深さ、汎用QA、質問票妥当性、バグ逃し想像、下流設計準備性を確認した。</p>
+<h3>4. レビュー・修正サマリー</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>反復</th><th>指摘</th><th>対応</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>P1: R010の正式回帰資産が下流へ渡る観点として不足</td><td>TV024を追加済み</td></tr>
+<tr><td>1</td><td>P1: 注意表示の金融・税務助言ではない旨がE2E/人間実行へ流れにくい</td><td>TV025を追加済み</td></tr>
+<tr><td>1</td><td>P2: 連続実行時の古い結果混入が性能観点だけでは弱い</td><td>TV021を追加済み</td></tr>
+<tr><td>2</td><td>P0/P1/P2なし</td><td>再レビューで修正対象の指摘なし</td></tr>
+</tbody></table></div>
+<h3>5. 最終レビュー結果</h3>
+<p><code>TA001</code> から <code>TA009</code> までの全アプローチに観点があり、高リスクの計算・年齢境界・投資補填・給与変更・プライバシーは正常、境界、異常、状態遷移、E2E、非機能の複数観点に分解されている。質問票は設計を止める未確定事項がないため、ダミー行なしで「質問なし」として保存されている。</p>
+<p>未修正の <code>P0</code>、<code>P1</code>、<code>P2</code> 指摘はない。</p>
+<h3>6. 残課題</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>優先度</th><th>内容</th><th>推奨対応</th></tr></thead>
+<tbody>
+<tr><td>P3</td><td>実機Safari/Edgeの厳密な版指定は未確定</td><td>人間実行時の環境欄に具体版を記録する</td></tr>
+</tbody></table></div>
+</body>
+</html>

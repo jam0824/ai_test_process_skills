@@ -7,7 +7,7 @@ description: Review Japanese Markdown and CSV test case artifacts against test d
 
 ## Overview
 
-Review and improve test case artifacts so they can be handed to implementers or human testers without losing traceability, coverage, or executability. The default artifact set is four Markdown files: code-based, E2E automated, human-executed, and question-wait test cases, plus a companion CSV for human-executed cases. Focus on traceability, test design coverage, execution category validity, case granularity, input clarity, step reproducibility, expected-result judgment, question-wait handling, human CSV parity, risk alignment, evidence, gaps, and maintainability.
+Review and improve test case artifacts so they can be handed to implementers or human testers without losing traceability, coverage, or executability. The default artifact set is four Markdown files: code-based, E2E automated, human-executed, and question-wait test cases, plus a companion CSV for human-executed cases. Focus on traceability, test design coverage, `Case Expansion Ledger`, execution category validity, case granularity, input clarity, step reproducibility, expected-result judgment, question-wait handling, human CSV parity, risk alignment, evidence, gaps, and maintainability.
 
 Default to Japanese output. This skill may edit the reviewed test case files when the user asks for the full review-and-fix workflow. Do not edit product specifications, README files, product code, existing tests, or unrelated artifacts unless the user explicitly asks. Edit upstream QA artifacts only when the test case review uncovers a clear design-, analysis-, or plan-level gap that should be fixed and the user request allows fixing related artifacts.
 
@@ -18,6 +18,7 @@ Apply this gate before treating traceability coverage as sufficient:
 - A test design row may group a condition family, but an executable test case row must be one concrete execution and one independently reportable Pass/Fail/N/A judgment.
 - If a failed `TC-*` would require reading subtest output, loop labels, screenshots for multiple environments, or manual notes to know which condition failed, the `TC-*` is too broad unless it explicitly defines an aggregate-judgment scenario.
 - Values, environments, roles, API statuses, file types, and data states that can fail independently should normally be separate `TC-*` rows.
+- The design's `Expected Case Yield` must be reconciled against actual test cases in a `Case Expansion Ledger`. Formal `TDxxx` coverage is not sufficient when actual case count is below expected case count.
 - Vague executor-choice words such as `など`, `付近`, `適切`, `任意`, `複数`, `各`, `代表`, `正常値`, and `異常値` are findings unless the row provides concrete values or is marked `要確認`.
 - Cross-row shortcuts such as `同上`, `前述と同じ`, `同条件`, and `同様` are findings because each executable row must stand alone.
 - Inputs that name only internal variables, derived states, or intermediate conditions are findings unless the row also states how to create that state through executable setup, fixtures, API arguments, files, UI operations, database records, mocks, clocks, or dependency responses.
@@ -41,18 +42,19 @@ Apply this gate before treating traceability coverage as sufficient:
    - Test plan, especially test approaches, product risks, scope, and exit criteria.
    - Product specifications such as `spec/`, `docs/`, files named `仕様書`, requirement IDs, or feature lists.
    - README, existing tests, QA artifacts, and implementation files only when they clarify testability, inputs, outputs, or existing coverage.
-3. Review the test cases using the review perspectives below. Run the Core Review Gate and compressed-condition scan before concluding that coverage is acceptable.
-4. List findings with priority, grounded in the test cases and source material.
-5. Fix all `P0`, `P1`, and `P2` findings that are actually fixable from available information. Fix `P3` findings only when the correction is low-risk and clearly supported by the source material.
-6. Re-review the edited artifacts. Repeat review and fix until no `P0`, `P1`, or `P2` findings remain.
-7. Save the final review result as Markdown. If the user does not specify a path, save it next to the reviewed test case files as `テストケースレビュー結果.md`.
+3. Independently compute actual `TC-*` counts per `TDxxx` across all split files and compare them with design `Expected Case Yield`.
+4. Review the test cases using the review perspectives below. Run the Core Review Gate, `Case Expansion Ledger` check, and compressed-condition scan before concluding that coverage is acceptable.
+5. List findings with priority, grounded in the test cases and source material.
+6. Fix all `P0`, `P1`, and `P2` findings that are actually fixable from available information. Fix `P3` findings only when the correction is low-risk and clearly supported by the source material.
+7. Re-review the edited artifacts. Repeat review and fix until no `P0`, `P1`, or `P2` findings remain.
+8. Save the final review result as Markdown. If the user does not specify a path, save it next to the reviewed test case files as `テストケースレビュー結果.md`.
 
 ## Priority Rules
 
 Use these priorities consistently:
 
-- **P0 - Blocker**: The test cases cannot be used for execution or downstream automation. Examples: missing required test case files, missing test case tables, no `TC-*` IDs, missing execution-category structure, severe Markdown table breakage across an artifact, CSV that cannot be parsed at all, or coverage tables missing enough information to determine whether `TDxxx` designs are covered.
-- **P1 - High**: The test cases are usable but have a problem that should be fixed before relying on them. Examples: any `TDxxx` from the test design is not covered across the artifact set, missing traceability to `TDxxx`/`TVxxx`/`TAxxx`, high-risk area too thin, impossible or ambiguous execution steps, cross-row shortcuts that make a row non-standalone, inputs that are only internal/derived state with no executable setup, multiple independently meaningful inputs/boundaries/abnormal values/browsers/environments/roles/API statuses/file types/data states compressed into one executable `TC-*` row without an explicit aggregate-judgment rationale, multiple independent expected observations in one row, expected result that cannot be judged and is not marked `要確認`, question-wait case without `DQxxx`, Markdown table row column mismatch, missing required human CSV, human CSV missing or adding `TC-MAN-*` rows compared with the Markdown human file, serious CSV header/quoting errors, serious execution-category misclassification or wrong file placement, duplicate `TC-*` across files without an explicit duplication policy, or contradiction with test design or plan.
+- **P0 - Blocker**: The test cases cannot be used for execution or downstream automation. Examples: missing required test case files, missing test case tables, missing `Case Expansion Ledger`, no `TC-*` IDs, missing execution-category structure, severe Markdown table breakage across an artifact, CSV that cannot be parsed at all, or coverage tables missing enough information to determine whether `TDxxx` designs are covered.
+- **P1 - High**: The test cases are usable but have a problem that should be fixed before relying on them. Examples: any `TDxxx` from the test design is not covered across the artifact set, missing traceability to `TDxxx`/`TVxxx`/`TAxxx`, high-risk area too thin, actual `TC-*` count below `期待TC数` without a concrete representative/aggregation rationale, ledger arithmetic mismatch, impossible or ambiguous execution steps, cross-row shortcuts that make a row non-standalone, inputs that are only internal/derived state with no executable setup, multiple independently meaningful inputs/boundaries/abnormal values/browsers/environments/roles/API statuses/file types/data states compressed into one executable `TC-*` row without an explicit aggregate-judgment rationale, multiple independent expected observations in one row, expected result that cannot be judged and is not marked `要確認`, question-wait case without `DQxxx`, Markdown table row column mismatch, missing required human CSV, human CSV missing or adding `TC-MAN-*` rows compared with the Markdown human file, serious CSV header/quoting errors, serious execution-category misclassification or wrong file placement, duplicate `TC-*` across files without an explicit duplication policy, or contradiction with test design or plan.
 - **P2 - Medium**: The test cases can be used, but clarity, completeness, or maintainability should be improved. Examples: minor duplication, vague preconditions, weak evidence description, inconsistent terminology, non-critical missing reference, low-risk case granularity that is somewhat uneven but still independently reportable, or aggregate-case rationale that is present but weak.
 - **P3 - Low**: Nice-to-have cleanup. Examples: formatting polish, wording consistency, or optional extra examples.
 
@@ -64,6 +66,8 @@ Review from these perspectives:
 
 - **Traceability**: Confirm each `TC-*` links to a valid `TDxxx`, `TVxxx`, `TAxxx`, specification reference, and risk ID or `なし`.
 - **Test design coverage**: Confirm every `TDxxx` from the test design appears in at least one test case across the split files and in a coverage table.
+- **Case Expansion Ledger**: Confirm each `TDxxx` has `期待TC数`, `実TC数`, `不足数`, corresponding `TC-*` IDs, split policy, and any representative/aggregation rationale. Actively recompute `実TC数`; do not trust the ledger by inspection only.
+- **Expected-vs-actual coverage**: Confirm `実TC数 >= 期待TC数` for each `TDxxx`, unless the shortfall is explicitly `質問待ち`, representative sampling is justified, or an aggregate judgment rule states evidence granularity.
 - **File structure and placement**: Confirm the artifact set has `テストケース_コードベース.md`, `テストケース_E2E自動.md`, `テストケース_人間実行.md`, and `テストケース_質問待ち.md`, unless the user explicitly requested a legacy consolidated file.
 - **Human CSV parity**: Confirm `テストケース_人間実行.csv` exists, is parseable, has the required header, contains the same non-question-wait `TC-MAN-*` rows as `テストケース_人間実行.md`, and keeps shared field values aligned.
 - **Execution category validity**: Confirm cases are naturally classified as `コードベース`, `E2E自動`, or `人間実行`, and that non-question-wait cases are placed in the matching execution file.
@@ -118,6 +122,10 @@ Guidelines:
 - Ground every finding in the test cases, design, questionnaire, analysis, test plan, or source material.
 - Do not create a finding merely because optional detail is absent.
 - Treat missing coverage for any `TDxxx` as at least `P1`.
+- Treat missing `Case Expansion Ledger` as `P0`.
+- Treat `Case Expansion Ledger` rows with missing or non-numeric `期待TC数`, `実TC数`, or `不足数` as `P1`.
+- Treat `実TC数 < 期待TC数` as `P1` unless the row has a concrete `代表抽出理由`, `集約判定ルール`, or linked `質問待ち` reason. Raise to `P0` when the shortfall is broad enough that implementation would start from a materially incomplete test suite.
+- Treat "all `TDxxx` have at least one `TC-*`" as insufficient when the ledger shows undercoverage.
 - Treat an executable case that lists multiple independent representative values, boundaries, abnormal values, browsers, environments, roles, API statuses, file types, data states, or scenarios in one row as `P1` unless the row explicitly defines an aggregate-judgment scenario.
 - Treat a low-risk compressed row as `P2` only when it is still independently reportable and the compression does not hide which condition passed or failed.
 - Treat slash-separated, comma-separated, Japanese comma-separated, or range-like values such as `3,000,000/4,000,000/10,000,000円`, `直前/境界/直後`, `空欄/文字列/非有限値`, `Chrome/Firefox/Safari`, or `800x600/1280x720` as review smells; require splitting when each value could produce a distinct result.
@@ -146,6 +154,7 @@ When fixing artifacts:
 - Add test case IDs sequentially within the matching execution category, such as `TC-CB-044`, `TC-E2E-083`, or `TC-MAN-035`.
 - When fixing compressed cases, split the row into multiple `TC-*` rows with one concrete input/condition per row. Preserve the original `TDxxx`, `TVxxx`, `TAxxx`, specification, and risk IDs on each split row, and give each row a test name that identifies the specific value or boundary.
 - When a design row intentionally becomes several test cases, update the coverage table so the same `TDxxx` maps to all resulting `TC-*` IDs.
+- Update the `Case Expansion Ledger` whenever cases are split, removed, moved to question-wait, or intentionally aggregated. The ledger must remain arithmetically consistent with the actual case rows.
 - Replace cross-row shortcuts with full row-local setup, input, step, and expected-result text.
 - Replace internal-state-only inputs with executable setup. For example, write the API request, fixture, database record, file content, UI operation, mock response, or clock setting that produces the state.
 - Split rows with multiple independent observation points, or add a clear aggregate-judgment rationale only when the scenario truly must be judged as one flow.
@@ -185,6 +194,7 @@ Final result requirements:
 - Include the review perspectives applied.
 - Summarize each review/fix iteration.
 - State the result of the one-TC-one-judgment / compressed-condition scan.
+- State the result of the `Case Expansion Ledger` reconciliation, including total expected cases, total actual cases, shortage count, and accepted representative/aggregate rationales.
 - State the result of row-independence, executable-input, multiple-observation, and Markdown-table-integrity checks.
 - State the result of human CSV parity and CSV integrity checks.
 - State clearly that no `P0`, `P1`, or `P2` findings remain, or explain any remaining fix-worthy finding that could not be fixed because required information was unavailable.

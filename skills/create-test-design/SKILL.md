@@ -11,7 +11,7 @@ Create a test design document that answers "how should each test viewpoint be te
 
 Default to Japanese output. Preserve traceability from each test design back to the originating test viewpoint, test approach, specification, and product risk.
 
-When test analysis records origin or decomposition hints in `備考` such as `由来: 仕様準拠`, `由来: 汎用QA`, or `ケース分解候補: 境界直前/境界/境界直後`, consume those hints during design. Also consume finite lists from source material, such as thresholds, statuses, roles, error codes, supported platforms, file formats, plan tiers, event types, or browser/device matrices. Keep the existing output table columns unchanged; express technique, partition, and decomposition intent inside `テストパターン`, `条件/入力`, `期待結果/判定観点`, and `状態`.
+When test analysis records origin or decomposition hints in `備考` such as `由来: 仕様準拠`, `由来: 汎用QA`, or `ケース分解候補: 境界直前/境界/境界直後`, consume those hints during design. Also consume the analysis `Source Structure Inventory` and finite lists from source material, such as thresholds, statuses, roles, error codes, supported platforms, file formats, plan tiers, event types, or browser/device matrices. Keep the existing output table columns unchanged; express technique, partition, and decomposition intent inside `テストパターン`, `条件/入力`, `期待結果/判定観点`, and `状態`. Record expected downstream test-case counts in a separate `Expected Case Yield` table.
 
 ## Workflow
 
@@ -28,16 +28,20 @@ When test analysis records origin or decomposition hints in `備考` such as `�
    - Existing tests and implementation files only when they clarify testability, inputs, outputs, or missing design detail.
 5. Extract every test viewpoint ID from the analysis, such as `TV001`, `TV002`, and its approach ID, category, viewpoint, specification reference, risk ID, priority, and notes.
    - Preserve analysis notes such as `由来`, `ケース分解候補`, unresolved questions, and source confidence.
+   - Extract every `SSIxxx` row from `Source Structure Inventory`, including `展開方針`, representative rationale, residual risk, and downstream split hints.
 6. Apply the Design Expansion Model to every viewpoint.
    - Choose one or more generic test design techniques appropriate to the target type and risk.
    - Create one or more test designs for every viewpoint.
    - Split high-risk, boundary, abnormal, calculation, security, performance, compatibility, accessibility, state, combination, recovery, persistence, concurrency, and environment-difference viewpoints into multiple design rows when one row would hide important defect classes.
    - For source-listed finite sets, cover every materially relevant item or explicitly record the representative subset and exclusion rationale.
    - Choose one primary execution method for each row. If both code-level, E2E, manual, review, or performance lanes are materially required, split the row or state the primary and supplementary method clearly.
-7. If a design depends on unanswered information, keep the design row, set `状態` to `質問待ち`, mark unclear fields as `要確認`, add the row to `## 4. 質問待ち項目`, and add a linked question to the design questionnaire.
-8. If design reveals a missing analysis viewpoint, product risk, or test approach, update upstream artifacts directly when supported by source material. Record all changes in the design document.
-9. Run the design density self-check before finishing.
-10. Save the test design document and questionnaire. If the user does not specify paths, save them next to the analysis as `テスト設計.md` and `テスト設計_質問票.md`.
+7. Create **Expected Case Yield（期待ケース数）** rows for every `TDxxx`. For each design row, record the source structures it partitions, expansion policy, expected number of concrete `TC-*` rows, and whether aggregation is allowed.
+   - If expected case count cannot be calculated, mark the design or yield row `質問待ち` and add a questionnaire item. Do not let such a row proceed as fully designed.
+   - `Expected Case Yield` is derived from source structures, not from a fixed minimum case count.
+8. If a design depends on unanswered information, keep the design row, set `状態` to `質問待ち`, mark unclear fields as `要確認`, add the row to `## 4. 質問待ち項目`, and add a linked question to the design questionnaire.
+9. If design reveals a missing analysis viewpoint, product risk, test approach, or source structure inventory row, update upstream artifacts directly when supported by source material. Record all changes in the design document.
+10. Run the design density self-check and expected-yield self-check before finishing.
+11. Save the test design document and questionnaire. If the user does not specify paths, save them next to the analysis as `テスト設計.md` and `テスト設計_質問票.md`.
 
 ## Design Expansion Model
 
@@ -94,6 +98,28 @@ Do not compress materially different design concerns into a single broad row whe
 - Treat separators such as `/`, `、`, comma lists, ranges, and "all/each" wording in `条件/入力` as compression smells. Keep them only when the row clearly defines the partition list and the later test-case split units.
 - Keep design rows focused enough that test cases can be generated mechanically from the row, but stop before click-by-click or command-by-command procedure details.
 
+## Expected Case Yield Contract
+
+The design must include an `Expected Case Yield（期待ケース数）` section. It is the contract that later test case creation must satisfy.
+
+Use this table:
+
+```markdown
+| テスト設計ID | 分割元構造ID | 分割方針 | 期待TC数 | 集約可否 | 集約判定ルール/代表抽出理由 | 備考 |
+|---|---|---|---|---|---|---|
+```
+
+Guidance:
+
+- **テスト設計ID**: Every `TDxxx` in the design table must appear at least once.
+- **分割元構造ID**: Reference `SSIxxx`, `TVxxx`, or a precise source section when no `SSIxxx` exists yet. Add an upstream `SSIxxx` when a source-defined structure was missed.
+- **分割方針**: Use `全件展開`, `境界展開`, `組み合わせ展開`, `代表抽出`, `集約`, or `質問待ち`.
+- **期待TC数**: Record a concrete integer. For boundary sets, count `直前 / 境界 / 直後` or source-meaningful equivalents when applicable. For finite lists, count all source-defined items by default. For environments, count independent Pass/Fail units separately unless aggregation is justified.
+- **集約可否**: Use `可`, `不可`, or `質問待ち`. Aggregation is allowed only when the expected result and evidence rule make one Pass/Fail judgment meaningful.
+- **集約判定ルール/代表抽出理由**: Required when `集約可否=可`, `分割方針=代表抽出`, or `期待TC数` is lower than the raw source-defined set size.
+
+Broad wording such as `代表値`, `異常値`, `各`, `複数`, `など`, and `適切` is a blocker smell unless concrete values and `期待TC数` are also present.
+
 ## Design Density Self-Check
 
 Before saving, inspect the design density from the perspective of downstream test case creation.
@@ -106,6 +132,7 @@ Before saving, inspect the design density from the perspective of downstream tes
 - Confirm each design row has a clear primary execution method; split rows whose methods belong to different implementation lanes unless the secondary method is only supporting evidence.
 - Cross-check question consistency: every blocking design question must have a `質問待ち` row, a `## 4. 質問待ち項目` entry, and a questionnaire row that all reference each other.
 - Avoid adding low-value rows only to increase count; sufficiency means risk-appropriate coverage, not mechanical expansion.
+- Confirm the `Expected Case Yield` table has one or more rows for every `TDxxx`, each row has a concrete `期待TC数`, and any aggregation or representative sampling has an explicit rule and residual-risk rationale.
 
 ## Output: Test Design
 
@@ -120,6 +147,7 @@ Use this Markdown structure:
 ## 4. 質問待ち項目
 ## 5. 上流成果物への追記・更新
 ## 6. カバレッジ確認
+## 7. Expected Case Yield（期待ケース数）
 ```
 
 The `## 3. テスト設計` section must be grouped by `テストレベル/タイプ`. Use headings such as `### 3.1 Unit` and repeat this traceability table in each group:
@@ -143,6 +171,8 @@ Column guidance:
 - **仕様**: Reference specification sections, feature IDs, README sections, existing tests, or `要確認`.
 - **リスクID**: Reference product risk IDs. Use `なし` when no direct risk exists.
 - **状態**: Use `設計済み`, `質問待ち`, or `上流更新済み` as the base values. Use `質問待ち` when a linked question affects pass/fail judgment, execution method, test partitioning, or expected results.
+
+The `## 7. Expected Case Yield（期待ケース数）` section must use the table defined in the `Expected Case Yield Contract` section.
 
 ## Test Design Guidance
 
@@ -209,6 +239,8 @@ Question guidance:
 
 - Confirm every `TVxxx` from the test analysis appears in the design table.
 - Confirm every `TAxxx` from the test plan remains covered through at least one `TDxxx`.
+- Confirm every `SSIxxx` from `Source Structure Inventory` is consumed by one or more `TDxxx`, explicitly out of scope, or marked `質問待ち`.
+- Confirm every `TDxxx` has an `Expected Case Yield` row with a concrete `期待TC数`, or is marked `質問待ち` with a linked question.
 - Confirm every high-risk product risk has enough design depth to support later test case creation.
 - Confirm analysis `備考` was consumed: `由来` should be preserved in intent, and `ケース分解候補` must be reflected or explicitly deferred.
 - Confirm source-listed finite values, boundaries, statuses, environments, and matrices are reflected or explicitly sampled with rationale.
@@ -224,6 +256,10 @@ Before finishing:
 - Confirm `## 3. テスト設計` is grouped by `テストレベル/タイプ`, and each group repeats the table header.
 - Confirm each design row has `TDxxx`, `TVxxx`, `TAxxx`, test level/type, priority, condition/input, execution method, expected-result judgment, specification reference, risk ID or `なし`, and status.
 - Confirm the design table shape is unchanged; no extra columns were added.
+- Confirm `Expected Case Yield` exists as a separate table and does not add columns to the main design table.
+- Confirm each `TDxxx` maps to source structures and a calculated expected test-case count.
+- Confirm expected counts are calculated from source-defined structures rather than an arbitrary minimum.
+- Confirm `期待TC数` is not lower than the source-defined finite/boundary/environment split without a representative extraction or aggregation rationale.
 - Confirm analysis `備考` origin and decomposition hints were considered.
 - Confirm `ケース分解候補` is reflected in `TDxxx` rows or the reason for deferral is recorded.
 - Confirm finite source lists and boundary tables have not been partially consumed without rationale.

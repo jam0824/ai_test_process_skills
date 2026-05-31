@@ -20,6 +20,7 @@ Create a human-readable HTML test execution report and freeze the current test a
    - `テスト成果物/テストケース_コードベース.md`, `テストケース_E2E自動.md`, `テストケース_人間実行.md`, `テストケース_質問待ち.md`.
    - `テスト成果物/テストケース_人間実行.csv` when present.
    - `テスト成果物/テストケースレビュー結果.md` and `テスト成果物/テスト成果物横断レビュー結果.md` when present.
+   - `Source Structure Inventory`, `Expected Case Yield`, and `Case Expansion Ledger` sections from copied QA artifacts. These may be inside the analysis, design, and split test case Markdown files rather than separate files.
    - `テスト成果物/未実装テストケース_コードベース.md`, `未実装テストケース_E2E自動.md`.
    - `テスト成果物/テストコードレビュー結果.md`, `Playwright_E2Eテストレビュー結果.md`, and any previous `テストレポートレビュー結果.md` when present.
    - Latest `テスト成果物/report/*_コードベーステスト` and `テスト成果物/report/*_e2e自動テスト`, unless the user specifies folders.
@@ -60,6 +61,13 @@ Sections 4-6 must not inline full test case lists in `index.html`. Show counts a
 - `html/質問待ちのテストケース.html`
 - `html/未実装のテストケース.html`
 
+The report must also show coverage-count meta information in or directly under `テスト結果サマリー`:
+
+- Total `期待TC数`, total `実TC数`, and total `不足数` from `Case Expansion Ledger`.
+- A link to `html/網羅性メタ情報.html`.
+- Representative extraction and aggregation reasons when present.
+- A visible warning when `Case Expansion Ledger` is missing, incomplete, or shows unexplained shortage. Do not hide case shortfalls behind total test count.
+
 ## Script Interface
 
 Use `scripts/create_test_report.py`.
@@ -80,6 +88,7 @@ Expected stdout:
 report_dir=...
 report_html=...
 summary=Total:... Executed:... Pass:... Fail:... N/A:... NotRun:... QuestionWait:... Unimplemented:... PassRate:...
+coverage=ExpectedTC:... ActualTC:... Shortage:... LedgerRows:...
 codebase_run_dir=...
 e2e_run_dir=...
 ```
@@ -97,6 +106,7 @@ e2e_run_dir=...
 - Not-yet-executed test cases: implemented or otherwise executable total test case IDs that do not appear in selected executed Markdown files. Keep question-wait and unimplemented cases in their own categories so the same case is not double-counted as ordinary not-run.
 - Question-wait cases: rows from `テストケース_質問待ち.md`.
 - Unimplemented cases: rows from `未実装テストケース_コードベース.md` and `未実装テストケース_E2E自動.md`.
+- Coverage meta: parse `Case Expansion Ledger` tables with `テスト設計ID`, `期待TC数`, and `実TC数`; sum numeric counts, calculate shortages, and show any representative extraction or aggregation rationale. If no ledger is present, show that absence visibly.
 - Human-execution-pending, skipped, blocked, N/A, question-wait, and unimplemented states should remain distinguishable when the source artifacts distinguish them.
 - If a question-wait or unimplemented case also appears in selected execution results, make that overlap explicit so readers know summary categories are not strictly additive.
 - Fail priority summary:
@@ -111,6 +121,7 @@ e2e_run_dir=...
 - Keep Markdown copies in `md/`.
 - Convert Markdown artifacts to HTML in `html/`.
 - Create dedicated detail HTML pages for not-yet-executed, question-wait, and unimplemented test cases.
+- Create `html/網羅性メタ情報.html` for `Case Expansion Ledger` rows, including source artifact, `TDxxx`, expected count, actual count, shortage, representative extraction reason, aggregation rule, and status.
 - Copy CSV, JSON, and log evidence to `raw/`, including human-executed CSV artifacts when present.
 - Create `raw/manifest.json` so the frozen report can be compared against later source artifacts.
 - HTML conversion must strip ANSI color codes from Playwright output.
@@ -128,4 +139,5 @@ e2e_run_dir=...
 - Confirm the top sections appear in the required order.
 - Confirm Pass rate uses `Pass / (Pass + Fail)` and excludes `N/A`.
 - Confirm ordinary not-run, question-wait, and unimplemented counts are not accidental duplicates of the same source table row.
+- Confirm `期待TC数 / 実TC数 / 不足数 / 代表抽出理由 / 集約判定ルール` are visible in the report, with a detail page link from the summary.
 - Mention the generated report path and summary in the final response.

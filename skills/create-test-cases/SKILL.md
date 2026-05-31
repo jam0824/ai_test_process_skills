@@ -19,6 +19,7 @@ Separate test design from executable test cases:
 - A test case row must describe one concrete execution and one independently reportable Pass/Fail/N/A judgment.
 - Do not copy condition sets from test design directly into `入力/データ`. Instantiate them into concrete cases.
 - Parameterized automation is allowed later, but each parameter that can pass/fail independently still needs its own `TC-*` row or an explicit aggregate-judgment rationale.
+- The design's `Expected Case Yield` is binding. Each `TDxxx` must expand to the expected number of concrete `TC-*` rows unless the test case file records an accepted representative extraction or aggregate judgment rule.
 - Each row must stand alone. Do not rely on another row for setup, inputs, steps, or expected results.
 - Test inputs must be executable inputs, not only derived internal variables or intermediate states. When a target state matters, write the external input, API argument, fixture, database row, file content, UI operation, or setup step that creates it.
 - If a value, threshold, environment, or expected result cannot be made concrete from source material, create or use a question-wait case instead of guessing.
@@ -37,19 +38,23 @@ Separate test design from executable test cases:
    - README and user-facing documentation.
    - Existing tests and implementation files only when they clarify testability, inputs, outputs, or existing coverage.
 4. Extract every test design ID, such as `TD001`, and its linked `TVxxx`, `TAxxx`, level/type, priority, pattern, condition/input, execution method, expected-result judgment, specification reference, risk ID, and status.
-5. Expand every `TDxxx` into at least one test case by instantiating design conditions into executable cases. Split the design into multiple cases when its condition/input contains multiple representative values, boundary values, abnormal values, browser targets, device/viewport/OS targets, user roles, API statuses, file formats, data states, scenarios, or question-wait conditions. A test case must represent one independently reportable execution/judgment unit; do not keep multiple materially different inputs in one `TC-*` row merely because they share the same expected formula, procedure, helper function, or automation loop.
-6. Classify each test case into one planned execution category: code-based, E2E automated, or human-executed.
-7. Separate question-wait cases from executable cases. Put `状態=質問待ち` cases in the question-wait file, keep their planned `実行区分`, set `期待結果` to `要確認` where needed, and link the relevant `DQxxx`.
-8. If test case creation reveals a missing design, missing question, missing viewpoint, or plan-level gap, update the appropriate upstream artifact when supported by source material. Record all changes in the affected test case files.
-9. Save the test case files. If the user does not specify paths, save the four files next to the design:
+5. Extract every `Expected Case Yield` row from the design. If the design has no yield table, or any `TDxxx` lacks a concrete `期待TC数`, stop and update/review the test design first; do not proceed on "one test per TD" as a fallback.
+6. Expand every `TDxxx` into the expected number of test cases by instantiating design conditions into executable cases. Split the design into multiple cases when its condition/input contains multiple representative values, boundary values, abnormal values, browser targets, device/viewport/OS targets, user roles, API statuses, file formats, data states, scenarios, or question-wait conditions. A test case must represent one independently reportable execution/judgment unit; do not keep multiple materially different inputs in one `TC-*` row merely because they share the same expected formula, procedure, helper function, or automation loop.
+7. Build a **Case Expansion Ledger（ケース展開台帳）** that maps `TDxxx -> 期待TC数 -> 実TC数 -> 差分 -> 理由` across all output files.
+   - If `実TC数 < 期待TC数`, record a concrete representative extraction reason or aggregate judgment rule. Without that, test case creation is incomplete.
+   - `全TDに1件以上TCがある` is not sufficient for completion.
+8. Classify each test case into one planned execution category: code-based, E2E automated, or human-executed.
+9. Separate question-wait cases from executable cases. Put `状態=質問待ち` cases in the question-wait file, keep their planned `実行区分`, set `期待結果` to `要確認` where needed, and link the relevant `DQxxx`.
+10. If test case creation reveals a missing design, missing expected-yield row, missing question, missing viewpoint, or plan-level gap, update the appropriate upstream artifact when supported by source material. Record all changes in the affected test case files.
+11. Save the test case files. If the user does not specify paths, save the four files next to the design:
    - `テスト成果物/テストケース_コードベース.md`
    - `テスト成果物/テストケース_E2E自動.md`
    - `テスト成果物/テストケース_人間実行.md`
    - `テスト成果物/テストケース_質問待ち.md`
    - `テスト成果物/テストケース_人間実行.csv`
-10. Run the execution-readiness self-check before finishing. Search generated cases for compressed-condition smells such as `/`, `、`, `,`, `・`, `または`, `各`, `すべて`, `複数`, `など`, `付近`, `正常値`, `異常値`, `代表`, `直前`, `境界`, `直後`, browser lists, viewport lists, role lists, and value ranges. Split or mark `要確認` unless the row explicitly documents an aggregate-judgment scenario.
-11. Run the row-independence and table-integrity self-check. Confirm no executable row uses `同上`, `前述と同じ`, `同条件`, `同様`, or cross-row references; no row uses only internal/derived values as input; no expected result contains multiple independent observation points; and every Markdown table row has the same number of cells as its header. Escape or rewrite literal `|`, `||`, shell pipes, regex alternation, and TypeScript union syntax inside table cells.
-12. Run the human CSV parity self-check. Confirm `テストケース_人間実行.csv` contains the same human-executed `TC-MAN-*` rows as `テストケース_人間実行.md`, has valid CSV quoting, and includes blank execution-record columns for human testers.
+12. Run the execution-readiness self-check before finishing. Search generated cases for compressed-condition smells such as `/`, `、`, `,`, `・`, `または`, `各`, `すべて`, `複数`, `など`, `付近`, `正常値`, `異常値`, `代表`, `直前`, `境界`, `直後`, browser lists, viewport lists, role lists, and value ranges. Split or mark `要確認` unless the row explicitly documents an aggregate-judgment scenario.
+13. Run the row-independence and table-integrity self-check. Confirm no executable row uses `同上`, `前述と同じ`, `同条件`, `同様`, or cross-row references; no row uses only internal/derived values as input; no expected result contains multiple independent observation points; and every Markdown table row has the same number of cells as its header. Escape or rewrite literal `|`, `||`, shell pipes, regex alternation, and TypeScript union syntax inside table cells.
+14. Run the human CSV parity self-check. Confirm `テストケース_人間実行.csv` contains the same human-executed `TC-MAN-*` rows as `テストケース_人間実行.md`, has valid CSV quoting, and includes blank execution-record columns for human testers.
 
 ## Execution-Ready Case Contract
 
@@ -84,6 +89,7 @@ Save code-based cases to `テスト成果物/テストケース_コードベー�
 ## 3. コードベースで実行するテストケース
 ## 4. 上流成果物への追記・更新
 ## 5. カバレッジ確認
+## 6. Case Expansion Ledger（ケース展開台帳）
 ```
 
 ### E2E Automated Test Case File
@@ -98,6 +104,7 @@ Save E2E automated cases to `テスト成果物/テストケース_E2E自動.md`
 ## 3. E2E自動テストで実行するテストケース
 ## 4. 上流成果物への追記・更新
 ## 5. カバレッジ確認
+## 6. Case Expansion Ledger（ケース展開台帳）
 ```
 
 ### Human-Executed Test Case File
@@ -112,6 +119,7 @@ Save human-executed cases to `テスト成果物/テストケース_人間実行
 ## 3. 人間が実行する必要があるテストケース
 ## 4. 上流成果物への追記・更新
 ## 5. カバレッジ確認
+## 6. Case Expansion Ledger（ケース展開台帳）
 ```
 
 Also save the same human-executed cases to `テスト成果物/テストケース_人間実行.csv` for spreadsheet-based execution and recording. Treat the Markdown file as the source of truth and the CSV as a derived companion artifact.
@@ -130,6 +138,7 @@ Save question-wait cases to `テスト成果物/テストケース_質問待ち.
 ## 5. 回答後の反映方針
 ## 6. 上流成果物への追記・更新
 ## 7. カバレッジ確認
+## 8. Case Expansion Ledger（ケース展開台帳）
 ```
 
 Use the same test case table in every file:
@@ -138,6 +147,24 @@ Use the same test case table in every file:
 | テストケースID | 元テスト設計ID | テスト観点ID | テストアプローチID | 実行区分 | テストレベル/タイプ | 優先度 | テストケース名 | 前提条件 | 入力/データ | 手順 | 期待結果 | 確認方法/証跡 | 関連質問ID | 仕様 | リスクID | 状態 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 ```
+
+Use this `Case Expansion Ledger` table in each case file or in a common coverage section copied into the case files:
+
+```markdown
+| テスト設計ID | 期待TC数 | 実TC数 | 不足数 | 対応テストケースID | 分割方針 | 代表抽出理由 | 集約判定ルール | 状態 |
+|---|---|---|---|---|---|---|---|---|
+```
+
+Ledger guidance:
+
+- **期待TC数**: Copy or sum from `Expected Case Yield` for the `TDxxx`.
+- **実TC数**: Count the concrete `TC-*` rows actually generated across all code-based, E2E, human, and question-wait files.
+- **不足数**: Calculate `期待TC数 - 実TC数`. Use `0` when actual count meets or exceeds expected count.
+- **対応テストケースID**: List the concrete `TC-*` IDs. If many IDs are listed, use a compact range only when the range is exact and all IDs are present.
+- **代表抽出理由** and **集約判定ルール**: Required whenever `実TC数 < 期待TC数` or when one `TC-*` intentionally covers multiple independent source values. State evidence granularity, such as `1つでも失敗ならFail`, when aggregation is used.
+- **状態**: Use `充足`, `不足（理由あり）`, `不足（要修正）`, or `質問待ち`.
+
+Do not mark creation complete when any row is `不足（要修正）`. Do not accept "one case exists for every `TDxxx`" as coverage if `実TC数` is below `期待TC数`.
 
 ### Human-Executed CSV File
 
@@ -281,6 +308,9 @@ In the `カバレッジ確認` section of each file, include a table that maps r
 
 Before finishing:
 
+- Confirm `Case Expansion Ledger` exists and reconciles every `TDxxx` from `Expected Case Yield`.
+- Confirm total and per-`TDxxx` `実TC数` meets `期待TC数`, or any shortfall has a concrete representative extraction rationale, aggregate judgment rule, or `質問待ち`.
+- Confirm no row has `不足（要修正）`.
 - Confirm every `TDxxx` from the test design appears in the combined coverage across the four files.
 - Confirm every `質問待ち` test case has a `DQxxx`.
 - Confirm all three execution-category files exist, even if one category has few cases.
