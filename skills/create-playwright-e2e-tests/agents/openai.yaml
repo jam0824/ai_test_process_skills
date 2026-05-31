@@ -1,0 +1,4 @@
+interface:
+  display_name: "Playwright E2Eテスト作成"
+  short_description: "E2E自動ケースからPlaywrightテストと未実装一覧を作成"
+  default_prompt: "Use $create-playwright-e2e-tests to create traceable Playwright E2E tests and an unimplemented-case list from E2E automated test cases."
