@@ -2,7 +2,7 @@
 
 このリポジトリは、仕様書やREADME、対象コードからテスト成果物を作成し、レビュー、テストコード実装、実行記録、HTMLレポート作成まで進めるための Codex skills をまとめたものです。
 
-メインの入口は `$run-test-process` です。ユーザーから見ると一度の依頼で最終レポートまで進めますが、内部ではフェーズごとに進行状況と引き継ぎを保存し、長い会話履歴に依存しすぎないようにします。必要に応じて、テスト計画だけ、テスト設計だけ、E2Eテスト実装だけのように個別 skill も実行できます。
+メインの入口は `$run-test-process` です。ユーザーから見ると一度の依頼で最終レポートまで進めますが、内部ではフェーズごとにサブエージェントまたは子スレッドをシリアルに使い、進行状況と引き継ぎを保存して、長い会話履歴に依存しすぎないようにします。必要に応じて、テスト計画だけ、テスト設計だけ、E2Eテスト実装だけのように個別 skill も実行できます。
 
 ## 使い方
 
@@ -22,7 +22,7 @@ Codex に依頼するときは、使いたい skill 名を `$skill-name` の形�
 
 ### `$run-test-process`
 
-テスト計画から最終HTMLレポートまで、既存 skill を順番に使うオーケストレーション skill です。実行中は `テスト成果物/run-test-process_進行状況.md` と `テスト成果物/run-test-process_引き継ぎ.md` を更新し、次フェーズはその成果物を正として進めます。
+テスト計画から最終HTMLレポートまで、既存 skill を順番に使うオーケストレーション skill です。対応環境では各フェーズを新しいサブエージェントまたは子スレッドで実行し、親が成果物を検証してから次へ進みます。実行中は `テスト成果物/run-test-process_進行状況.md` と `テスト成果物/run-test-process_引き継ぎ.md` を更新し、次フェーズはその成果物を正として進めます。
 
 実行順は次のとおりです。
 
@@ -35,13 +35,15 @@ Codex に依頼するときは、使いたい skill 名を `$skill-name` の形�
 7. `$create-test-cases`
 8. `$review-test-cases`
 9. `$review-test-artifacts`
-10. `$create-test-code`
-11. `$review-test-code`
-12. `$execute-codebase-tests`
-13. `$create-playwright-e2e-tests`
-14. `$review-playwright-e2e-tests`
-15. `$execute-playwright-e2e-tests`
-16. `$create-test-report`
+10. Implementation Entry Gate
+11. `$create-test-code`
+12. `$review-test-code`
+13. `$execute-codebase-tests`
+14. `$create-playwright-e2e-tests`
+15. `$review-playwright-e2e-tests`
+16. `$execute-playwright-e2e-tests`
+17. `$create-test-report`
+18. `$review-test-report`
 
 各レビュー工程では、高優先度の問題がなくなるまで修正と再レビューを繰り返します。実装対象や実行環境が足りない場合は、その工程だけ未実装または未実行として記録し、可能な範囲でレポート作成まで進めます。
 
@@ -54,6 +56,8 @@ Codex に依頼するときは、使いたい skill 名を `$skill-name` の形�
 5. コードベース自動テスト: `$create-test-code` + `$review-test-code` + `$execute-codebase-tests`
 6. Playwright E2E: `$create-playwright-e2e-tests` + `$review-playwright-e2e-tests` + `$execute-playwright-e2e-tests`
 7. 最終レポート: `$create-test-report` + `$review-test-report`
+
+サブエージェント対応環境では、親オーケストレーターは各フェーズの子が完了し、成果物・レビュー結果・ゲート結果・引き継ぎを検証してから子を閉じ、次の子を開始します。並列実行はせず、前フェーズの成果物を次フェーズの入力にします。
 
 ## 個別 Skills
 

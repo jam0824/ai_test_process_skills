@@ -1,6 +1,6 @@
 ---
 name: create-test-plan
-description: Create Japanese Markdown test plan documents from product requirements, README files, specifications, existing tests, implementation notes, and user-provided source data. Use when Codex needs to draft or revise a test plan (テスト計画書) that defines test objectives, referenced documents, test items, scope, exit criteria, product risk scoring, traceable high-level test approaches, use-case/scenario testing strategy, formal/regression test asset handling, unresolved assumptions, and downstream analysis/design depth expectations.
+description: Create or refine Japanese Markdown test plan documents from product requirements, README files, specifications, existing tests, implementation notes, and user-provided source data. Use when Codex needs to draft a new test plan (テスト計画書) or re-run the test plan creation skill to further consider and add overlooked product risks and traceable test approaches. The plan defines test objectives, referenced documents, test items, scope, exit criteria, product risk scoring, traceable high-level test approaches, use-case/scenario testing strategy, formal/regression test asset handling, unresolved assumptions, and downstream analysis/design depth expectations.
 ---
 
 # Create Test Plan
@@ -12,6 +12,15 @@ Create a Markdown test plan that defines the overall testing strategy for a prod
 Default to Japanese output. Match another language only when the user asks for it or all source material clearly uses another language.
 
 The plan should decide which testing approaches are needed and how much depth downstream analysis and design should provide. It should not enumerate detailed viewpoints or test cases, but it should prevent later artifacts from becoming too thin by naming high-risk flows, use cases, generic QA areas, quality gates, and unresolved assumptions.
+
+## Two-Pass Behavior
+
+Treat this skill as a two-pass creator/refiner.
+
+- **First pass**: When no existing test plan is specified or found, create `テスト成果物/テスト計画書.md` from the available source material.
+- **Second pass**: When an existing test plan is specified or `テスト成果物/テスト計画書.md` already exists, reread the source material and the current plan, then refine the same plan by adding or correcting overlooked product risks, test approaches, scope notes, exit criteria, and unresolved assumptions.
+
+On the second pass, do not merely review prose. Actively look for product behavior, user flows, data variations, execution assets, and operational concerns that the first pass may have underweighted. Update the existing risk and approach tables in place, preserving stable IDs where possible and adding new sequential IDs for new risks (`Rxxx`) and approaches (`TAxxx`). If a current risk score, scope statement, or approach is too weak, strengthen it instead of duplicating it.
 
 ## Workflow
 
@@ -27,9 +36,12 @@ The plan should decide which testing approaches are needed and how much depth do
    - Product types and interfaces such as Web UI, API, CLI, library, batch, data processing, mobile, reports/documents, integrations, or infrastructure tools.
    - Generic QA areas that are relevant at plan level, such as boundary values, abnormal values, state transitions, combinations, security/privacy, performance/reliability, compatibility, accessibility, persistence, concurrency/timing, localization, and observability/logging.
    - Source-defined formal test assets, regression suites, required fixtures, golden files, seed data, test commands, CI jobs, evidence formats, supported environments, thresholds, and explicit exclusions.
-4. Draft the test plan with every required section below. Add optional sections only when the source material supports them or they reduce ambiguity.
+4. Decide whether this is the first pass or second pass:
+   - First pass: draft the test plan with every required section below. Add optional sections only when the source material supports them or they reduce ambiguity.
+   - Second pass: compare the current plan against the source material and add missing risks, approaches, scope notes, exit criteria, and unresolved assumptions. Keep the output as one updated test plan, not a separate review note.
 5. Mark missing information as `未確定` or `要確認`. Do not invent owners, schedules, tools, supported environments, or acceptance thresholds that are not supported by the source material. If any `未確定` or `要確認` item appears, aggregate it in an optional `未決事項` section or table after the required sections.
 6. Before finalizing, verify that all required sections exist, every product risk has 発生確率, 影響度, and リスク度, high-risk areas have downstream analysis/design depth expectations, source-defined test assets are addressed, and unresolved items are visible in one place.
+7. On the second pass, record material additions in an optional `追加検討メモ` section when it helps reviewers see what changed. Keep it concise and do not let it replace updating the main risk and approach tables.
 
 ## Required Output Structure
 
@@ -111,6 +123,19 @@ Choose approaches by risk and behavior type:
 - **Exploratory test**: Use for high-risk areas with ambiguous requirements, complex user workflows, or behaviors affected by randomness or many parameter combinations.
 
 Do not list detailed test cases in the plan. Instead, identify target areas, the testing style that should be applied, and the traceability back to specifications and risk IDs.
+
+## Second-Pass Refinement Checklist
+
+When refining an existing plan, search for these gaps and update the plan when supported by source material:
+
+- User journeys or actor goals that are important but not represented by a risk or approach.
+- Calculation, boundary, state transition, persistence, import/export, or integration behavior that has no explicit risk or only vague coverage.
+- Error, abnormal, timeout, recovery, empty data, malformed data, permission, privacy, or security paths that are plausible for the product.
+- Formal or regression assets mentioned by specifications, README files, previous QA artifacts, or code structure but not handled in scope, approach, evidence, or unresolved items.
+- Test approaches that should be split because one row hides different levels such as Unit, Integration, E2E, performance, compatibility, accessibility, exploratory, or human execution.
+- High-risk items whose downstream depth expectation is not strong enough to guide test analysis and design.
+- Risks with scores that no longer match impact or likelihood after considering source constraints.
+- Missing traceability between new or existing `Rxxx` risks and `TAxxx` approaches.
 
 ## Downstream Depth Expectations
 

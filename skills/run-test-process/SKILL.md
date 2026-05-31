@@ -9,7 +9,7 @@ description: Orchestrate the full Japanese QA workflow by invoking existing skil
 
 Run the complete test workflow by using the existing specialized skills in a fixed order. This skill is an orchestrator and does not replace the detailed instructions in each child skill; load each child `SKILL.md` before executing that step and follow its input, output, review-loop, and stop-condition rules.
 
-The user-facing experience should be one-shot: when the user asks for `$run-test-process`, continue through the final report whenever meaningful progress is possible. Internally, treat the workflow as checkpointed phases so later steps use saved artifacts instead of relying on a long conversation history.
+The user-facing experience should be one-shot: when the user asks for `$run-test-process`, continue through the final report whenever meaningful progress is possible. Internally, treat the workflow as serial phase workers with checkpointed handoffs, so later steps use saved artifacts instead of relying on a long conversation history.
 
 ## Required Inputs
 
@@ -72,7 +72,7 @@ The progress file should record:
 
 The handoff file should be concise and task-local. It should contain only the facts the next phase needs: purpose, target files or URLs, constraints, relevant traceability IDs, unresolved decisions, latest execution folders, and the next phase's completion criteria.
 
-When the environment supports child threads, subagents, or background tasks, prefer using a fresh child context at phase boundaries and pass only the relevant artifacts plus the handoff file. When those capabilities are unavailable, continue in the same thread but explicitly treat `テスト成果物/run-test-process_進行状況.md`, `テスト成果物/run-test-process_引き継ぎ.md`, and the generated QA artifacts as the source of truth for the next phase.
+When the environment supports child threads, subagents, or background tasks, run each phase in a fresh serial child context by default. Before launching the first child, read `references/serial_subagents.md` and follow its prompt, completion, verification, and close/archive protocol. Start exactly one child at a time; wait for it to complete; verify local artifacts, review stop conditions, gate results, and checkpoint files; close or archive that child when supported; then start the next child. When child execution tools are unavailable, continue in the same thread but explicitly treat `テスト成果物/run-test-process_進行状況.md`, `テスト成果物/run-test-process_引き継ぎ.md`, and the generated QA artifacts as the source of truth for the next phase.
 
 For each step:
 
@@ -86,6 +86,7 @@ For each step:
 
 - After each creation step, confirm the expected artifact exists before starting the corresponding review step.
 - After each phase, confirm the progress and handoff files exist before starting the next phase.
+- If a phase used a child thread or subagent, do not start the next phase until that child has completed and has been closed or archived when the tool supports it.
 - Review steps must repeat review/fix/re-review until each child review skill's stop condition is met. For review skills that define `P0`, `P1`, and `P2` as fix-worthy, continue until no fix-worthy `P0`, `P1`, or `P2` findings remain.
 - If a review uncovers a clear upstream gap, allow the relevant child review skill to update upstream QA artifacts as defined by that skill.
 - If a question-wait or `要確認` item appears, do not guess. Keep it in the questionnaire, question-wait test cases, or unimplemented test case list.

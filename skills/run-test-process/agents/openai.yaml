@@ -1,4 +1,4 @@
 interface:
   display_name: "テストワークフロー通し実行"
-  short_description: "計画からレポートレビューまで、進行状況を保存しながら既存スキルを順に使う支援"
-  default_prompt: "Use $run-test-process to run the full checkpointed test planning, review, implementation, execution, report generation, and report review workflow."
+  short_description: "計画からレポートレビューまで、シリアルなフェーズ子エージェントで既存スキルを使う支援"
+  default_prompt: "Use $run-test-process to run the full serial-subagent test planning, review, implementation, execution, report generation, and report review workflow."
