@@ -1,6 +1,6 @@
 ---
 name: create-test-analysis
-description: Create Japanese Markdown test analysis artifacts from a test plan, specifications, README files, existing tests, and implementation notes. Use when Codex needs to run a two-pass analysis that first derives specification-driven test viewpoints (テスト観点), then adds generally expected QA viewpoints for the target type, preserves traceability, updates the test plan when new risks or approaches should be added, and saves a Markdown questionnaire for open questions.
+description: Create Japanese Markdown test analysis artifacts from a test plan, specifications, README files, existing tests, and implementation notes. Use when Codex needs to run a three-pass analysis that first derives specification-driven test viewpoints (テスト観点), then adds generally expected QA viewpoints for the target type, then re-examines whether additional missing viewpoints should be added, preserves traceability, updates the test plan when new risks or approaches should be added, and saves a Markdown questionnaire for open questions.
 ---
 
 # Create Test Analysis
@@ -9,10 +9,11 @@ description: Create Japanese Markdown test analysis artifacts from a test plan, 
 
 Create a test analysis document that answers "what should be tested?" at the viewpoint level. Keep the output more detailed than a test plan but less concrete than test cases; do not write step-by-step procedures or expected results unless the user explicitly asks.
 
-The analysis must use a two-pass model:
+The analysis must use a three-pass model:
 
 1. **Specification-driven pass**: derive viewpoints from explicitly documented requirements, test approaches, risks, README behavior, and existing tests.
 2. **Generic QA pass**: classify the target type and add generally expected QA viewpoints that are not explicit in the source material but are commonly needed to make the analysis sufficient.
+3. **Additional viewpoint challenge pass**: re-read the current analysis against the source material, risks, target type, and downstream design readiness, then add any materially missing viewpoints, questions, or plan updates that Pass 1 and Pass 2 still missed.
 
 Default to Japanese output. Preserve traceability from each analysis viewpoint back to the originating test approach, specification, and risk.
 
@@ -34,12 +35,13 @@ Default to Japanese output. Preserve traceability from each analysis viewpoint b
    - Environment matrices are `組み合わせ展開` or `全件展開` when each environment can independently Pass/Fail. If aggregation may be acceptable, record the aggregate judgment rule needed downstream.
 5. Run **Pass 1: Specification-Driven Viewpoints**. Derive viewpoints that cover all test approaches from explicitly documented specifications, README behavior, existing tests, product risks, constraints, acceptance thresholds, and the source-defined structures found above.
 6. Run **Pass 2: Generic QA Viewpoints**. Classify the test target type in generic terms, such as Web UI, API, CLI, library/module, batch/job, data pipeline, mobile app, document/report output, integration, infrastructure, or configuration-driven system. Compare the Pass 1 viewpoints against the Generic QA Viewpoint Catalog below and add source-supported or generally necessary viewpoints that are missing.
-7. Mark each viewpoint's origin in the existing `備考` column. Use phrases such as `由来: 仕様準拠`, `由来: 汎用QA`, and `ケース分解候補: 境界直前/境界/境界直後`. Do not add new table columns.
-8. If analysis reveals a missing product risk or missing test approach that belongs in the test plan, update the test plan directly and record the change in the analysis document.
-9. If information is unclear or should be asked of stakeholders, save it in a Markdown questionnaire. Do not invent expected values, supported environments, owners, or thresholds.
-10. Perform the viewpoint-density self-check described below, then save the test analysis document and questionnaire. If the user does not specify paths, save them next to the test plan as `テスト分析.md` and `テスト分析_質問票.md`.
+7. Run **Pass 3: Additional Viewpoint Challenge**. Re-examine the draft analysis and ask whether any additional test viewpoints are still missing. Focus on bug-escape scenarios, overlooked high-risk combinations, downstream design readiness, traceability gaps, source structures without enough viewpoint coverage, and unclear assumptions that should become questions.
+8. Mark each viewpoint's origin in the existing `備考` column. Use phrases such as `由来: 仕様準拠`, `由来: 汎用QA`, `由来: 追加観点検討`, and `ケース分解候補: 境界直前/境界/境界直後`. Do not add new table columns.
+9. If analysis reveals a missing product risk or missing test approach that belongs in the test plan, update the test plan directly and record the change in the analysis document.
+10. If information is unclear or should be asked of stakeholders, save it in a Markdown questionnaire. Do not invent expected values, supported environments, owners, or thresholds.
+11. Perform the viewpoint-density self-check described below, then save the test analysis document and questionnaire. If the user does not specify paths, save them next to the test plan as `テスト分析.md` and `テスト分析_質問票.md`.
 
-## Two-Pass Analysis Model
+## Three-Pass Analysis Model
 
 ### Pass 1: Specification-Driven Viewpoints
 
@@ -90,6 +92,23 @@ Use Pass 2 to challenge whether the Pass 1 analysis is sufficient for the target
 For each target type present in the product, compare Pass 1 against the Generic QA Viewpoint Catalog. Add missing viewpoints when they are generally necessary for the target's reliability, security, usability, operability, compatibility, or testability. When the source material does not define the expected result, create a viewpoint with `仕様=要確認` or add a questionnaire entry instead of guessing.
 
 Pass 2 viewpoints should use `備考` values such as `由来: 汎用QA`, `追加候補`, `質問票あり`, and `ケース分解候補: ...`.
+
+### Pass 3: Additional Viewpoint Challenge
+
+Use Pass 3 as a deliberate gap-finding pass after Pass 1 and Pass 2 are already reflected in the table. Do not merely proofread the text. Actively look for missing viewpoints that could still let an important defect escape.
+
+Review the draft analysis from these angles:
+
+- **Bug-escape imagination**: Consider plausible serious defects a user, stakeholder, or maintainer would care about, then confirm each is covered by a viewpoint, a questionnaire item, or an explicit out-of-scope note.
+- **High-risk cross-check**: For each high-risk `TAxxx` or `Rxxx`, confirm normal, boundary, abnormal, state/interaction, and relevant non-functional/security concerns are represented with enough granularity.
+- **Source Structure Inventory coverage**: Confirm every `SSIxxx` row has at least one related viewpoint or a clear reason it does not need one.
+- **Combination and interaction gaps**: Look for meaningful interactions between source-defined structures, user flows, environments, permissions, data states, timing, and configuration that neither Pass 1 nor Pass 2 covered.
+- **Downstream design readiness**: Confirm downstream design can split the viewpoint into concrete patterns without rediscovering source values, inventing expected results, or guessing representative extraction rules.
+- **Question and assumption surfacing**: Convert unclear expectations into `仕様=要確認` viewpoints and questionnaire rows when the uncertainty affects coverage, acceptance, or execution.
+
+Add a new viewpoint only when it is materially different from existing Pass 1 or Pass 2 viewpoints. If Pass 3 finds no additions, record that explicitly in `## 6. カバレッジ確認`, such as `Pass 3では追加すべき独立観点なし。既存観点でカバー済み。`
+
+Pass 3 viewpoints should use `備考` values such as `由来: 追加観点検討`, `バグ逃し想定`, `下流設計補強`, `質問票あり`, and `ケース分解候補: ...`.
 
 ## Generic QA Viewpoint Catalog
 
@@ -191,7 +210,7 @@ Coverage requirements:
 
 - Every source-defined structure that can affect coverage must appear in `Source Structure Inventory`, or be explicitly listed as out of scope with a source reference.
 - Every test approach in the test plan must have at least one test viewpoint.
-- Every analysis should show that both Pass 1 and Pass 2 were performed, either through viewpoint `備考` values or coverage notes.
+- Every analysis should show that Pass 1, Pass 2, and Pass 3 were performed, either through viewpoint `備考` values or coverage notes.
 - High-risk approaches should usually have multiple viewpoints across normal, boundary, abnormal, state/interaction, and relevant non-functional or security concerns.
 - Include default value and compatibility viewpoints when the product has UI inputs or browser/device constraints.
 - Include generic QA viewpoints when the target type commonly requires them. If no generic QA viewpoint is added for a relevant category, state why in `## 5. カバレッジ確認` or `備考`.
@@ -237,7 +256,7 @@ Question guidance:
 Before finishing:
 
 - Confirm all test approach IDs from the test plan appear in the analysis coverage.
-- Confirm Pass 1 and Pass 2 were both performed.
+- Confirm Pass 1, Pass 2, and Pass 3 were all performed.
 - Confirm each test viewpoint has a viewpoint ID, approach traceability, specification reference, and risk ID or `なし`.
 - Confirm `Source Structure Inventory` exists and every row has a concrete expansion policy.
 - Confirm source-defined finite lists default to `全件展開`, boundary sets preserve below/at/above-style split hints when meaningful, and environment matrices state whether each environment can fail independently.
@@ -246,6 +265,7 @@ Before finishing:
 - Confirm normal, boundary, abnormal, default value, compatibility, security/privacy, performance, and exploratory concerns are considered when relevant.
 - Confirm high-risk `TAxxx` entries have sufficient viewpoint density across normal, boundary, abnormal, state/combination, and relevant non-functional or security categories.
 - Confirm generic QA catalog categories relevant to the target type were considered.
+- Confirm Pass 3 either added materially missing viewpoints/questions/plan updates or explicitly recorded that no independent additional viewpoints were found.
 - Confirm source-defined finite lists, boundaries, thresholds, supported environments, defaults, and exclusions were preserved or precisely cited for downstream design.
 - Confirm case-splitting hints are present in `備考` when a viewpoint would otherwise compress many meaningful test cases.
 - Confirm viewpoints with different expected handling are split or explicitly describe the handling difference.
