@@ -19,6 +19,10 @@ Apply this gate before treating traceability coverage as sufficient:
 - If a failed `TC-*` would require reading subtest output, loop labels, screenshots for multiple environments, or manual notes to know which condition failed, the `TC-*` is too broad unless it explicitly defines an aggregate-judgment scenario.
 - Values, environments, roles, API statuses, file types, and data states that can fail independently should normally be separate `TC-*` rows.
 - Vague executor-choice words such as `など`, `付近`, `適切`, `任意`, `複数`, `各`, `代表`, `正常値`, and `異常値` are findings unless the row provides concrete values or is marked `要確認`.
+- Cross-row shortcuts such as `同上`, `前述と同じ`, `同条件`, and `同様` are findings because each executable row must stand alone.
+- Inputs that name only internal variables, derived states, or intermediate conditions are findings unless the row also states how to create that state through executable setup, fixtures, API arguments, files, UI operations, database records, mocks, clocks, or dependency responses.
+- Expected results with multiple independent observation points are findings unless the row explicitly defines a single scenario or aggregate judgment.
+- Markdown table integrity is part of executability. Broken column counts or unescaped `|` characters in cells are high-priority findings.
 
 ## Workflow
 
@@ -46,8 +50,8 @@ Apply this gate before treating traceability coverage as sufficient:
 
 Use these priorities consistently:
 
-- **P0 - Blocker**: The test cases cannot be used for execution or downstream automation. Examples: missing required test case files, missing test case tables, no `TC-*` IDs, missing execution-category structure, severe Markdown table breakage, or coverage tables missing enough information to determine whether `TDxxx` designs are covered.
-- **P1 - High**: The test cases are usable but have a problem that should be fixed before relying on them. Examples: any `TDxxx` from the test design is not covered across the artifact set, missing traceability to `TDxxx`/`TVxxx`/`TAxxx`, high-risk area too thin, impossible or ambiguous execution steps, multiple independently meaningful inputs/boundaries/abnormal values/browsers/environments/roles/API statuses/file types/data states compressed into one executable `TC-*` row without an explicit aggregate-judgment rationale, expected result that cannot be judged and is not marked `要確認`, question-wait case without `DQxxx`, serious execution-category misclassification or wrong file placement, duplicate `TC-*` across files without an explicit duplication policy, or contradiction with test design or plan.
+- **P0 - Blocker**: The test cases cannot be used for execution or downstream automation. Examples: missing required test case files, missing test case tables, no `TC-*` IDs, missing execution-category structure, severe Markdown table breakage across an artifact, or coverage tables missing enough information to determine whether `TDxxx` designs are covered.
+- **P1 - High**: The test cases are usable but have a problem that should be fixed before relying on them. Examples: any `TDxxx` from the test design is not covered across the artifact set, missing traceability to `TDxxx`/`TVxxx`/`TAxxx`, high-risk area too thin, impossible or ambiguous execution steps, cross-row shortcuts that make a row non-standalone, inputs that are only internal/derived state with no executable setup, multiple independently meaningful inputs/boundaries/abnormal values/browsers/environments/roles/API statuses/file types/data states compressed into one executable `TC-*` row without an explicit aggregate-judgment rationale, multiple independent expected observations in one row, expected result that cannot be judged and is not marked `要確認`, question-wait case without `DQxxx`, Markdown table row column mismatch, serious execution-category misclassification or wrong file placement, duplicate `TC-*` across files without an explicit duplication policy, or contradiction with test design or plan.
 - **P2 - Medium**: The test cases can be used, but clarity, completeness, or maintainability should be improved. Examples: minor duplication, vague preconditions, weak evidence description, inconsistent terminology, non-critical missing reference, low-risk case granularity that is somewhat uneven but still independently reportable, or aggregate-case rationale that is present but weak.
 - **P3 - Low**: Nice-to-have cleanup. Examples: formatting polish, wording consistency, or optional extra examples.
 
@@ -62,15 +66,18 @@ Review from these perspectives:
 - **File structure and placement**: Confirm the artifact set has `テストケース_コードベース.md`, `テストケース_E2E自動.md`, `テストケース_人間実行.md`, and `テストケース_質問待ち.md`, unless the user explicitly requested a legacy consolidated file.
 - **Execution category validity**: Confirm cases are naturally classified as `コードベース`, `E2E自動`, or `人間実行`, and that non-question-wait cases are placed in the matching execution file.
 - **Test case granularity**: Confirm each case is split at a practical execution unit, especially for representative values, boundary values, abnormal values, browser/environment differences, roles, API statuses, file types, data states, and question-wait conditions. A practical unit is one independently reportable Pass/Fail/N/A judgment, not one automation loop, one parameter table, one checklist with hidden sub-results, or one broad row copied from test design.
+- **Row independence**: Confirm every executable row can be executed by reading that row alone. Flag `同上`, `前述と同じ`, `同条件`, `同様`, and references to another row for setup, input, steps, or expected result.
 - **Precondition and input clarity**: Confirm setup, initial state, browser/environment, concrete values, account/role, external dependency state, and data conditions are clear or explicitly marked `要確認`.
+- **Executable input validity**: Confirm `入力/データ` describes executable inputs or setup artifacts, not only internal variables, derived values, or target states. If an internal state is the purpose, the row must explain how to create it.
 - **Step reproducibility**: Confirm a human tester or automation implementer can reproduce the same execution from the written steps without hidden assumptions.
-- **Expected-result judgment clarity**: Confirm pass/fail judgment can be made. If an expected value, threshold, tolerance, environment, or acceptance rule is unknown, it must be marked `要確認` and linked to a question ID.
+- **Expected-result judgment clarity**: Confirm pass/fail judgment can be made for one case. If the expected result contains multiple independent observation points, split the row or require an explicit aggregate-judgment rationale. If an expected value, threshold, tolerance, environment, or acceptance rule is unknown, it must be marked `要確認` and linked to a question ID.
 - **Question-wait management**: Confirm every `質問待ち` case has a `DQxxx`, appears in `テストケース_質問待ち.md`, keeps its planned `実行区分`, and is not duplicated into execution files unless the user explicitly requested duplicate listing.
 - **Priority and risk alignment**: Confirm high-risk or high-priority designs lead to sufficient high-priority test cases, and low-risk checks are not over-expanded without reason.
 - **Confirmation method and evidence validity**: Confirm `確認方法/証跡` states suitable evidence such as unit test results, E2E logs, screenshots, browser output, DevTools records, performance measurements, or code review records.
 - **Duplication, gaps, and contradictions**: Confirm there is no harmful duplication, missing valuable case, contradiction between cases and design, or unsupported assumption.
 - **Upstream alignment**: Confirm the cases remain consistent with the test design, design questionnaire, test analysis, analysis questionnaire, test plan, product risks, and scope.
 - **Maintainability**: Confirm ID prefixes, numbering, terminology, state values, table structure, and coverage mapping are consistent and easy to update.
+- **Markdown table integrity**: Confirm each table row has the same number of cells as the header and cells do not contain unescaped `|` characters that break parsing.
 
 ## Compressed-Condition Scan
 
@@ -82,8 +89,14 @@ In addition to semantic review, scan executable rows for these common smells:
 - Environment matrices: browser, OS, device, viewport, orientation, locale, timezone, permission, network, feature flag, build mode, and external service lists.
 - Data or actor matrices: user roles, tenants, plans, account states, API statuses, file formats, data sizes, and dependency responses.
 - Executor-choice words: `など`, `付近`, `適切`, `任意`, `複数`, `各`, `すべて`, `必要な項目`.
+- Cross-row shortcuts: `同上`, `前述と同じ`, `同条件`, `同様`, `上記`, and references that require another row to execute.
+- Internal-state-only inputs: `need=...`, `cacheHit=...`, `session expired`, `DB is inconsistent`, `already calculated`, or other target states with no setup method.
+- Multiple observation phrases: `最初と最後`, `開始時と終了時`, `前後`, `AとBを確認`, `Xでは...、Yでは...`, multiple screens, multiple output rows, or multiple state transitions.
+- Markdown table hazards: unescaped `|`, raw `||`, shell pipes, regex alternation, TypeScript union syntax, or row column counts that differ from the header.
 
 These are not automatically defects inside explanatory text, but they require a review decision. Split when each listed item can pass/fail independently. Keep one row only when the row explicitly defines a single scenario flow or an aggregate judgment, and the evidence can support that aggregate judgment.
+
+For Markdown tables, structural hazards are defects when they affect a table row. Rewrite or escape table-breaking text even when the intended test meaning is otherwise clear.
 
 ## Finding Format
 
@@ -103,6 +116,10 @@ Guidelines:
 - Treat a low-risk compressed row as `P2` only when it is still independently reportable and the compression does not hide which condition passed or failed.
 - Treat slash-separated, comma-separated, Japanese comma-separated, or range-like values such as `3,000,000/4,000,000/10,000,000円`, `直前/境界/直後`, `空欄/文字列/非有限値`, `Chrome/Firefox/Safari`, or `800x600/1280x720` as review smells; require splitting when each value could produce a distinct result.
 - Treat executor-choice words such as `など`, `付近`, `適切`, `任意`, `複数`, `各`, `代表`, `正常値`, or `異常値` as at least `P2`; raise to `P1` when the row cannot be executed or judged without the reviewer choosing values.
+- Treat cross-row shortcuts such as `同上`, `前述と同じ`, `同条件`, or `同様` in executable rows as `P1`.
+- Treat input/data that only names internal or derived state, without executable setup, as `P1`.
+- Treat expected results that contain multiple independent observation points as `P1` unless the row explicitly defines an aggregate scenario.
+- Treat Markdown table row column mismatches, or unescaped `|` that breaks a test case row, as `P1`; raise to `P0` when table breakage is widespread enough to prevent reviewing the artifact.
 - Treat a `質問待ち` case without a linked `DQxxx` as at least `P1`.
 - Treat an expected result that cannot be used for pass/fail and is not marked `要確認` as at least `P1`.
 - Treat an execution-category mismatch that would send the case to the wrong executor as at least `P1`.
@@ -120,6 +137,10 @@ When fixing artifacts:
 - Add test case IDs sequentially within the matching execution category, such as `TC-CB-044`, `TC-E2E-083`, or `TC-MAN-035`.
 - When fixing compressed cases, split the row into multiple `TC-*` rows with one concrete input/condition per row. Preserve the original `TDxxx`, `TVxxx`, `TAxxx`, specification, and risk IDs on each split row, and give each row a test name that identifies the specific value or boundary.
 - When a design row intentionally becomes several test cases, update the coverage table so the same `TDxxx` maps to all resulting `TC-*` IDs.
+- Replace cross-row shortcuts with full row-local setup, input, step, and expected-result text.
+- Replace internal-state-only inputs with executable setup. For example, write the API request, fixture, database record, file content, UI operation, mock response, or clock setting that produces the state.
+- Split rows with multiple independent observation points, or add a clear aggregate-judgment rationale only when the scenario truly must be judged as one flow.
+- Fix Markdown table hazards by escaping `|`, rewriting `||` and pipe-heavy snippets in prose, or moving code examples outside the table. Recheck column counts after editing.
 - When the reviewed artifact set includes automation mapping, execution-report templates, or implemented test names, align those references with the split `TC-*` IDs. If those files are out of scope for the user request, record the downstream mismatch as a residual risk instead of silently leaving it unmentioned.
 - Do not create suffix IDs such as `TC-CB-001-a` unless the existing project explicitly uses that style; prefer new sequential IDs so each row is independently addressable by tools and reports.
 - When converting a legacy consolidated `テストケース.md` to split files, move rows into `テストケース_コードベース.md`, `テストケース_E2E自動.md`, `テストケース_人間実行.md`, or `テストケース_質問待ち.md` according to `実行区分` and `状態`.
@@ -153,6 +174,7 @@ Final result requirements:
 - Include the review perspectives applied.
 - Summarize each review/fix iteration.
 - State the result of the one-TC-one-judgment / compressed-condition scan.
+- State the result of row-independence, executable-input, multiple-observation, and Markdown-table-integrity checks.
 - State clearly that no `P0` or `P1` findings remain, or explain any remaining high-priority finding that could not be fixed because required information was unavailable.
 - List remaining `P2` and `P3` issues, if any, with recommended next actions.
 - Mention any updates made to the test cases, test design, design questionnaire, test analysis, analysis questionnaire, or test plan.

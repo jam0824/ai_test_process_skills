@@ -19,6 +19,8 @@ Separate test design from executable test cases:
 - A test case row must describe one concrete execution and one independently reportable Pass/Fail/N/A judgment.
 - Do not copy condition sets from test design directly into `入力/データ`. Instantiate them into concrete cases.
 - Parameterized automation is allowed later, but each parameter that can pass/fail independently still needs its own `TC-*` row or an explicit aggregate-judgment rationale.
+- Each row must stand alone. Do not rely on another row for setup, inputs, steps, or expected results.
+- Test inputs must be executable inputs, not only derived internal variables or intermediate states. When a target state matters, write the external input, API argument, fixture, database row, file content, UI operation, or setup step that creates it.
 - If a value, threshold, environment, or expected result cannot be made concrete from source material, create or use a question-wait case instead of guessing.
 
 ## Workflow
@@ -45,6 +47,7 @@ Separate test design from executable test cases:
    - `テスト成果物/テストケース_人間実行.md`
    - `テスト成果物/テストケース_質問待ち.md`
 10. Run the execution-readiness self-check before finishing. Search generated cases for compressed-condition smells such as `/`, `、`, `,`, `・`, `または`, `各`, `すべて`, `複数`, `など`, `付近`, `正常値`, `異常値`, `代表`, `直前`, `境界`, `直後`, browser lists, viewport lists, role lists, and value ranges. Split or mark `要確認` unless the row explicitly documents an aggregate-judgment scenario.
+11. Run the row-independence and table-integrity self-check. Confirm no executable row uses `同上`, `前述と同じ`, `同条件`, `同様`, or cross-row references; no row uses only internal/derived values as input; no expected result contains multiple independent observation points; and every Markdown table row has the same number of cells as its header. Escape or rewrite literal `|`, `||`, shell pipes, regex alternation, and TypeScript union syntax inside table cells.
 
 ## Execution-Ready Case Contract
 
@@ -52,12 +55,16 @@ Every executable `TC-*` row must pass this contract:
 
 - **One judgment**: the row can be reported as one Pass/Fail/N/A without needing sub-results to explain which input failed.
 - **Concrete inputs**: the tester or implementer can execute the row without choosing values.
+- **Row independence**: the row does not require reading another test case row to know its preconditions, inputs, steps, or expected result. Do not use `同上`, `前述と同じ`, `同条件`, or `同様` in executable rows.
+- **Executable inputs**: the row uses actual inputs or setup artifacts the executor can apply. Avoid writing only internal state such as `need=50000`, `cacheHit=true`, `DB is inconsistent`, or `session expired`; instead state how to create that state through API parameters, fixtures, database records, files, UI operations, clock setup, mocks, or dependency responses.
 - **Concrete environment**: browser, OS, viewport, role, dataset, feature flag, locale, and external dependency state are concrete when they affect the result.
 - **Reproducible steps**: the written steps are sufficient for a human tester or automation implementer to perform the same execution.
 - **Judgable expected result**: the expected result names the observable output, state, error, tolerance, or evidence required to pass.
+- **One observation unit**: if the expected result says to check separate times, rows, screens, roles, environments, states, or outputs that can fail independently, split them unless the row is explicitly an aggregate scenario.
+- **Valid Markdown table**: table cells do not contain unescaped `|` characters or raw syntax that breaks the column count.
 - **Traceability preserved**: split rows keep the same source `TDxxx`/`TVxxx`/`TAxxx`/spec/risk references and each appears in coverage.
 
-Do not use broad execution placeholders such as `正常値`, `異常値`, `境界付近`, `いくつかの値`, `必要な項目`, `適切に`, or `など` in executable rows. Replace them with concrete values or move the row to question-wait with `要確認`.
+Do not use broad execution placeholders such as `正常値`, `異常値`, `境界付近`, `いくつかの値`, `必要な項目`, `適切に`, `など`, or cross-row shortcuts such as `同上` in executable rows. Replace them with concrete values or move the row to question-wait with `要確認`.
 
 ## Output: Test Case Files
 
@@ -141,10 +148,10 @@ Column guidance:
 - **テストレベル/タイプ**: Copy or normalize the design level/type, such as `Unit`, `Integration`, `E2E`, `Security`, `Performance`, `Compatibility`, `Accessibility`, `Manual`, `Code review`, `Exploratory`, or `Regression`.
 - **優先度**: Use `高`, `中`, or `低` from the design unless a split case clearly deserves a different priority.
 - **テストケース名**: Name the concrete case in a short phrase. Include the specific value, boundary, role, environment, or condition when it distinguishes the case.
-- **前提条件**: State setup, environment, browser, data, account/role, external dependency state, or `なし`.
-- **入力/データ**: State one concrete value, scenario, browser, file, or condition to use. If multiple values are listed, they must form one inseparable sequence with one aggregate judgment; otherwise split them into separate `TC-*` rows.
-- **手順**: State readable execution steps. Do not write automation code. Avoid steps that require the executor to select unspecified values.
-- **期待結果**: State pass/fail criteria for this one case. Use `要確認` only when the expected result truly depends on unanswered questions.
+- **前提条件**: State setup, environment, browser, data, account/role, external dependency state, or `なし`. Do not use cross-row shortcuts such as `同上`.
+- **入力/データ**: State one concrete executable value, scenario, browser, file, fixture, API argument, database row, dependency response, or condition to use. If multiple values are listed, they must form one inseparable sequence with one aggregate judgment; otherwise split them into separate `TC-*` rows. Do not state only derived internal variables or intermediate states.
+- **手順**: State readable execution steps. Do not write automation code. Avoid steps that require the executor to select unspecified values. Include setup steps needed to create any target state.
+- **期待結果**: State pass/fail criteria for this one case. If multiple independent observations are needed, split them into separate `TC-*` rows unless this is explicitly an aggregate scenario. Use `要確認` only when the expected result truly depends on unanswered questions.
 - **確認方法/証跡**: State evidence such as unit test result, E2E execution log, screenshot, browser output, DevTools Network record, performance measurement, or code review record.
 - **関連質問ID**: Link `DQxxx` for question-wait cases. Use `なし` when no related question exists.
 - **仕様**: Reference specification sections, feature IDs, README sections, existing tests, or `要確認`.
@@ -186,11 +193,23 @@ Use condition-by-condition splitting. Treat splitting as the default whenever in
 - Split user/data/API matrices into separate test cases when behavior can differ by role, tenant, plan, account state, data status, API status code, file type, content size, or dependency response.
 - Split abnormal-value sets when different values can fail for different reasons, such as empty, null, missing, malformed, non-finite, negative, over-maximum, duplicate, inconsistent, expired, unauthorized, or unsupported values.
 - Split cases whenever a later automation implementer would otherwise need a loop, parameter table, or subtest labels to identify which input failed. If a loop is expected in automation, each loop row still needs its own `TC-*` unless the values are only incidental data within one scenario.
+- Split cases when one input setup has multiple independent observation points, such as `first and last`, `before and after`, `start and end`, multiple rows in an output, multiple screens, multiple roles, or multiple state transitions. A shared setup does not justify one `TC-*` when the observations can fail independently.
+- Split expected results that use phrases like `A and B`, `Xでは...、Yでは...`, `最初と最後`, `開始時と終了時`, or `前後` when each observation can have a different failure cause.
 - Keep one test case when the condition is naturally checked as one sequence or one scenario, such as a long-running workflow or one cross-feature integration flow.
 - Keep one test case for a multi-step scenario only when the values are part of the same user journey and cannot be judged independently without changing the scenario's meaning.
 - When intentionally keeping an aggregate case, state the rationale in `入力/データ` or `期待結果`, such as `互換性マトリクスとして全環境を一括判定し、1環境でも不一致ならFail`. Do not use aggregate cases to hide independent high- or medium-risk conditions.
 - Keep `TDxxx` stable. Do not renumber design IDs; create multiple `TC-*` rows that reference the same `TDxxx`.
 - Avoid inventing precise values that are not supported. Use source values, design values, README examples, or `要確認`.
+
+## Markdown Table Integrity
+
+Generated tables must remain machine-readable Markdown:
+
+- Keep the same column count for every row in a table.
+- Do not place raw `|` inside a table cell. Escape it as `\|`, wrap it in a fenced example outside the table, or rewrite the prose.
+- Avoid raw `||`, shell pipes, regex alternation, and TypeScript union syntax inside table cells unless escaped or rewritten.
+- Prefer prose such as "`parseFloat(value)` がNaNの場合に0へフォールバックする" over code snippets that contain table delimiters.
+- Treat a malformed table as a creation error and fix it before finishing.
 
 ## Question-Wait Cases
 
@@ -249,3 +268,7 @@ Before finishing:
 - Confirm no `TC-*` row is duplicated across files unless the user explicitly requested duplication.
 - Confirm no executable `TC-*` row compresses multiple independently meaningful inputs, boundaries, abnormal values, browsers, environments, roles, API statuses, file types, data states, or scenarios into one row without an explicit aggregate-judgment rationale.
 - Confirm no executable `TC-*` row contains unresolved executor-choice words such as `など`, `付近`, `適切`, `任意`, `複数`, `各`, `代表`, `正常値`, or `異常値` unless the row also gives concrete values or is marked `要確認`.
+- Confirm no executable `TC-*` row uses cross-row shortcuts such as `同上`, `前述と同じ`, `同条件`, or `同様`.
+- Confirm no executable `TC-*` row relies only on internal/derived state instead of executable input or setup.
+- Confirm no executable `TC-*` row contains multiple independent observation points in the expected result without an aggregate-judgment rationale.
+- Confirm every Markdown table row has the same number of cells as its header and no unescaped `|` breaks the table.
