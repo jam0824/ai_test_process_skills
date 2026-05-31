@@ -1,4 +1,4 @@
 interface:
   display_name: "テスト設計レビュー"
-  short_description: "テスト設計をレビューし高優先度問題を改善して保存する支援"
-  default_prompt: "Use $review-test-design to review, fix, re-review, and save the final Markdown review result for a test design."
+  short_description: "テスト設計の漏れ、必要十分性、分解粒度をレビューし改善する支援"
+  default_prompt: "Use $review-test-design to review necessary-and-sufficient design depth, fix high-priority issues, re-review, and save the final Markdown review result."
