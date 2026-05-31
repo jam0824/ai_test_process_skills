@@ -35,7 +35,9 @@ CORE_MD_FILES = [
     ("テスト成果物横断レビュー", "テスト成果物横断レビュー結果.md"),
     ("未実装テストケース（コードベース）", "未実装テストケース_コードベース.md"),
     ("未実装テストケース（E2E自動）", "未実装テストケース_E2E自動.md"),
+    ("テストコード実装結果", "テストコード実装結果.md"),
     ("テストコードレビュー", "テストコードレビュー結果.md"),
+    ("Playwright E2Eテスト実装結果", "Playwright_E2Eテスト実装結果.md"),
     ("Playwright E2Eテストレビュー", "Playwright_E2Eテストレビュー結果.md"),
     ("テストレポートレビュー", "テストレポートレビュー結果.md"),
 ]
@@ -1001,6 +1003,20 @@ def build_index_html(
     unimplemented_rows = []
     for filename in ["未実装テストケース_コードベース.md", "未実装テストケース_E2E自動.md"]:
         unimplemented_rows.extend(rows_from_markdown_cases(artifacts_dir / filename, report_dir, html_files_by_name, ["未実装理由", "関連質問ID"]))
+    question_row_ids = {row[0] for row in question_rows}
+    unimplemented_row_ids = {row[0] for row in unimplemented_rows}
+    question_unimplemented_overlap_ids = sorted(question_row_ids & unimplemented_row_ids)
+    if question_unimplemented_overlap_ids:
+        overlap_notes.append(
+            "質問待ちかつ未実装一覧にも掲載: "
+            f"{len(question_unimplemented_overlap_ids)}件 "
+            f"({', '.join(question_unimplemented_overlap_ids)})"
+        )
+        overlap_note_html = (
+            "<p>注記: 未完了カテゴリに重複掲載されるケースがあるため、"
+            "質問待ち数と未実装数は単純加算しない。"
+            f"{html.escape('、'.join(overlap_notes))}。</p>"
+        )
     not_run_page = write_detail_page(
         report_dir,
         "未実行テストケース.html",
@@ -1186,13 +1202,17 @@ def main(argv: list[str] | None = None) -> int:
 
     pass_rate = summary["pass_rate"]
     pass_rate_text = "-" if pass_rate is None else f"{pass_rate:.1f}%"
+    question_row_count = len(rows_from_markdown_cases(artifacts_dir / "テストケース_質問待ち.md", report_dir, {}, ["関連質問ID"]))
+    unimplemented_row_count = 0
+    for filename in ["未実装テストケース_コードベース.md", "未実装テストケース_E2E自動.md"]:
+        unimplemented_row_count += len(rows_from_markdown_cases(artifacts_dir / filename, report_dir, {}, ["未実装理由", "関連質問ID"]))
     print(f"report_dir={report_dir}")
     print(f"report_html={report_html}")
     print(
         f"summary=Total:{summary['total']} Executed:{summary['executed']} "
         f"Pass:{summary['pass']} Fail:{summary['fail']} N/A:{summary['na']} "
-        f"NotRun:{len(summary['not_run_ids'])} QuestionWait:{len(summary['question_wait_ids'])} "
-        f"Unimplemented:{len(summary['unimplemented_ids'])} PassRate:{pass_rate_text}"
+        f"NotRun:{len(summary['not_run_ids'])} QuestionWait:{question_row_count} "
+        f"Unimplemented:{unimplemented_row_count} PassRate:{pass_rate_text}"
     )
     print(
         f"coverage=ExpectedTC:{coverage_summary['expected']} ActualTC:{coverage_summary['actual']} "

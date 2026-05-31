@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Playwright E2Eテストレビュー</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>Playwright E2Eテストレビュー結果</h2>
+<h3>1. レビュー対象</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>種別</th><th>対象</th></tr></thead>
+<tbody>
+<tr><td>Playwrightテストコード</td><td><code>tests/e2e/retirement_simulator.e2e.spec.js</code></td></tr>
+<tr><td>Playwright構成</td><td><code>playwright.config.js</code>, <code>package.json</code></td></tr>
+<tr><td>実装結果</td><td><code>テスト成果物/Playwright_E2Eテスト実装結果.md</code></td></tr>
+<tr><td>未実装管理</td><td><code>テスト成果物/未実装テストケース_E2E自動.md</code></td></tr>
+<tr><td>入力テストケース</td><td><code>テスト成果物/テストケース_E2E自動.md</code>, <code>テスト成果物/テストケース_質問待ち.md</code></td></tr>
+<tr><td>ターゲット</td><td><code>sample_app/retirement_simulator.html</code></td></tr>
+</tbody></table></div>
+<h3>2. 参照資料</h3>
+<p><code>テスト成果物/テストケース_E2E自動.md</code>, <code>テスト成果物/テストケース_質問待ち.md</code>, <code>テスト成果物/テスト設計.md</code>, <code>テスト成果物/テスト設計_質問票.md</code>, <code>テスト成果物/テスト分析.md</code>, <code>テスト成果物/テスト計画書.md</code>, <code>spec/仕様書.md</code>, <code>sample_app/README.md</code>, <code>sample_app/retirement_simulator.html</code>, <code>package.json</code>, <code>playwright.config.js</code></p>
+<h3>3. レビュー観点</h3>
+<p>ターゲット妥当性、トレーサビリティ、テストケース網羅性、未実装管理、期待結果の正当性、false positive/negative、安定性、独立性、セレクタ、入力データ、Playwright idiom、環境可搬性、失敗診断、Security/Performance/Compatibility/Accessibilityの扱い、実行準備性、保守性を確認した。</p>
+<h3>4. レビュー・修正サマリー</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>回</th><th>実施内容</th><th>結果</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>実装直後レビュー</td><td><code>TC-E2E-012</code> が期待表示欠落をPassにしてしまう逆向きアサーションだったため修正。データ駆動テストのグループトレーサビリティコメントを追記。</td></tr>
+<tr><td>2</td><td>静的確認</td><td><code>npm.cmd run test:e2e -- --list</code> 成功。68件 x 3 project = 204件を認識。</td></tr>
+<tr><td>3</td><td>Chromium実走</td><td><code>npm.cmd run test:e2e -- --project=chromium --reporter=line</code> は67 Pass / 1 Fail。Failは <code>TC-E2E-012</code> の製品表示欠落を正しく検出。</td></tr>
+<tr><td>4</td><td>最終再レビュー</td><td>テストコード・E2E関連QA成果物に残るP0/P1/P2 fix-worthy指摘なし。</td></tr>
+<tr><td>5</td><td>全project実行成果物確認</td><td>recorder出力を確認。<code>e2e_発見issue一覧.md</code> のANSI装飾混入を読みやすい記録へ修正。E2E成果物上のP0/P1/P2 fix-worthy指摘なし。</td></tr>
+</tbody></table></div>
+<h3>5. 最終レビュー結果</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>優先度</th><th>観点</th><th>問題</th><th>場所</th><th>影響</th><th>修正方針</th></tr></thead>
+<tbody>
+<tr><td>なし</td><td>全観点</td><td>テストコード・E2E成果物上のP0/P1/P2 fix-worthy指摘なし</td><td><code>tests/e2e/retirement_simulator.e2e.spec.js</code>, <code>テスト成果物/Playwright_E2Eテスト実装結果.md</code>, <code>テスト成果物/未実装テストケース_E2E自動.md</code></td><td>なし</td><td>対応不要</td></tr>
+</tbody></table></div>
+<p>補足: <code>TC-E2E-012</code> のFailは、テストコードではなくターゲット画面に金融/税務助言ではない旨と実制度・個人差確認の表示がないことを検出する製品側の不一致候補である。製品コードは制約どおり修正していない。</p>
+<h3>6. 実行結果</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>コマンド</th><th>結果</th></tr></thead>
+<tbody>
+<tr><td><code>npm.cmd run test:e2e -- --list</code></td><td>成功。204件を認識。</td></tr>
+<tr><td><code>npm.cmd run test:e2e -- --project=chromium --reporter=line</code></td><td>67 Pass / 1 Fail。Fail: <code>TC-E2E-012</code>。</td></tr>
+<tr><td><code>python skills\execute-playwright-e2e-tests\scripts\record_playwright_e2e_test_run.py --command-name &quot;npm.cmd run test:e2e -- --reporter=json&quot; -- npm.cmd run test:e2e -- --reporter=json</code></td><td>67 Pass / 1 Fail / 0 N/A。<code>E2E-BUG-001</code> を記録。</td></tr>
+</tbody></table></div>
+<p>正式な全project実行結果は <code>テスト成果物/report/20260531222735_e2e自動テスト/</code> に保存済み。</p>
+<h3>7. 残課題</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>区分</th><th>内容</th><th>扱い</th></tr></thead>
+<tbody>
+<tr><td>P0/P1/P2</td><td>なし</td><td>テストコード・E2E成果物上の修正対象なし</td></tr>
+<tr><td>P3</td><td>なし</td><td>対応不要</td></tr>
+<tr><td>製品不一致候補</td><td><code>TC-E2E-012</code> が期待する金融/税務助言ではない旨の表示が画面にない</td><td>E2E実行結果として <code>E2E-BUG-*</code> に記録する</td></tr>
+</tbody></table></div>
+<h3>8. 更新ファイル</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>ファイル</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td><code>tests/e2e/retirement_simulator.e2e.spec.js</code></td><td>E2E 68件を実装。レビューで <code>TC-E2E-012</code> アサーションとトレーサビリティコメントを修正。</td></tr>
+<tr><td><code>テスト成果物/Playwright_E2Eテスト実装結果.md</code></td><td>実装件数、構成、確認結果を記録。</td></tr>
+<tr><td><code>テスト成果物/未実装テストケース_E2E自動.md</code></td><td>未実装0件を記録。</td></tr>
+<tr><td><code>テスト成果物/Playwright_E2Eテストレビュー結果.md</code></td><td>本レビュー結果を記録。</td></tr>
+<tr><td><code>テスト成果物/report/20260531222735_e2e自動テスト/e2e_発見issue一覧.md</code></td><td><code>E2E-BUG-001</code> の説明からANSI装飾を除去し、読みやすい要約へ整形。</td></tr>
+</tbody></table></div>
+</body>
+</html>

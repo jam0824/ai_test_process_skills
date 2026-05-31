@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テスト成果物横断レビュー</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テスト成果物横断レビュー結果</h2>
+<h3>1. レビュー対象</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>成果物</th><th>パス</th></tr></thead>
+<tbody>
+<tr><td>テスト計画</td><td><code>テスト成果物/テスト計画書.md</code></td></tr>
+<tr><td>テスト分析</td><td><code>テスト成果物/テスト分析.md</code></td></tr>
+<tr><td>テスト分析質問票</td><td><code>テスト成果物/テスト分析_質問票.md</code></td></tr>
+<tr><td>テスト設計</td><td><code>テスト成果物/テスト設計.md</code></td></tr>
+<tr><td>テスト設計質問票</td><td><code>テスト成果物/テスト設計_質問票.md</code></td></tr>
+<tr><td>テストケース一式</td><td><code>テスト成果物/テストケース_コードベース.md</code>, <code>テスト成果物/テストケース_E2E自動.md</code>, <code>テスト成果物/テストケース_人間実行.md</code>, <code>テスト成果物/テストケース_質問待ち.md</code>, <code>テスト成果物/テストケース_人間実行.csv</code></td></tr>
+</tbody></table></div>
+<h3>2. 参照資料</h3>
+<p><code>テスト成果物/テスト設計.md</code>, <code>テスト成果物/テスト設計_質問票.md</code>, <code>テスト成果物/テスト分析.md</code>, <code>テスト成果物/テスト分析_質問票.md</code>, <code>テスト成果物/テスト計画書.md</code>, <code>spec/仕様書.md</code>, <code>sample_app/README.md</code>, <code>sample_app/retirement_simulator.html</code></p>
+<h3>3. レビュー観点</h3>
+<p>エンドツーエンドトレーサビリティ, Source Structure Inventory, Expected Case Yield, Case Expansion Ledger, アプローチ網羅, 観点網羅, リスクベース妥当性, 質問待ち管理, 実装開始可否を確認した。</p>
+<h3>4. レビュー・修正サマリー</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>イテレーション</th><th>レビュー結果</th><th>修正内容</th><th>再レビュー結果</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><code>SSI001</code> から <code>SSI021</code>, <code>TD001</code> から <code>TD060</code>, <code>TC-*</code> 215件の接続を確認した。P0, P1の高優先度指摘なし。</td><td>修正なし。</td><td>高優先度指摘なし。</td></tr>
+</tbody></table></div>
+<h3>5. 最終レビュー結果</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>優先度</th><th>観点</th><th>問題</th><th>場所</th><th>影響</th><th>修正方針</th></tr></thead>
+<tbody>
+<tr><td>なし</td><td>全観点</td><td>P0, P1の高優先度指摘なし。</td><td>QA成果物全体</td><td>非質問待ちケースの実装フェーズへ進める。</td><td>修正不要。</td></tr>
+</tbody></table></div>
+<div class="table-wrap"><table>
+<thead><tr><th>確認項目</th><th>結果</th></tr></thead>
+<tbody>
+<tr><td>Source Structure Inventory</td><td><code>SSI001</code> から <code>SSI021</code> まで存在し、展開方針と下流ヒントあり。</td></tr>
+<tr><td>Expected Case Yield</td><td><code>TD001</code> から <code>TD060</code> まで期待TC数あり。合計215件。</td></tr>
+<tr><td>Case Expansion Ledger</td><td>全テストケースファイルに台帳あり。実TC数215件, 不足0件。</td></tr>
+<tr><td>トレーサビリティ</td><td><code>TA001</code> から <code>TA014</code>, <code>TV001</code> から <code>TV049</code>, <code>TD001</code> から <code>TD060</code>, <code>TC-*</code> 215件が接続済み。</td></tr>
+<tr><td>質問待ち</td><td><code>DQ001</code> から <code>DQ004</code> は9件の質問待ちケースとして保持し、期待結果は要確認で推測していない。</td></tr>
+<tr><td>実行区分</td><td>コードベース106件, E2E自動68件, 人間実行32件, 質問待ち9件。</td></tr>
+</tbody></table></div>
+<h4>Implementation Entry Gate</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>ゲート項目</th><th>結果</th></tr></thead>
+<tbody>
+<tr><td>Source Structure Inventory</td><td>PASS。21件すべて展開方針あり。</td></tr>
+<tr><td>Expected Case Yield</td><td>PASS。60件すべて期待TC数あり。</td></tr>
+<tr><td>Case Expansion Ledger</td><td>PASS。60件すべて期待数, 実数, 不足数, 対応TC IDあり。</td></tr>
+<tr><td>合計期待TC数</td><td>215</td></tr>
+<tr><td>合計実TC数</td><td>215</td></tr>
+<tr><td>不足数</td><td>0</td></tr>
+<tr><td>代表抽出/集約</td><td>TD014, TD015, TD016, TD026, TD027, TD034, TD038, TD040, TD041, TD042は台帳に理由または集約判定ルールを記録済み。</td></tr>
+<tr><td>質問待ち</td><td>DQ001からDQ004に紐づく9件は質問待ちとして明示。回答前に実装対象へ移さない。</td></tr>
+<tr><td>ゲート判定</td><td>PASS_WITH_QUESTION_WAIT。非質問待ち206件は実装入力として開始可能。質問待ち9件は回答後に実装, N/A, 未実装, 未実行へ確定する。</td></tr>
+</tbody></table></div>
+<h3>6. 残課題</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>ID</th><th>優先度</th><th>内容</th><th>推奨次アクション</th></tr></thead>
+<tbody>
+<tr><td>DQ001</td><td>高</td><td>正式回帰HTMLの追加対象または欠落扱いが未確定。</td><td>回答前はTC-CB-107とTC-MAN-040を実装しない。</td></tr>
+<tr><td>DQ002</td><td>高</td><td>実ブラウザ確認範囲とSafari実機差異が未確定。</td><td>回答前はTC-MAN-033とTC-MAN-034を人間実行へ移さない。</td></tr>
+<tr><td>DQ003</td><td>中</td><td>失敗時videoを含む証跡保存条件が未確定。</td><td>E2E実装前に保存方針を確認する。</td></tr>
+<tr><td>DQ004</td><td>高</td><td>P0/P1欠陥残存時の承認フローが未確定。</td><td>最終レポート前に残存リスク扱いを確認する。</td></tr>
+</tbody></table></div>
+</body>
+</html>

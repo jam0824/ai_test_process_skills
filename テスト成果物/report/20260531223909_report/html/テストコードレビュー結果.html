@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テストコードレビュー</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テストコードレビュー結果</h2>
+<h3>1. レビュー対象</h3>
+<p><code>tests/codebase/retirement_simulator.test.js</code>, <code>テスト成果物/テストコード実装結果.md</code>, <code>テスト成果物/未実装テストケース_コードベース.md</code>, <code>テスト成果物/テストケース_コードベース.md</code>, <code>テスト成果物/テストケース_質問待ち.md</code>, <code>sample_app/retirement_simulator.html</code></p>
+<h3>2. 参照資料</h3>
+<p><code>テスト成果物/テスト設計.md</code>, <code>テスト成果物/テスト設計_質問票.md</code>, <code>テスト成果物/テスト分析.md</code>, <code>テスト成果物/テスト計画書.md</code>, <code>spec/仕様書.md</code>, <code>sample_app/README.md</code>, <code>package.json</code></p>
+<h3>3. レビュー観点</h3>
+<p>トレーサビリティ、実装対象カバレッジ、未実装ケース管理、実ターゲット検証、期待値根拠、アサーション強度、独立性、決定性、テストレベル妥当性、保守性、実行準備、失敗診断、テストデータ妥当性、結合度、安全性を確認した。</p>
+<h3>4. レビュー・修正サマリー</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>反復</th><th>確認内容</th><th>結果</th><th>修正</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>初回実行と静的確認</td><td>106件中89件Pass, 17件Fail。負値ケース4件と <code>startAge=101</code> にテストコード不備あり。</td><td><code>assert.doesNotThrow()</code> の戻り値誤用、VM配列比較、複合ケースの生活費条件を修正。</td></tr>
+<tr><td>2</td><td>再実行と決定性確認</td><td>106件中94件Pass, 12件Fail。残りはプロダクト仕様不一致。</td><td>DOM/イベント系の乱数を既定で固定し、Infinity/指数表記/HTML断片ケースを給与期間で検証するよう補強。</td></tr>
+<tr><td>3</td><td>recorder実行後レビュー</td><td>94 Pass, 12 Fail, 0 N/A。Failは <code>BUG-001</code> から <code>BUG-012</code> に記録済み。</td><td>追加修正不要。</td></tr>
+</tbody></table></div>
+<h3>5. 最終レビュー結果</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>優先度</th><th>観点</th><th>問題</th><th>場所</th><th>影響</th><th>修正方針</th></tr></thead>
+<tbody>
+<tr><td>なし</td><td>全観点</td><td>テストコード側に修正すべき P0/P1/P2 指摘なし</td><td><code>tests/codebase/retirement_simulator.test.js</code></td><td>テストは対象HTMLの実コードを実行し、非質問待ち106件を追跡できる</td><td>なし</td></tr>
+</tbody></table></div>
+<p>残存Fail 12件はプロダクト仕様不一致として execution issue に記録したため、製品コードは本フェーズで修正していない。</p>
+<h3>6. 実行結果</h3>
+<p>最終コマンド: <code>python skills\execute-codebase-tests\scripts\record_codebase_test_run.py --command-name &quot;npm run test:codebase&quot; -- npm.cmd run test:codebase</code></p>
+<p>結果: 106件中94件Pass、12件Fail、0件N/A。終了コード1。レポートフォルダは <code>テスト成果物/report/20260531221233_コードベーステスト/</code>。</p>
+<h3>7. 残課題</h3>
+<p><code>BUG-001</code> から <code>BUG-012</code> はプロダクト側の仕様不一致候補として後続フェーズまたは修正フェーズで扱う。<code>TC-CB-107</code> は <code>DQ001</code> 回答待ちのため未実装。</p>
+</body>
+</html>

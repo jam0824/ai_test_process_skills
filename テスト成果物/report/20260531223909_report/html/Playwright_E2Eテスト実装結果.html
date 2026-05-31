@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Playwright E2Eテスト実装結果</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>Playwright E2Eテスト実装結果</h2>
+<h3>1. 実装対象</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>項目</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>指定ターゲット</td><td><code>sample_app/retirement_simulator.html</code></td></tr>
+<tr><td>実装ファイル</td><td><code>tests/e2e/retirement_simulator.e2e.spec.js</code></td></tr>
+<tr><td>実装件数</td><td>68件</td></tr>
+<tr><td>未実装件数</td><td>0件</td></tr>
+<tr><td>対象ブラウザ/project</td><td><code>playwright.config.js</code> 既存設定に従い <code>chromium</code>, <code>firefox</code>, <code>webkit</code></td></tr>
+</tbody></table></div>
+<h3>2. 参照資料</h3>
+<p><code>テスト成果物/テストケース_E2E自動.md</code>, <code>テスト成果物/テストケース_質問待ち.md</code>, <code>テスト成果物/テスト設計.md</code>, <code>テスト成果物/テスト設計_質問票.md</code>, <code>テスト成果物/テスト分析.md</code>, <code>テスト成果物/テスト計画書.md</code>, <code>spec/仕様書.md</code>, <code>sample_app/README.md</code>, <code>sample_app/retirement_simulator.html</code>, <code>package.json</code>, <code>playwright.config.js</code></p>
+<h3>3. Playwright構成</h3>
+<p>既存の <code>package.json</code> に <code>test:e2e: playwright test</code> と <code>@playwright/test</code> が定義済み。既存の <code>playwright.config.js</code> は <code>tests/e2e</code> を <code>testDir</code> とし、<code>chromium</code>, <code>firefox</code>, <code>webkit</code> の3 project、失敗時trace/screenshot/video保存を設定しているため、構成変更や依存追加は行っていない。</p>
+<p>対象HTMLは <code>pathToFileURL(path.resolve(...))</code> で <code>file://</code> として開く。</p>
+<h3>4. 実装したテスト</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テストケースID</th><th>テスト名</th><th>実装ファイル</th><th>対象</th><th>テストレベル/タイプ</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TC-E2E-001</td><td>初期値のまま開始</td><td><code>tests/e2e/retirement_simulator.e2e.spec.js</code></td><td><code>sample_app/retirement_simulator.html</code></td><td>E2E</td><td>README使い方, 仕様2.1, 3.1</td><td>R002, R003, R009, R013</td><td>実装済み</td></tr>
+<tr><td>TC-E2E-002 - TC-E2E-006</td><td>README使用例5件</td><td><code>tests/e2e/retirement_simulator.e2e.spec.js</code></td><td>同上</td><td>E2E</td><td>README使用例, 仕様2.1, 3.1</td><td>R002, R003, R005, R009, R013</td><td>実装済み</td></tr>
+<tr><td>TC-E2E-007 - TC-E2E-010</td><td>給与変更UI操作4件</td><td><code>tests/e2e/retirement_simulator.e2e.spec.js</code></td><td>同上</td><td>E2E</td><td>仕様2.2 F008, 3.1.2</td><td>R005, R013</td><td>実装済み</td></tr>
+<tr><td>TC-E2E-011</td><td>プライバシー説明の視認</td><td><code>tests/e2e/retirement_simulator.e2e.spec.js</code></td><td>同上</td><td>E2E</td><td>仕様3.1.4, 8.1</td><td>R009</td><td>実装済み</td></tr>
+<tr><td>TC-E2E-012</td><td>金融助言ではない旨の必須表示</td><td><code>tests/e2e/retirement_simulator.e2e.spec.js</code></td><td>同上</td><td>E2E</td><td>仕様3.1.4, 11.1</td><td>R009</td><td>実装済み</td></tr>
+<tr><td>TC-E2E-013 - TC-E2E-015</td><td>XSS入力3件</td><td><code>tests/e2e/retirement_simulator.e2e.spec.js</code></td><td>同上</td><td>Security</td><td>仕様7.2, 8.2</td><td>R007</td><td>実装済み</td></tr>
+<tr><td>TC-E2E-016 - TC-E2E-019</td><td>通信/外部リソース/ストレージ/API 4件</td><td><code>tests/e2e/retirement_simulator.e2e.spec.js</code></td><td>同上</td><td>Security</td><td>仕様1.3, 8.1</td><td>R008</td><td>実装済み</td></tr>
+<tr><td>TC-E2E-020 - TC-E2E-029</td><td>計算性能測定10件</td><td><code>tests/e2e/retirement_simulator.e2e.spec.js</code></td><td>同上</td><td>Performance</td><td>仕様6.2</td><td>R010</td><td>実装済み</td></tr>
+<tr><td>TC-E2E-030 - TC-E2E-039</td><td>描画性能測定10件</td><td><code>tests/e2e/retirement_simulator.e2e.spec.js</code></td><td>同上</td><td>Performance</td><td>仕様6.2</td><td>R010</td><td>実装済み</td></tr>
+<tr><td>TC-E2E-040 - TC-E2E-049</td><td>10回連続実行10件</td><td><code>tests/e2e/retirement_simulator.e2e.spec.js</code></td><td>同上</td><td>Performance</td><td>仕様6.2</td><td>R010</td><td>実装済み</td></tr>
+<tr><td>TC-E2E-050 - TC-E2E-052</td><td>代表環境3件</td><td><code>tests/e2e/retirement_simulator.e2e.spec.js</code></td><td>同上</td><td>Compatibility</td><td>仕様7.3, 9.4</td><td>R011</td><td>実装済み</td></tr>
+<tr><td>TC-E2E-053 - TC-E2E-061</td><td>number input差異9件</td><td><code>tests/e2e/retirement_simulator.e2e.spec.js</code></td><td>同上</td><td>Compatibility</td><td>仕様7.1, 7.2, 9.4</td><td>R006</td><td>実装済み</td></tr>
+<tr><td>TC-E2E-062 - TC-E2E-063</td><td>レイアウト2件</td><td><code>tests/e2e/retirement_simulator.e2e.spec.js</code></td><td>同上</td><td>Accessibility</td><td>仕様11.2, 13 C002</td><td>R011</td><td>実装済み</td></tr>
+<tr><td>TC-E2E-064 - TC-E2E-068</td><td>キーボード操作5件</td><td><code>tests/e2e/retirement_simulator.e2e.spec.js</code></td><td>同上</td><td>Accessibility</td><td>仕様9.4, 13 C003</td><td>R011</td><td>実装済み</td></tr>
+</tbody></table></div>
+<h3>5. 未実装テストケース</h3>
+<p>未実装E2E自動ケースは0件。詳細は <code>テスト成果物/未実装テストケース_E2E自動.md</code> に記録した。</p>
+<h3>6. 実行結果</h3>
+<p>作成フェーズの確認として以下を実行した。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>コマンド</th><th>結果</th></tr></thead>
+<tbody>
+<tr><td><code>npm.cmd run test:e2e -- --list</code></td><td>成功。68件 x 3 project = 204件を認識。</td></tr>
+<tr><td><code>npm.cmd run test:e2e -- --project=chromium --reporter=line</code></td><td>67 Pass / 1 Fail。Failは <code>TC-E2E-012</code> の必須表示欠落で、テストコード起因ではなくE2E検出対象の製品不一致候補。</td></tr>
+</tbody></table></div>
+<p>正式なE2E実行結果は recorder により <code>テスト成果物/report/20260531222735_e2e自動テスト/</code> 配下へ保存済み。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>コマンド</th><th>最終結果</th></tr></thead>
+<tbody>
+<tr><td><code>python skills\execute-playwright-e2e-tests\scripts\record_playwright_e2e_test_run.py --command-name &quot;npm.cmd run test:e2e -- --reporter=json&quot; -- npm.cmd run test:e2e -- --reporter=json</code></td><td>67 Pass / 1 Fail / 0 N/A。Failは <code>TC-E2E-012</code>、Bug IDは <code>E2E-BUG-001</code>。</td></tr>
+</tbody></table></div>
+<h3>7. トレーサビリティ確認</h3>
+<p>全実装テストのテスト名に <code>TC-E2E-*</code> を含めた。各テストまたは同一データ駆動グループ直前に <code>TC</code>, <code>TD</code>, <code>TV</code>, <code>TA</code>, <code>Spec</code>, <code>Risk</code> を記載した。質問待ち・要確認の <code>TC-E2E-*</code> は入力ファイル上に存在しないため、未実装へ分離する対象は0件。</p>
+</body>
+</html>

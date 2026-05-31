@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テストケース（人間実行）</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テストケース（人間実行）</h2>
+<h3>1. 作成対象</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>項目</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>対象フェーズ</td><td>Phase 4 Cases and implementation gate</td></tr>
+<tr><td>テスト対象コード</td><td><code>sample_app/retirement_simulator.html</code></td></tr>
+<tr><td>出力ファイル</td><td><code>テスト成果物/テストケース_人間実行.md</code></td></tr>
+<tr><td>ケース数</td><td>32</td></tr>
+</tbody></table></div>
+<h3>2. 参照資料</h3>
+<p><code>テスト成果物/テスト設計.md</code>, <code>テスト成果物/テスト設計_質問票.md</code>, <code>テスト成果物/テスト分析.md</code>, <code>テスト成果物/テスト分析_質問票.md</code>, <code>テスト成果物/テスト計画書.md</code>, <code>spec/仕様書.md</code>, <code>sample_app/README.md</code>, <code>sample_app/retirement_simulator.html</code></p>
+<h3>3. 人間が実行する必要があるテストケース</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テストケースID</th><th>元テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>実行区分</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストケース名</th><th>前提条件</th><th>入力/データ</th><th>手順</th><th>期待結果</th><th>確認方法/証跡</th><th>関連質問ID</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TC-MAN-001</td><td>TD015</td><td>TV028</td><td>TA008</td><td>人間実行</td><td>Unit</td><td>高</td><td>給与変更テンプレートinnerHTML監査</td><td>sample_app/retirement_simulator.html を確認できるブラウザ環境と記録用メモを用意する。</td><td>addSalaryChangeItem内のinnerHTMLテンプレート</td><td>TD015 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>innerHTMLは静的テンプレート限定で、ユーザー入力値をHTMLとして埋め込まない。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様8.2</td><td>R007</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-002</td><td>TD016</td><td>TV045</td><td>TA013</td><td>人間実行</td><td>Unit</td><td>中</td><td>組み込みconsole.assert補助範囲監査</td><td>sample_app/retirement_simulator.html を確認できるブラウザ環境と記録用メモを用意する。</td><td>runTests内のconsole.assert</td><td>TD016 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>組み込みassertは正式回帰の十分条件ではなく、補助ログとして扱う範囲を説明できる。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様9.4, 10.2</td><td>R012, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-003</td><td>TD035</td><td>TV032</td><td>TA009</td><td>人間実行</td><td>E2E</td><td>中</td><td>文書整合 README注意事項</td><td>sample_app/retirement_simulator.html を確認できるブラウザ環境と記録用メモを用意する。</td><td>sample_app/README.md の注意事項</td><td>TD035 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>仕様の必須注意内容を満たすか、不足は仕様差異候補として記録できる。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様1.4, 3.1.4, README注意事項</td><td>R009, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-004</td><td>TD035</td><td>TV032</td><td>TA009</td><td>人間実行</td><td>E2E</td><td>中</td><td>文書整合 画面注意表示</td><td>sample_app/retirement_simulator.html を確認できるブラウザ環境と記録用メモを用意する。</td><td>sample_app/retirement_simulator.html の画面注意表示</td><td>TD035 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>仕様の必須表示内容を満たすか、不足は仕様差異候補として記録できる。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様1.4, 3.1.4, README注意事項</td><td>R009, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-005</td><td>TD037</td><td>TV027</td><td>TA008</td><td>人間実行</td><td>Security</td><td>高</td><td>結果表示textContent経路</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>runSimulationから#output.textContentへ代入する経路</td><td>TD037 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>結果表示がtextContentを使い、シミュレーション結果をHTMLとして解釈しない。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様3.1.3, 8.2</td><td>R007, R008</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-006</td><td>TD037</td><td>TV027</td><td>TA008</td><td>人間実行</td><td>Security</td><td>高</td><td>ユーザー入力出力経路</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>給与変更年収表示と入力由来値の出力経路</td><td>TD037 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>ユーザー入力がHTMLとして結果表示へ埋め込まれない。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様3.1.3, 8.2</td><td>R007, R008</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-007</td><td>TD038</td><td>TV028</td><td>TA008</td><td>人間実行</td><td>Security</td><td>高</td><td>innerHTML使用箇所全件監査</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>sample_app/retirement_simulator.html 内のinnerHTML使用箇所</td><td>TD038 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>innerHTML使用が静的テンプレートに限定され、ユーザー入力値を含まない。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様8.2</td><td>R007</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-008</td><td>TD048</td><td>TV040</td><td>TA011</td><td>人間実行</td><td>Accessibility</td><td>中</td><td>入力ラベル</td><td>sample_app/retirement_simulator.html を確認できるブラウザ環境と記録用メモを用意する。</td><td>全入力欄のラベル文言</td><td>TD048 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>支援技術上も項目の意味を推測できる文言である。</td><td>手動確認記録, スクリーンショット</td><td>なし</td><td>仕様9.4, 11.2, 13 C003</td><td>R011</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-009</td><td>TD048</td><td>TV040</td><td>TA011</td><td>人間実行</td><td>Accessibility</td><td>中</td><td>ボタン文言</td><td>sample_app/retirement_simulator.html を確認できるブラウザ環境と記録用メモを用意する。</td><td>開始, 給与変更表示, 追加, 削除ボタン</td><td>TD048 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>操作目的を推測できる文言である。</td><td>手動確認記録, スクリーンショット</td><td>なし</td><td>仕様9.4, 11.2, 13 C003</td><td>R011</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-010</td><td>TD048</td><td>TV040</td><td>TA011</td><td>人間実行</td><td>Accessibility</td><td>中</td><td>結果表示</td><td>sample_app/retirement_simulator.html を確認できるブラウザ環境と記録用メモを用意する。</td><td>シミュレーション結果の見出しと金額行</td><td>TD048 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>月次結果と残高が読み取りやすく、WCAG正式適合対象外の基本確認として記録できる。</td><td>手動確認記録, スクリーンショット</td><td>なし</td><td>仕様9.4, 11.2, 13 C003</td><td>R011</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-011</td><td>TD050</td><td>TV042</td><td>TA012</td><td>人間実行</td><td>Regression</td><td>高</td><td>正式HTML存在時の補完設計</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>sample_app/test_retirement_simulator.html が存在する前提</td><td>TD050 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>本体コピー依存の限界を、仕様式から独立した期待値, E2E, コードレビューで補完できる。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様9.4</td><td>R012, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-012</td><td>TD050</td><td>TV042</td><td>TA012</td><td>人間実行</td><td>Regression</td><td>高</td><td>正式HTML欠落時の補完設計</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>sample_app/test_retirement_simulator.html が欠落する前提</td><td>TD050 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>欠落を未実装またはN/A候補として残し、独立期待値とE2Eとコードレビューで補完できる。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様9.4</td><td>R012, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-013</td><td>TD051</td><td>TV043</td><td>TA012</td><td>人間実行</td><td>Regression</td><td>中</td><td>既存HTML結果画面証跡</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>既存HTMLテストを実行する場合の結果画面</td><td>TD051 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>ブラウザ結果画面のスクリーンショットまたはHTML保存を証跡として定義できる。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様9.4</td><td>R012, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-014</td><td>TD051</td><td>TV043</td><td>TA012</td><td>人間実行</td><td>Regression</td><td>中</td><td>既存HTML実行ブラウザ証跡</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>既存HTMLテストを実行する場合の実行ブラウザ</td><td>TD051 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>実行ブラウザ名とバージョンを証跡として定義できる。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様9.4</td><td>R012, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-015</td><td>TD051</td><td>TV043</td><td>TA012</td><td>人間実行</td><td>Regression</td><td>中</td><td>既存HTML失敗時ログ証跡</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>既存HTMLテストを実行する場合の失敗時ログ</td><td>TD051 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>失敗時のコンソールログまたは画面ログを証跡として定義できる。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様9.4</td><td>R012, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-016</td><td>TD052</td><td>TV044</td><td>TA013</td><td>人間実行</td><td>Code review</td><td>高</td><td>計算式差異確認</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>仕様2.2, 5.1, 5.2 と対象コードの計算式</td><td>TD052 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>仕様式との差異を検出し、実装追随の期待値にすり替えない。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様1.4, 10.2</td><td>R012, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-017</td><td>TD052</td><td>TV044</td><td>TA013</td><td>人間実行</td><td>Code review</td><td>高</td><td>入力属性差異確認</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>仕様3.1.2, 7.1 とinput属性</td><td>TD052 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>min, max, step, 初期値の差異を検出できる。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様1.4, 10.2</td><td>R012, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-018</td><td>TD052</td><td>TV044</td><td>TA013</td><td>人間実行</td><td>Code review</td><td>高</td><td>表示差異確認</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>仕様3.1.3 と結果表示処理</td><td>TD052 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>表示丸め, 桁区切り, textContentの差異を検出できる。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様1.4, 10.2</td><td>R012, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-019</td><td>TD052</td><td>TV044</td><td>TA013</td><td>人間実行</td><td>Code review</td><td>高</td><td>注意文言差異確認</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>仕様3.1.4, 11.1 と画面文言</td><td>TD052 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>必須注意文言の不足を検出できる。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様1.4, 10.2</td><td>R012, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-020</td><td>TD052</td><td>TV044</td><td>TA013</td><td>人間実行</td><td>Code review</td><td>高</td><td>セキュリティ方針差異確認</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>仕様8.1, 8.2 と対象コード</td><td>TD052 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>外部依存, 永続化, innerHTML, textContentの差異を検出できる。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様1.4, 10.2</td><td>R012, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-021</td><td>TD052</td><td>TV044</td><td>TA013</td><td>人間実行</td><td>Code review</td><td>高</td><td>正式資産記述差異確認</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>仕様9.4, sample_app/README.md, ファイル一覧</td><td>TD052 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>正式回帰HTMLの記述と実ファイル有無の差異を検出できる。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様1.4, 10.2</td><td>R012, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-022</td><td>TD053</td><td>TV046</td><td>TA013</td><td>人間実行</td><td>Code review</td><td>高</td><td>BUG追跡方針</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>コードベースまたはコードレビューで仕様差異を検出した場合</td><td>TD053 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>差異をBUG-*候補として追跡し、仕様を正として扱い続ける。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様1.4, 計画5</td><td>R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-023</td><td>TD053</td><td>TV046</td><td>TA013</td><td>人間実行</td><td>Code review</td><td>高</td><td>E2E-BUG追跡方針</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>E2Eで仕様差異を検出した場合</td><td>TD053 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>差異をE2E-BUG-*候補として追跡し、ケースと実行結果へ反映できる。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様1.4, 計画5</td><td>R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-024</td><td>TD054</td><td>TV032</td><td>TA009</td><td>人間実行</td><td>Manual</td><td>中</td><td>画面注意表示の過信抑止</td><td>sample_app/retirement_simulator.html を確認できるブラウザ環境と記録用メモを用意する。</td><td>画面上の注意表示</td><td>TD054 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>金融助言または税務助言ではない旨が利用者に確認できる位置と文意で表示される。</td><td>手動確認記録, スクリーンショット</td><td>なし</td><td>仕様1.4, 3.1.4, 11.1</td><td>R009, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-025</td><td>TD054</td><td>TV032</td><td>TA009</td><td>人間実行</td><td>Manual</td><td>中</td><td>README注意事項の過信抑止</td><td>sample_app/retirement_simulator.html を確認できるブラウザ環境と記録用メモを用意する。</td><td>sample_app/README.md 注意事項</td><td>TD054 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>実制度や個人差の別途確認が必要である文意が欠落しない。</td><td>手動確認記録, スクリーンショット</td><td>なし</td><td>仕様1.4, 3.1.4, 11.1</td><td>R009, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-026</td><td>TD056</td><td>TV022</td><td>TA006</td><td>人間実行</td><td>Exploratory</td><td>高</td><td>年齢境界×給与変更</td><td>sample_app/retirement_simulator.html を確認できるブラウザ環境と記録用メモを用意する。</td><td>retirementAge=65, pensionStartAge=67, salaryChanges=[{age:64,salary:4000000}]</td><td>TD056 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>境界年齢で収入種別と給与変更表示が仕様順で破綻しないことを探索記録に残す。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様2.2, 5.1, 5.2, 5.3</td><td>R002, R003, R005, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-027</td><td>TD056</td><td>TV022</td><td>TA006</td><td>人間実行</td><td>Exploratory</td><td>高</td><td>投資率×補填</td><td>sample_app/retirement_simulator.html を確認できるブラウザ環境と記録用メモを用意する。</td><td>investRate=100, initialCash=0, initialInv=120000, expenseRetired=100000</td><td>TD056 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>投資積立と補填が同じシナリオ内で破綻しないことを探索記録に残す。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様2.2, 5.1, 5.2, 5.3</td><td>R002, R003, R005, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-028</td><td>TD056</td><td>TV022</td><td>TA006</td><td>人間実行</td><td>Exploratory</td><td>高</td><td>イベント×補填</td><td>sample_app/retirement_simulator.html を確認できるブラウザ環境と記録用メモを用意する。</td><td>eventProb=100, eventTypes=[入院200000], initialCash=0, initialInv=240000</td><td>TD056 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>イベント費用後の補填と表示が破綻しないことを探索記録に残す。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様2.2, 5.1, 5.2, 5.3</td><td>R002, R003, R005, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-029</td><td>TD056</td><td>TV022</td><td>TA006</td><td>人間実行</td><td>Exploratory</td><td>高</td><td>逆転条件×表示</td><td>sample_app/retirement_simulator.html を確認できるブラウザ環境と記録用メモを用意する。</td><td>retirementAge=67, pensionStartAge=65, startAge=64</td><td>TD056 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>年金開始逆転条件でも給与優先後に年金へ遷移し、表示が破綻しないことを探索記録に残す。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様2.2, 5.1, 5.2, 5.3</td><td>R002, R003, R005, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-030</td><td>TD058</td><td>TV047</td><td>TA014</td><td>人間実行</td><td>Evidence/reporting</td><td>中</td><td>MarkdownまたはCSVサマリ証跡</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>自動テスト実行後のサマリ成果物</td><td>TD058 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>サマリがテスト成果物配下に保存される方針を確認できる。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様9.4, READMEワークフロー</td><td>R012, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-031</td><td>TD058</td><td>TV047</td><td>TA014</td><td>人間実行</td><td>Evidence/reporting</td><td>中</td><td>実行ログ証跡</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>自動テスト実行後のログ成果物</td><td>TD058 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>実行ログがテスト成果物配下に保存される方針を確認できる。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様9.4, READMEワークフロー</td><td>R012, R013</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-032</td><td>TD058</td><td>TV047</td><td>TA014</td><td>人間実行</td><td>Evidence/reporting</td><td>中</td><td>Playwright JSON証跡</td><td>spec/仕様書.md, sample_app/README.md, sample_app/retirement_simulator.html, テスト成果物を参照できる。</td><td>E2E実行後のJSON結果</td><td>TD058 の対象資料と対象箇所を確認し、この行の確認対象だけを証跡に記録する。</td><td>Playwright JSON結果がテスト成果物配下に保存される方針を確認できる。</td><td>レビュー記録, 差分メモ</td><td>なし</td><td>仕様9.4, READMEワークフロー</td><td>R012, R013</td><td>作成済み</td></tr>
+</tbody></table></div>
+<h3>4. 上流成果物への追記・更新</h3>
+<p>上流成果物への追記・更新なし。未回答の <code>DQ001</code> から <code>DQ004</code> は質問待ちケースとして保持した。</p>
+<h3>5. カバレッジ確認</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>対応テストケースID</th><th>実行区分</th><th>状態</th><th>出力ファイル</th><th>カバー状況</th></tr></thead>
+<tbody>
+<tr><td>TD015</td><td>TC-MAN-001</td><td>人間実行</td><td>作成済み</td><td>テスト成果物/テストケース_人間実行.md</td><td>1/1件をこのファイルでカバー。全体台帳で1/1件。</td></tr>
+<tr><td>TD016</td><td>TC-MAN-002</td><td>人間実行</td><td>作成済み</td><td>テスト成果物/テストケース_人間実行.md</td><td>1/1件をこのファイルでカバー。全体台帳で1/1件。</td></tr>
+<tr><td>TD035</td><td>TC-MAN-003, TC-MAN-004</td><td>人間実行</td><td>作成済み</td><td>テスト成果物/テストケース_人間実行.md</td><td>2/2件をこのファイルでカバー。全体台帳で2/2件。</td></tr>
+<tr><td>TD037</td><td>TC-MAN-005, TC-MAN-006</td><td>人間実行</td><td>作成済み</td><td>テスト成果物/テストケース_人間実行.md</td><td>2/2件をこのファイルでカバー。全体台帳で2/2件。</td></tr>
+<tr><td>TD038</td><td>TC-MAN-007</td><td>人間実行</td><td>作成済み</td><td>テスト成果物/テストケース_人間実行.md</td><td>1/1件をこのファイルでカバー。全体台帳で1/1件。</td></tr>
+<tr><td>TD048</td><td>TC-MAN-008, TC-MAN-009, TC-MAN-010</td><td>人間実行</td><td>作成済み</td><td>テスト成果物/テストケース_人間実行.md</td><td>3/3件をこのファイルでカバー。全体台帳で3/3件。</td></tr>
+<tr><td>TD050</td><td>TC-MAN-011, TC-MAN-012</td><td>人間実行</td><td>作成済み</td><td>テスト成果物/テストケース_人間実行.md</td><td>2/2件をこのファイルでカバー。全体台帳で2/2件。</td></tr>
+<tr><td>TD051</td><td>TC-MAN-013, TC-MAN-014, TC-MAN-015</td><td>人間実行</td><td>作成済み</td><td>テスト成果物/テストケース_人間実行.md</td><td>3/3件をこのファイルでカバー。全体台帳で3/3件。</td></tr>
+<tr><td>TD052</td><td>TC-MAN-016, TC-MAN-017, TC-MAN-018, TC-MAN-019, TC-MAN-020, TC-MAN-021</td><td>人間実行</td><td>作成済み</td><td>テスト成果物/テストケース_人間実行.md</td><td>6/6件をこのファイルでカバー。全体台帳で6/6件。</td></tr>
+<tr><td>TD053</td><td>TC-MAN-022, TC-MAN-023</td><td>人間実行</td><td>作成済み</td><td>テスト成果物/テストケース_人間実行.md</td><td>2/2件をこのファイルでカバー。全体台帳で2/2件。</td></tr>
+<tr><td>TD054</td><td>TC-MAN-024, TC-MAN-025</td><td>人間実行</td><td>作成済み</td><td>テスト成果物/テストケース_人間実行.md</td><td>2/2件をこのファイルでカバー。全体台帳で2/2件。</td></tr>
+<tr><td>TD056</td><td>TC-MAN-026, TC-MAN-027, TC-MAN-028, TC-MAN-029</td><td>人間実行</td><td>作成済み</td><td>テスト成果物/テストケース_人間実行.md</td><td>4/4件をこのファイルでカバー。全体台帳で4/4件。</td></tr>
+<tr><td>TD058</td><td>TC-MAN-030, TC-MAN-031, TC-MAN-032</td><td>人間実行</td><td>作成済み</td><td>テスト成果物/テストケース_人間実行.md</td><td>3/3件をこのファイルでカバー。全体台帳で3/3件。</td></tr>
+</tbody></table></div>
+<h3>6. Case Expansion Ledger（ケース展開台帳）</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>期待TC数</th><th>実TC数</th><th>不足数</th><th>対応テストケースID</th><th>分割方針</th><th>代表抽出理由</th><th>集約判定ルール</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TD001</td><td>4</td><td>4</td><td>0</td><td>TC-CB-001, TC-CB-002, TC-CB-003, TC-CB-004</td><td>年収代表値を1値1判定に分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD002</td><td>18</td><td>18</td><td>0</td><td>TC-CB-005, TC-CB-006, TC-CB-007, TC-CB-008, TC-CB-009, TC-CB-010, TC-CB-011, TC-CB-012, TC-CB-013, TC-CB-014, TC-CB-015, TC-CB-016, TC-CB-017, TC-CB-018, TC-CB-019, TC-CB-020, TC-CB-021, TC-CB-022</td><td>6境界それぞれ直前, 境界, 直後へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD003</td><td>3</td><td>3</td><td>0</td><td>TC-CB-023, TC-CB-024, TC-CB-025</td><td>課税所得下限の3状態へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD004</td><td>2</td><td>2</td><td>0</td><td>TC-CB-026, TC-CB-027</td><td>内部値保持と表示丸めの代表2件へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD005</td><td>5</td><td>5</td><td>0</td><td>TC-CB-028, TC-CB-029, TC-CB-030, TC-CB-031, TC-CB-032</td><td>月境界と利回り境界を1条件1判定に分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD006</td><td>4</td><td>4</td><td>0</td><td>TC-CB-033, TC-CB-034, TC-CB-035, TC-CB-036</td><td>補填上限の4状態へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD007</td><td>3</td><td>3</td><td>0</td><td>TC-CB-037, TC-CB-038, TC-CB-039</td><td>資産枯渇状態を1状態1判定に分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD008</td><td>2</td><td>2</td><td>0</td><td>TC-CB-040, TC-CB-041</td><td>イベント発生率0%と100%へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD009</td><td>8</td><td>8</td><td>0</td><td>TC-CB-042, TC-CB-043, TC-CB-044, TC-CB-045, TC-CB-046, TC-CB-047, TC-CB-048, TC-CB-049</td><td>イベント8種全件へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD010</td><td>2</td><td>2</td><td>0</td><td>TC-CB-050, TC-CB-051</td><td>乱数差し替えとイベント1件化を分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD011</td><td>7</td><td>7</td><td>0</td><td>TC-CB-052, TC-CB-053, TC-CB-054, TC-CB-055, TC-CB-056, TC-CB-057, TC-CB-058</td><td>給与変更有効条件の境界値を分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD012</td><td>4</td><td>4</td><td>0</td><td>TC-CB-059, TC-CB-060, TC-CB-061, TC-CB-062</td><td>給与変更優先順位の組み合わせを分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD013</td><td>3</td><td>3</td><td>0</td><td>TC-CB-063, TC-CB-064, TC-CB-065</td><td>空欄, NaN相当, Infinity相当を分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD014</td><td>4</td><td>4</td><td>0</td><td>TC-CB-066, TC-CB-067, TC-CB-068, TC-CB-069</td><td>負値代表を入力群別に分割</td><td>主要入力群から代表を抽出し、個別項目差分は残留リスクとして設計済み。</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD015</td><td>1</td><td>1</td><td>0</td><td>TC-MAN-001</td><td>静的innerHTML範囲を1レビュー単位で確認</td><td>なし</td><td>対象範囲を1レビュー単位で確認し、必須条件が1つでも欠ければFail。</td><td>充足</td></tr>
+<tr><td>TD016</td><td>1</td><td>1</td><td>0</td><td>TC-MAN-002</td><td>組み込みassert範囲を1レビュー単位で確認</td><td>なし</td><td>対象範囲を1レビュー単位で確認し、必須条件が1つでも欠ければFail。</td><td>充足</td></tr>
+<tr><td>TD017</td><td>3</td><td>3</td><td>0</td><td>TC-CB-070, TC-CB-071, TC-CB-072</td><td>startAge境界を分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD018</td><td>4</td><td>4</td><td>0</td><td>TC-CB-073, TC-CB-074, TC-CB-075, TC-CB-076</td><td>収入種別境界を月次状態別に分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD019</td><td>2</td><td>2</td><td>0</td><td>TC-CB-077, TC-CB-078</td><td>逆転条件2件へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD020</td><td>3</td><td>3</td><td>0</td><td>TC-CB-079, TC-CB-080, TC-CB-081</td><td>生活費3状態へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD021</td><td>3</td><td>3</td><td>0</td><td>TC-CB-082, TC-CB-083, TC-CB-084</td><td>投資率3値へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD022</td><td>1</td><td>1</td><td>0</td><td>TC-CB-085</td><td>補填後表示の代表月を1件で確認</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD023</td><td>5</td><td>5</td><td>0</td><td>TC-CB-086, TC-CB-087, TC-CB-088, TC-CB-089, TC-CB-090</td><td>給与変更UIライフサイクルを操作別に分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD024</td><td>3</td><td>3</td><td>0</td><td>TC-CB-091, TC-CB-092, TC-CB-093</td><td>給与変更適用時期を状態別に分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD025</td><td>3</td><td>3</td><td>0</td><td>TC-CB-094, TC-CB-095, TC-CB-096</td><td>複数給与変更反映の組み合わせを分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD026</td><td>1</td><td>1</td><td>0</td><td>TC-CB-097</td><td>高リスク複合の代表シナリオを1件で総合判定</td><td>なし</td><td>対象範囲を1レビュー単位で確認し、必須条件が1つでも欠ければFail。</td><td>充足</td></tr>
+<tr><td>TD027</td><td>3</td><td>3</td><td>0</td><td>TC-CB-098, TC-CB-099, TC-CB-100</td><td>フォールバック代表3件へ分割</td><td>主要入力群から代表を抽出し、個別項目差分は残留リスクとして設計済み。</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD028</td><td>3</td><td>3</td><td>0</td><td>TC-CB-101, TC-CB-102, TC-CB-103</td><td>指数表記, 貼り付け, DOM値設定へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD029</td><td>3</td><td>3</td><td>0</td><td>TC-CB-104, TC-CB-105, TC-CB-106</td><td>HTML断片の投入経路3件へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD030</td><td>1</td><td>1</td><td>0</td><td>TC-E2E-001</td><td>デフォルト実行を1フローで確認</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD031</td><td>5</td><td>5</td><td>0</td><td>TC-E2E-002, TC-E2E-003, TC-E2E-004, TC-E2E-005, TC-E2E-006</td><td>README使用例5件へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD032</td><td>4</td><td>4</td><td>0</td><td>TC-E2E-007, TC-E2E-008, TC-E2E-009, TC-E2E-010</td><td>給与変更UI操作を操作別に分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD033</td><td>1</td><td>1</td><td>0</td><td>TC-E2E-011</td><td>プライバシー表示を1件で確認</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD034</td><td>1</td><td>1</td><td>0</td><td>TC-E2E-012</td><td>助言否定表示を必須文言一式で確認</td><td>なし</td><td>対象範囲を1レビュー単位で確認し、必須条件が1つでも欠ければFail。</td><td>充足</td></tr>
+<tr><td>TD035</td><td>2</td><td>2</td><td>0</td><td>TC-MAN-003, TC-MAN-004</td><td>README注意と画面注意を分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD036</td><td>3</td><td>3</td><td>0</td><td>TC-E2E-013, TC-E2E-014, TC-E2E-015</td><td>XSS入力3種へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD037</td><td>2</td><td>2</td><td>0</td><td>TC-MAN-005, TC-MAN-006</td><td>textContent経路2件へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD038</td><td>1</td><td>1</td><td>0</td><td>TC-MAN-007</td><td>innerHTML使用箇所全件を1レビュー単位で確認</td><td>なし</td><td>対象範囲を1レビュー単位で確認し、必須条件が1つでも欠ければFail。</td><td>充足</td></tr>
+<tr><td>TD039</td><td>4</td><td>4</td><td>0</td><td>TC-E2E-016, TC-E2E-017, TC-E2E-018, TC-E2E-019</td><td>通信, 外部リソース, ストレージ, API使用へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD040</td><td>10</td><td>10</td><td>0</td><td>TC-E2E-020, TC-E2E-021, TC-E2E-022, TC-E2E-023, TC-E2E-024, TC-E2E-025, TC-E2E-026, TC-E2E-027, TC-E2E-028, TC-E2E-029</td><td>10回測定を1測定1ケースに分割</td><td>なし</td><td>10測定の95パーセンタイルで集約し、閾値超過ならFail。</td><td>充足</td></tr>
+<tr><td>TD041</td><td>10</td><td>10</td><td>0</td><td>TC-E2E-030, TC-E2E-031, TC-E2E-032, TC-E2E-033, TC-E2E-034, TC-E2E-035, TC-E2E-036, TC-E2E-037, TC-E2E-038, TC-E2E-039</td><td>10回測定を1測定1ケースに分割</td><td>なし</td><td>10測定の95パーセンタイルで集約し、閾値超過ならFail。</td><td>充足</td></tr>
+<tr><td>TD042</td><td>10</td><td>10</td><td>0</td><td>TC-E2E-040, TC-E2E-041, TC-E2E-042, TC-E2E-043, TC-E2E-044, TC-E2E-045, TC-E2E-046, TC-E2E-047, TC-E2E-048, TC-E2E-049</td><td>10回連続実行を1反復1ケースに分割</td><td>なし</td><td>10反復のうち古い結果混入, 例外, 明確な遅延が1回でもあればFail。</td><td>充足</td></tr>
+<tr><td>TD043</td><td>3</td><td>3</td><td>0</td><td>TC-E2E-050, TC-E2E-051, TC-E2E-052</td><td>Playwright代表環境3種へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD044</td><td>1</td><td>1</td><td>0</td><td>TC-MAN-033</td><td>実ブラウザ範囲はDQ002回答待ちとして1件保持</td><td>質問回答後に展開またはN/A確定する。</td><td>なし</td><td>質問待ち</td></tr>
+<tr><td>TD045</td><td>9</td><td>9</td><td>0</td><td>TC-E2E-053, TC-E2E-054, TC-E2E-055, TC-E2E-056, TC-E2E-057, TC-E2E-058, TC-E2E-059, TC-E2E-060, TC-E2E-061</td><td>3入力差異×3代表環境へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD046</td><td>2</td><td>2</td><td>0</td><td>TC-E2E-062, TC-E2E-063</td><td>viewport 2件へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD047</td><td>5</td><td>5</td><td>0</td><td>TC-E2E-064, TC-E2E-065, TC-E2E-066, TC-E2E-067, TC-E2E-068</td><td>キーボード操作5件へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD048</td><td>3</td><td>3</td><td>0</td><td>TC-MAN-008, TC-MAN-009, TC-MAN-010</td><td>読み取りやすさ3対象へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD049</td><td>1</td><td>1</td><td>0</td><td>TC-CB-107</td><td>正式回帰HTMLの扱いはDQ001回答待ちとして1件保持</td><td>質問回答後に展開またはN/A確定する。</td><td>なし</td><td>質問待ち</td></tr>
+<tr><td>TD050</td><td>2</td><td>2</td><td>0</td><td>TC-MAN-011, TC-MAN-012</td><td>正式HTML存在時と欠落時へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD051</td><td>3</td><td>3</td><td>0</td><td>TC-MAN-013, TC-MAN-014, TC-MAN-015</td><td>既存HTML証跡3種へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD052</td><td>6</td><td>6</td><td>0</td><td>TC-MAN-016, TC-MAN-017, TC-MAN-018, TC-MAN-019, TC-MAN-020, TC-MAN-021</td><td>仕様差異確認対象6種へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD053</td><td>2</td><td>2</td><td>0</td><td>TC-MAN-022, TC-MAN-023</td><td>BUG追跡とE2E-BUG追跡へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD054</td><td>2</td><td>2</td><td>0</td><td>TC-MAN-024, TC-MAN-025</td><td>画面注意とREADME注意へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD055</td><td>1</td><td>1</td><td>0</td><td>TC-MAN-034</td><td>Safari実機固有差異はDQ002回答待ちとして1件保持</td><td>質問回答後に展開またはN/A確定する。</td><td>なし</td><td>質問待ち</td></tr>
+<tr><td>TD056</td><td>4</td><td>4</td><td>0</td><td>TC-MAN-026, TC-MAN-027, TC-MAN-028, TC-MAN-029</td><td>探索的複合4シナリオへ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD057</td><td>1</td><td>1</td><td>0</td><td>TC-MAN-035</td><td>欠陥承認フローはDQ004回答待ちとして1件保持</td><td>質問回答後に展開またはN/A確定する。</td><td>なし</td><td>質問待ち</td></tr>
+<tr><td>TD058</td><td>3</td><td>3</td><td>0</td><td>TC-MAN-030, TC-MAN-031, TC-MAN-032</td><td>自動テスト証跡3種へ分割</td><td>なし</td><td>なし</td><td>充足</td></tr>
+<tr><td>TD059</td><td>4</td><td>4</td><td>0</td><td>TC-MAN-036, TC-MAN-037, TC-MAN-038, TC-MAN-039</td><td>失敗時証跡4種をDQ003回答待ちとして保持</td><td>質問回答後に展開またはN/A確定する。</td><td>なし</td><td>質問待ち</td></tr>
+<tr><td>TD060</td><td>1</td><td>1</td><td>0</td><td>TC-MAN-040</td><td>正式資産欠落時の記録方針はDQ001回答待ちとして1件保持</td><td>質問回答後に展開またはN/A確定する。</td><td>なし</td><td>質問待ち</td></tr>
+</tbody></table></div>
+</body>
+</html>

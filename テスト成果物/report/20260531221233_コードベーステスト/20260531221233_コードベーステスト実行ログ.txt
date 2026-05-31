@@ -1,0 +1,987 @@
+Command: npm run test:codebase
+ExitCode: 1
+Timestamp: 20260531221233
+
+
+> test:codebase
+> node --test tests/codebase/*.test.js
+
+TAP version 13
+# Subtest: TC-CB-001 年収0円の月手取り
+ok 1 - TC-CB-001 年収0円の月手取り
+  ---
+  duration_ms: 1.8991
+  type: 'test'
+  ...
+# Subtest: TC-CB-002 年収1,200,000円の月手取り
+ok 2 - TC-CB-002 年収1,200,000円の月手取り
+  ---
+  duration_ms: 0.6717
+  type: 'test'
+  ...
+# Subtest: TC-CB-003 年収3,000,000円の月手取り
+ok 3 - TC-CB-003 年収3,000,000円の月手取り
+  ---
+  duration_ms: 0.4903
+  type: 'test'
+  ...
+# Subtest: TC-CB-004 年収10,000,000円の月手取り
+ok 4 - TC-CB-004 年収10,000,000円の月手取り
+  ---
+  duration_ms: 0.4639
+  type: 'test'
+  ...
+# Subtest: TC-CB-005 課税所得1,950,000円直前
+ok 5 - TC-CB-005 課税所得1,950,000円直前
+  ---
+  duration_ms: 0.4814
+  type: 'test'
+  ...
+# Subtest: TC-CB-006 課税所得1,950,000円境界
+ok 6 - TC-CB-006 課税所得1,950,000円境界
+  ---
+  duration_ms: 0.4465
+  type: 'test'
+  ...
+# Subtest: TC-CB-007 課税所得1,950,000円直後
+ok 7 - TC-CB-007 課税所得1,950,000円直後
+  ---
+  duration_ms: 0.4869
+  type: 'test'
+  ...
+# Subtest: TC-CB-008 課税所得3,300,000円直前
+ok 8 - TC-CB-008 課税所得3,300,000円直前
+  ---
+  duration_ms: 0.4344
+  type: 'test'
+  ...
+# Subtest: TC-CB-009 課税所得3,300,000円境界
+ok 9 - TC-CB-009 課税所得3,300,000円境界
+  ---
+  duration_ms: 0.5571
+  type: 'test'
+  ...
+# Subtest: TC-CB-010 課税所得3,300,000円直後
+ok 10 - TC-CB-010 課税所得3,300,000円直後
+  ---
+  duration_ms: 0.5895
+  type: 'test'
+  ...
+# Subtest: TC-CB-011 課税所得6,950,000円直前
+ok 11 - TC-CB-011 課税所得6,950,000円直前
+  ---
+  duration_ms: 0.4283
+  type: 'test'
+  ...
+# Subtest: TC-CB-012 課税所得6,950,000円境界
+ok 12 - TC-CB-012 課税所得6,950,000円境界
+  ---
+  duration_ms: 0.3893
+  type: 'test'
+  ...
+# Subtest: TC-CB-013 課税所得6,950,000円直後
+ok 13 - TC-CB-013 課税所得6,950,000円直後
+  ---
+  duration_ms: 0.3493
+  type: 'test'
+  ...
+# Subtest: TC-CB-014 課税所得9,000,000円直前
+ok 14 - TC-CB-014 課税所得9,000,000円直前
+  ---
+  duration_ms: 0.3921
+  type: 'test'
+  ...
+# Subtest: TC-CB-015 課税所得9,000,000円境界
+ok 15 - TC-CB-015 課税所得9,000,000円境界
+  ---
+  duration_ms: 0.355
+  type: 'test'
+  ...
+# Subtest: TC-CB-016 課税所得9,000,000円直後
+ok 16 - TC-CB-016 課税所得9,000,000円直後
+  ---
+  duration_ms: 0.3442
+  type: 'test'
+  ...
+# Subtest: TC-CB-017 課税所得18,000,000円直前
+ok 17 - TC-CB-017 課税所得18,000,000円直前
+  ---
+  duration_ms: 0.3644
+  type: 'test'
+  ...
+# Subtest: TC-CB-018 課税所得18,000,000円境界
+ok 18 - TC-CB-018 課税所得18,000,000円境界
+  ---
+  duration_ms: 0.3382
+  type: 'test'
+  ...
+# Subtest: TC-CB-019 課税所得18,000,000円直後
+ok 19 - TC-CB-019 課税所得18,000,000円直後
+  ---
+  duration_ms: 0.384
+  type: 'test'
+  ...
+# Subtest: TC-CB-020 課税所得40,000,000円直前
+ok 20 - TC-CB-020 課税所得40,000,000円直前
+  ---
+  duration_ms: 0.3387
+  type: 'test'
+  ...
+# Subtest: TC-CB-021 課税所得40,000,000円境界
+ok 21 - TC-CB-021 課税所得40,000,000円境界
+  ---
+  duration_ms: 0.3638
+  type: 'test'
+  ...
+# Subtest: TC-CB-022 課税所得40,000,000円直後
+ok 22 - TC-CB-022 課税所得40,000,000円直後
+  ---
+  duration_ms: 0.3467
+  type: 'test'
+  ...
+# Subtest: TC-CB-026 内部小数値を保持する年収
+ok 23 - TC-CB-026 内部小数値を保持する年収
+  ---
+  duration_ms: 0.337
+  type: 'test'
+  ...
+# Subtest: TC-CB-023 年収0円
+ok 24 - TC-CB-023 年収0円
+  ---
+  duration_ms: 0.4766
+  type: 'test'
+  ...
+# Subtest: TC-CB-024 課税所得0円の低所得
+ok 25 - TC-CB-024 課税所得0円の低所得
+  ---
+  duration_ms: 0.3719
+  type: 'test'
+  ...
+# Subtest: TC-CB-025 課税所得1円相当
+ok 26 - TC-CB-025 課税所得1円相当
+  ---
+  duration_ms: 0.438
+  type: 'test'
+  ...
+# Subtest: TC-CB-027 整数表示になる年収
+ok 27 - TC-CB-027 整数表示になる年収
+  ---
+  duration_ms: 11.1405
+  type: 'test'
+  ...
+# Subtest: TC-CB-028 開始翌年1月の利息適用
+ok 28 - TC-CB-028 開始翌年1月の利息適用
+  ---
+  duration_ms: 4.5536
+  type: 'test'
+  ...
+# Subtest: TC-CB-029 2月の利息非適用
+ok 29 - TC-CB-029 2月の利息非適用
+  ---
+  duration_ms: 4.7489
+  type: 'test'
+  ...
+# Subtest: TC-CB-030 利回り0%
+ok 30 - TC-CB-030 利回り0%
+  ---
+  duration_ms: 3.9537
+  type: 'test'
+  ...
+# Subtest: TC-CB-031 利回り4%
+ok 31 - TC-CB-031 利回り4%
+  ---
+  duration_ms: 3.5759
+  type: 'test'
+  ...
+# Subtest: TC-CB-032 利回り-1%
+ok 32 - TC-CB-032 利回り-1%
+  ---
+  duration_ms: 3.6701
+  type: 'test'
+  ...
+# Subtest: TC-CB-033 補填不要
+ok 33 - TC-CB-033 補填不要
+  ---
+  duration_ms: 0.5916
+  type: 'test'
+  ...
+# Subtest: TC-CB-034 全額補填
+ok 34 - TC-CB-034 全額補填
+  ---
+  duration_ms: 0.5175
+  type: 'test'
+  ...
+# Subtest: TC-CB-035 残高ちょうど
+ok 35 - TC-CB-035 残高ちょうど
+  ---
+  duration_ms: 0.4626
+  type: 'test'
+  ...
+# Subtest: TC-CB-036 残高不足
+not ok 36 - TC-CB-036 残高不足
+  ---
+  duration_ms: 0.8407
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:457:1'
+  failureType: 'testCodeFailure'
+  error: '投資から補填: ¥25,000 (税金: ¥5,000) を含む行が出力される'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: '=='
+  stack: |-
+    lineContaining (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:268:10)
+    assertFirstFill (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:321:3)
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:459:3)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-037 投資0円で現金不足
+ok 37 - TC-CB-037 投資0円で現金不足
+  ---
+  duration_ms: 0.4992
+  type: 'test'
+  ...
+# Subtest: TC-CB-038 投資残高不足で枯渇
+not ok 38 - TC-CB-038 投資残高不足で枯渇
+  ---
+  duration_ms: 0.6199
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:467:1'
+  failureType: 'testCodeFailure'
+  error: '投資から補填: ¥20,000 (税金: ¥4,000) を含む行が出力される'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: '=='
+  stack: |-
+    lineContaining (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:268:10)
+    assertFirstFill (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:321:3)
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:469:3)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-039 補填後も現金マイナス継続
+not ok 39 - TC-CB-039 補填後も現金マイナス継続
+  ---
+  duration_ms: 0.5435
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:472:1'
+  failureType: 'testCodeFailure'
+  error: '投資から補填: ¥10,000 (税金: ¥2,000) を含む行が出力される'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: '=='
+  stack: |-
+    lineContaining (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:268:10)
+    assertFirstFill (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:321:3)
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:474:3)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-040 イベント発生率0%
+ok 40 - TC-CB-040 イベント発生率0%
+  ---
+  duration_ms: 0.483
+  type: 'test'
+  ...
+# Subtest: TC-CB-041 イベント発生率100%
+ok 41 - TC-CB-041 イベント発生率100%
+  ---
+  duration_ms: 0.5149
+  type: 'test'
+  ...
+# Subtest: TC-CB-042 入院イベント
+ok 42 - TC-CB-042 入院イベント
+  ---
+  duration_ms: 0.5961
+  type: 'test'
+  ...
+# Subtest: TC-CB-043 歯科治療イベント
+ok 43 - TC-CB-043 歯科治療イベント
+  ---
+  duration_ms: 0.5573
+  type: 'test'
+  ...
+# Subtest: TC-CB-044 薬の購入イベント
+ok 44 - TC-CB-044 薬の購入イベント
+  ---
+  duration_ms: 0.8225
+  type: 'test'
+  ...
+# Subtest: TC-CB-045 家電故障イベント
+ok 45 - TC-CB-045 家電故障イベント
+  ---
+  duration_ms: 0.5385
+  type: 'test'
+  ...
+# Subtest: TC-CB-046 車検イベント
+ok 46 - TC-CB-046 車検イベント
+  ---
+  duration_ms: 0.4368
+  type: 'test'
+  ...
+# Subtest: TC-CB-047 冠婚葬祭イベント
+ok 47 - TC-CB-047 冠婚葬祭イベント
+  ---
+  duration_ms: 0.4361
+  type: 'test'
+  ...
+# Subtest: TC-CB-048 健康診断イベント
+ok 48 - TC-CB-048 健康診断イベント
+  ---
+  duration_ms: 0.491
+  type: 'test'
+  ...
+# Subtest: TC-CB-049 引越しイベント
+ok 49 - TC-CB-049 引越しイベント
+  ---
+  duration_ms: 0.4753
+  type: 'test'
+  ...
+# Subtest: TC-CB-050 Math.random差し替えでイベント有無を固定
+ok 50 - TC-CB-050 Math.random差し替えでイベント有無を固定
+  ---
+  duration_ms: 0.4702
+  type: 'test'
+  ...
+# Subtest: TC-CB-051 イベント種別1件化で種別固定
+ok 51 - TC-CB-051 イベント種別1件化で種別固定
+  ---
+  duration_ms: 0.4843
+  type: 'test'
+  ...
+# Subtest: TC-CB-052 給与変更年齢0は無効
+not ok 52 - TC-CB-052 給与変更年齢0は無効
+  ---
+  duration_ms: 3.2018
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:524:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /\[年収:/. Input:
+    
+    '  給与: ¥245,458 (投資: ¥0) [年収: ¥4,000,000]'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '  給与: ¥245,458 (投資: ¥0) [年収: ¥4,000,000]'
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:526:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-053 給与変更年齢1は有効
+ok 53 - TC-CB-053 給与変更年齢1は有効
+  ---
+  duration_ms: 2.1432
+  type: 'test'
+  ...
+# Subtest: TC-CB-054 給与変更年齢100は有効
+ok 54 - TC-CB-054 給与変更年齢100は有効
+  ---
+  duration_ms: 0.5511
+  type: 'test'
+  ...
+# Subtest: TC-CB-055 給与変更年齢101は無効
+ok 55 - TC-CB-055 給与変更年齢101は無効
+  ---
+  duration_ms: 2.0589
+  type: 'test'
+  ...
+# Subtest: TC-CB-056 給与変更年収0は無効
+not ok 56 - TC-CB-056 給与変更年収0は無効
+  ---
+  duration_ms: 2.1417
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:544:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /\[年収:/. Input:
+    
+    '  給与: ¥0 (投資: ¥0) [年収: ¥0]'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '  給与: ¥0 (投資: ¥0) [年収: ¥0]'
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:546:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-057 給与変更年収正値は有効
+ok 57 - TC-CB-057 給与変更年収正値は有効
+  ---
+  duration_ms: 3.1264
+  type: 'test'
+  ...
+# Subtest: TC-CB-058 給与変更年収未入力は無効
+not ok 58 - TC-CB-058 給与変更年収未入力は無効
+  ---
+  duration_ms: 2.1359
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:554:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /\[年収:/. Input:
+    
+    '  給与: ¥NaN (投資: ¥NaN) [年収: ¥NaN]'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '  給与: ¥NaN (投資: ¥NaN) [年収: ¥NaN]'
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:556:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-059 単一給与変更
+ok 59 - TC-CB-059 単一給与変更
+  ---
+  duration_ms: 2.2124
+  type: 'test'
+  ...
+# Subtest: TC-CB-060 複数年齢給与変更
+not ok 60 - TC-CB-060 複数年齢給与変更
+  ---
+  duration_ms: 3.1659
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:566:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /\[年収: ¥7,000,000\]/. Input:
+    
+    '  給与: ¥245,458 (投資: ¥0) [年収: ¥4,000,000]'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '  給与: ¥245,458 (投資: ¥0) [年収: ¥4,000,000]'
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:570:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-061 同一年齢最後追加優先
+not ok 61 - TC-CB-061 同一年齢最後追加優先
+  ---
+  duration_ms: 3.32
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:573:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /\[年収: ¥5,000,000\]/. Input:
+    
+    '  給与: ¥245,458 (投資: ¥0) [年収: ¥4,000,000]'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '  給与: ¥245,458 (投資: ¥0) [年収: ¥4,000,000]'
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:576:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-062 削除後の優先順位
+ok 62 - TC-CB-062 削除後の優先順位
+  ---
+  duration_ms: 2.131
+  type: 'test'
+  ...
+# Subtest: TC-CB-063 空欄フォールバック
+ok 63 - TC-CB-063 空欄フォールバック
+  ---
+  duration_ms: 1.8711
+  type: 'test'
+  ...
+# Subtest: TC-CB-064 NaN相当フォールバック
+ok 64 - TC-CB-064 NaN相当フォールバック
+  ---
+  duration_ms: 1.8425
+  type: 'test'
+  ...
+# Subtest: TC-CB-065 Infinity相当フォールバック
+not ok 65 - TC-CB-065 Infinity相当フォールバック
+  ---
+  duration_ms: 1.7069
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:598:1'
+  failureType: 'testCodeFailure'
+  error: '出力にNaNが混入しない'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    -- 100歳1月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥155,600
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳2月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥155,600
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳3月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥155,600
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳4月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥155,600
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳5月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥155,600
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳6月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥155,600
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳7月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥155,600
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳8月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥155,600
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳9月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥155,600
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳10月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥155,600
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳11月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥155,600
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳12月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥155,600
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+  operator: 'doesNotMatch'
+  stack: |-
+    assertNoInvalidNumbers (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:301:10)
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:601:3)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-066 開始時現金の負値
+ok 66 - TC-CB-066 開始時現金の負値
+  ---
+  duration_ms: 0.4656
+  type: 'test'
+  ...
+# Subtest: TC-CB-067 開始時投資残高の負値
+ok 67 - TC-CB-067 開始時投資残高の負値
+  ---
+  duration_ms: 0.43
+  type: 'test'
+  ...
+# Subtest: TC-CB-068 生活費の負値
+ok 68 - TC-CB-068 生活費の負値
+  ---
+  duration_ms: 0.5267
+  type: 'test'
+  ...
+# Subtest: TC-CB-069 収入系の負値
+ok 69 - TC-CB-069 収入系の負値
+  ---
+  duration_ms: 0.4646
+  type: 'test'
+  ...
+# Subtest: TC-CB-070 startAge 30
+ok 70 - TC-CB-070 startAge 30
+  ---
+  duration_ms: 3.3215
+  type: 'test'
+  ...
+# Subtest: TC-CB-071 startAge 100
+ok 71 - TC-CB-071 startAge 100
+  ---
+  duration_ms: 0.4572
+  type: 'test'
+  ...
+# Subtest: TC-CB-072 startAge 101
+ok 72 - TC-CB-072 startAge 101
+  ---
+  duration_ms: 0.4009
+  type: 'test'
+  ...
+# Subtest: TC-CB-073 退職直前
+ok 73 - TC-CB-073 退職直前
+  ---
+  duration_ms: 1.3922
+  type: 'test'
+  ...
+# Subtest: TC-CB-074 退職年齢
+ok 74 - TC-CB-074 退職年齢
+  ---
+  duration_ms: 1.3207
+  type: 'test'
+  ...
+# Subtest: TC-CB-075 年金開始直前
+ok 75 - TC-CB-075 年金開始直前
+  ---
+  duration_ms: 1.2876
+  type: 'test'
+  ...
+# Subtest: TC-CB-076 年金開始年齢
+ok 76 - TC-CB-076 年金開始年齢
+  ---
+  duration_ms: 1.3701
+  type: 'test'
+  ...
+# Subtest: TC-CB-077 退職年齢と年金開始が同年齢
+ok 77 - TC-CB-077 退職年齢と年金開始が同年齢
+  ---
+  duration_ms: 1.4796
+  type: 'test'
+  ...
+# Subtest: TC-CB-078 年金開始が退職前
+ok 78 - TC-CB-078 年金開始が退職前
+  ---
+  duration_ms: 1.7411
+  type: 'test'
+  ...
+# Subtest: TC-CB-079 現役生活費
+ok 79 - TC-CB-079 現役生活費
+  ---
+  duration_ms: 3.0223
+  type: 'test'
+  ...
+# Subtest: TC-CB-080 退職後生活費
+ok 80 - TC-CB-080 退職後生活費
+  ---
+  duration_ms: 2.0209
+  type: 'test'
+  ...
+# Subtest: TC-CB-081 年金期間生活費
+ok 81 - TC-CB-081 年金期間生活費
+  ---
+  duration_ms: 1.2942
+  type: 'test'
+  ...
+# Subtest: TC-CB-082 投資率0%
+ok 82 - TC-CB-082 投資率0%
+  ---
+  duration_ms: 2.2623
+  type: 'test'
+  ...
+# Subtest: TC-CB-083 投資率20%
+ok 83 - TC-CB-083 投資率20%
+  ---
+  duration_ms: 2.3763
+  type: 'test'
+  ...
+# Subtest: TC-CB-084 投資率100%
+ok 84 - TC-CB-084 投資率100%
+  ---
+  duration_ms: 2.5222
+  type: 'test'
+  ...
+# Subtest: TC-CB-085 補填発生月の表示
+ok 85 - TC-CB-085 補填発生月の表示
+  ---
+  duration_ms: 0.5432
+  type: 'test'
+  ...
+# Subtest: TC-CB-086 給与変更エリア表示
+ok 86 - TC-CB-086 給与変更エリア表示
+  ---
+  duration_ms: 1.838
+  type: 'test'
+  ...
+# Subtest: TC-CB-087 給与変更エリア非表示
+ok 87 - TC-CB-087 給与変更エリア非表示
+  ---
+  duration_ms: 1.9062
+  type: 'test'
+  ...
+# Subtest: TC-CB-088 給与変更追加
+ok 88 - TC-CB-088 給与変更追加
+  ---
+  duration_ms: 5.7066
+  type: 'test'
+  ...
+# Subtest: TC-CB-089 給与変更削除
+ok 89 - TC-CB-089 給与変更削除
+  ---
+  duration_ms: 6.0386
+  type: 'test'
+  ...
+# Subtest: TC-CB-090 給与変更後の再実行
+ok 90 - TC-CB-090 給与変更後の再実行
+  ---
+  duration_ms: 10.2032
+  type: 'test'
+  ...
+# Subtest: TC-CB-091 開始前給与変更
+ok 91 - TC-CB-091 開始前給与変更
+  ---
+  duration_ms: 2.3019
+  type: 'test'
+  ...
+# Subtest: TC-CB-092 開始同年齢給与変更
+ok 92 - TC-CB-092 開始同年齢給与変更
+  ---
+  duration_ms: 2.2058
+  type: 'test'
+  ...
+# Subtest: TC-CB-093 退職年齢以後給与変更
+ok 93 - TC-CB-093 退職年齢以後給与変更
+  ---
+  duration_ms: 1.4377
+  type: 'test'
+  ...
+# Subtest: TC-CB-094 複数年齢の月次反映
+not ok 94 - TC-CB-094 複数年齢の月次反映
+  ---
+  duration_ms: 2.5429
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:778:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /\[年収: ¥7,000,000\]/. Input:
+    
+    '  給与: ¥245,458 (投資: ¥0) [年収: ¥4,000,000]'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '  給与: ¥245,458 (投資: ¥0) [年収: ¥4,000,000]'
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:782:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-095 同一年齢最後追加の月次反映
+not ok 95 - TC-CB-095 同一年齢最後追加の月次反映
+  ---
+  duration_ms: 2.9188
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:785:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /\[年収: ¥5,000,000\]/. Input:
+    
+    '  給与: ¥245,458 (投資: ¥0) [年収: ¥4,000,000]'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '  給与: ¥245,458 (投資: ¥0) [年収: ¥4,000,000]'
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:787:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-096 削除後再実行の月次反映
+ok 96 - TC-CB-096 削除後再実行の月次反映
+  ---
+  duration_ms: 2.2185
+  type: 'test'
+  ...
+# Subtest: TC-CB-097 退職境界と給与変更とイベントと補填の複合
+ok 97 - TC-CB-097 退職境界と給与変更とイベントと補填の複合
+  ---
+  duration_ms: 1.7659
+  type: 'test'
+  ...
+# Subtest: TC-CB-098 全主要数値欄の空欄代表
+ok 98 - TC-CB-098 全主要数値欄の空欄代表
+  ---
+  duration_ms: 1.4267
+  type: 'test'
+  ...
+# Subtest: TC-CB-099 全主要数値欄のInfinity相当代表
+not ok 99 - TC-CB-099 全主要数値欄のInfinity相当代表
+  ---
+  duration_ms: 1.5011
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:824:1'
+  failureType: 'testCodeFailure'
+  error: '出力にNaNが混入しない'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    -- 100歳1月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥∞
+      ▶ 入院: ¥200,000
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳2月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥∞
+      ▶ 入院: ¥200,000
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳3月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥∞
+      ▶ 入院: ¥200,000
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳4月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥∞
+      ▶ 入院: ¥200,000
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳5月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥∞
+      ▶ 入院: ¥200,000
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳6月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥∞
+      ▶ 入院: ¥200,000
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳7月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥∞
+      ▶ 入院: ¥200,000
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳8月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥∞
+      ▶ 入院: ¥200,000
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳9月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥∞
+      ▶ 入院: ¥200,000
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳10月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥∞
+      ▶ 入院: ¥200,000
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳11月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥∞
+      ▶ 入院: ¥200,000
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+    -- 100歳12月 --
+      給与: ¥NaN (投資: ¥NaN)
+      生活費: ¥∞
+      ▶ 入院: ¥200,000
+      現金: ¥NaN 投資: ¥NaN 総資産: ¥NaN
+  operator: 'doesNotMatch'
+  stack: |-
+    assertNoInvalidNumbers (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:301:10)
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:829:3)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-100 全主要数値欄のNaN相当代表
+ok 100 - TC-CB-100 全主要数値欄のNaN相当代表
+  ---
+  duration_ms: 1.4102
+  type: 'test'
+  ...
+# Subtest: TC-CB-101 指数表記
+ok 101 - TC-CB-101 指数表記
+  ---
+  duration_ms: 1.3973
+  type: 'test'
+  ...
+# Subtest: TC-CB-102 貼り付け値
+ok 102 - TC-CB-102 貼り付け値
+  ---
+  duration_ms: 1.4163
+  type: 'test'
+  ...
+# Subtest: TC-CB-103 DOM値直接設定
+ok 103 - TC-CB-103 DOM値直接設定
+  ---
+  duration_ms: 1.5808
+  type: 'test'
+  ...
+# Subtest: TC-CB-104 HTML断片貼り付け
+ok 104 - TC-CB-104 HTML断片貼り付け
+  ---
+  duration_ms: 1.5959
+  type: 'test'
+  ...
+# Subtest: TC-CB-105 HTML断片DOM値設定
+ok 105 - TC-CB-105 HTML断片DOM値設定
+  ---
+  duration_ms: 1.5623
+  type: 'test'
+  ...
+# Subtest: TC-CB-106 特殊文字列DOM値設定
+ok 106 - TC-CB-106 特殊文字列DOM値設定
+  ---
+  duration_ms: 1.4979
+  type: 'test'
+  ...
+1..106
+# tests 106
+# suites 0
+# pass 94
+# fail 12
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 261.7687

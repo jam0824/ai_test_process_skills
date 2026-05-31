@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>未実装テストケース（コードベース）</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>未実装テストケース（コードベース）</h2>
+<h3>1. 対象</h3>
+<p><code>sample_app/retirement_simulator.html</code> を対象とするコードベース自動テスト。</p>
+<h3>2. 参照資料</h3>
+<p><code>テスト成果物/テストケース_コードベース.md</code>, <code>テスト成果物/テストケース_質問待ち.md</code>, <code>テスト成果物/テスト設計.md</code>, <code>テスト成果物/テスト設計_質問票.md</code>, <code>テスト成果物/テスト分析.md</code>, <code>テスト成果物/テスト計画書.md</code>, <code>spec/仕様書.md</code>, <code>sample_app/README.md</code>, <code>sample_app/retirement_simulator.html</code></p>
+<h3>3. 未実装テストケース</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テストケースID</th><th>元テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストケース名</th><th>未実装理由</th><th>実装に必要な確認・対応</th><th>関連質問ID</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TC-CB-107</td><td>TD049</td><td>TV041</td><td>TA012</td><td>Regression</td><td>高</td><td>正式回帰HTML追加または欠落扱いの確定待ち</td><td>質問待ち</td><td>DQ001回答後に、<code>sample_app/test_retirement_simulator.html</code> を追加対象にするか、欠落として未実装・未実行・N/Aのどれで記録するか確定する。</td><td>DQ001</td><td>仕様9.3, 9.4, sample_app READMEテスト</td><td>R012, R013</td><td>質問待ち</td></tr>
+</tbody></table></div>
+<h3>4. 実装に必要な確認・対応</h3>
+<p><code>DQ001</code> の回答が必要。回答前に <code>TC-CB-107</code> をコードベーステストへ実装しない。</p>
+<h3>5. トレーサビリティ確認</h3>
+<p>非質問待ちの <code>TC-CB-001</code> から <code>TC-CB-106</code> は <code>tests/codebase/retirement_simulator.test.js</code> に実装済み。質問待ちの <code>TC-CB-107</code> は本ファイルで未実装として追跡する。</p>
+</body>
+</html>

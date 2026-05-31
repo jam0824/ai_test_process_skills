@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テスト計画レビュー</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テスト計画レビュー結果</h2>
+<h3>1. レビュー対象</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>項目</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>レビュー対象</td><td><code>テスト成果物/テスト計画書.md</code></td></tr>
+<tr><td>レビュー結果</td><td><code>テスト成果物/テスト計画レビュー結果.md</code></td></tr>
+<tr><td>対象フェーズ</td><td>Phase 1 Plan（<code>$create-test-plan</code> + <code>$review-test-plan</code>）</td></tr>
+<tr><td>対象コード</td><td><code>sample_app/retirement_simulator.html</code></td></tr>
+</tbody></table></div>
+<h3>2. 参照資料</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>参照資料</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td><code>spec/仕様書.md</code></td><td>正の仕様として、機能、計算式、UI、性能、互換性、セキュリティ、正式回帰資産、証跡方針を確認した。</td></tr>
+<tr><td><code>sample_app/README.md</code></td><td>利用者向け説明、起動方法、テスト資産説明、使用例を確認した。</td></tr>
+<tr><td><code>sample_app/retirement_simulator.html</code></td><td>テスト対象実装として、関数、UI、DOM操作、結果表示、組み込み <code>console.assert</code> を確認した。</td></tr>
+<tr><td><code>README.md</code></td><td><code>$run-test-process</code> の成果物配置、後続フェーズ、レビューゲート、未実行/N/A管理のワークフロー確認に使用した。</td></tr>
+</tbody></table></div>
+<h3>3. レビュー観点</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>観点</th><th>確認結果</th></tr></thead>
+<tbody>
+<tr><td>目的妥当性</td><td>仕様準拠、計算正確性、プライバシー、注意表示、後続成果物の方向付けが目的に含まれている。</td></tr>
+<tr><td>仕様トレーサビリティ</td><td>主要機能 F001-F008、UI、データ仕様、性能、エラーハンドリング、互換性、セキュリティ、テスト運用に計画上の対応がある。</td></tr>
+<tr><td>リスク分析妥当性</td><td>高リスク領域として手取り、期間境界、投資補填、給与変更、注意表示、正式回帰資産欠落、仕様差異を扱っている。</td></tr>
+<tr><td>スコープ明確性</td><td>対象範囲、対象外、制約、残存リスク、代替確認が表で明示されている。</td></tr>
+<tr><td>正式/回帰資産</td><td><code>sample_app/test_retirement_simulator.html</code> の仕様上の位置づけと、現時点で未確認であることが計画・リスク・未決事項に残されている。</td></tr>
+<tr><td>テストアプローチ</td><td>Unit、Integration、E2E、Validation、Security/privacy、Performance、Compatibility/accessibility、Regression、Review/static inspection、Evidenceの各方針が戦略レベルで定義されている。</td></tr>
+<tr><td>ユースケース/シナリオ</td><td>デフォルト実行、キャリア変更、つなぎ期間、資産枯渇、イベント、異常入力が計画レベルで整理されている。</td></tr>
+<tr><td>汎用QA観点</td><td>境界値、異常値、状態遷移、組み合わせ、セキュリティ/プライバシー、性能、互換性、アクセシビリティ、証跡がリスクまたはアプローチに紐づいている。</td></tr>
+<tr><td>後続深さの指示</td><td>高リスク項目に対し、境界、異常、状態/期間遷移、組み合わせ、セキュリティ、性能、互換性、証跡の深さが後続フェーズへ伝わる。</td></tr>
+<tr><td>終了条件</td><td>レビュー品質ゲート、欠陥対応、自動テスト実装/実行、証跡、未決事項管理が含まれている。</td></tr>
+<tr><td>未決事項管理</td><td><code>QP001</code> から <code>QP004</code> として、正式回帰HTML、互換性実ブラウザ範囲、承認フロー、video保存方針が可視化されている。</td></tr>
+<tr><td>実行可能性</td><td>Phase 1ではテスト実行・ブラウザ起動・依存導入を行わず、後続での実装/実行/未実行/N/A記録に接続できる。</td></tr>
+</tbody></table></div>
+<h3>4. レビュー・修正サマリー</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>イテレーション</th><th>レビュー結果</th><th>修正内容</th><th>再レビュー結果</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><code>P0</code>、<code>P1</code>、fix-worthy <code>P2</code> は検出されなかった。</td><td>修正なし。</td><td>高優先度の未解消指摘なし。</td></tr>
+</tbody></table></div>
+<h3>5. 最終レビュー結果</h3>
+<h4>5.1 指摘一覧</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>優先度</th><th>観点</th><th>問題</th><th>場所</th><th>影響</th><th>修正方針</th></tr></thead>
+<tbody>
+<tr><td>なし</td><td>全観点</td><td><code>P0</code>、<code>P1</code>、fix-worthy <code>P2</code> の指摘なし。</td><td><code>テスト成果物/テスト計画書.md</code> 全体</td><td>現計画は後続の分析・設計・ケース作成の入力として使用可能。</td><td>修正不要。</td></tr>
+</tbody></table></div>
+<h4>5.2 必要十分性の評価</h4>
+<p>テスト計画は、仕様を正として実装とREADMEを確認対象にする方針を明示している。主要機能 F001-F008、計算境界、期間遷移、給与変更、投資補填、乱数制御、異常入力、プライバシー、注意表示、性能、互換性、アクセシビリティ、証跡がリスクとテストアプローチに接続されている。</p>
+<p>高リスク領域には、単体・統合・E2E・静的確認・性能・互換性・証跡の各アプローチが設定されており、後続のテスト分析と設計で必要な深さを判断できる。ユースケース/シナリオも計画レベルに留められており、詳細な事前条件、手順、期待結果は後続フェーズへ適切に委ねられている。</p>
+<p>正式回帰資産 <code>sample_app/test_retirement_simulator.html</code> は、仕様上の重要資産として扱われている一方、現時点でファイル一覧に見当たらないため、計画内でリスク <code>R012</code>、アプローチ <code>TA012</code>、未決事項 <code>QP001</code> として可視化されている。この扱いは、推測で存在を埋めず、未実装/未実行/N/Aを後続で残すという依頼条件に合っている。</p>
+<h4>5.3 ゲート判定</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>判定項目</th><th>結果</th></tr></thead>
+<tbody>
+<tr><td><code>P0</code> 指摘</td><td>なし</td></tr>
+<tr><td><code>P1</code> 指摘</td><td>なし</td></tr>
+<tr><td>fix-worthy <code>P2</code> 指摘</td><td>なし</td></tr>
+<tr><td>Phase 1レビューゲート</td><td>PASS</td></tr>
+<tr><td>次フェーズへの入力可否</td><td>入力可能</td></tr>
+</tbody></table></div>
+<h3>6. 残課題</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>ID</th><th>優先度</th><th>内容</th><th>推奨次アクション</th></tr></thead>
+<tbody>
+<tr><td>QP001</td><td>要確認</td><td><code>sample_app/test_retirement_simulator.html</code> が仕様上の正式回帰テスト資産だが、現時点のファイル一覧では確認できない。</td><td>後続フェーズで存在確認し、欠落時は未実装/未実行/N/Aとして記録する。</td></tr>
+<tr><td>QP002</td><td>要確認</td><td>Chrome/Firefox/Safari/Edge の実ブラウザ確認範囲とPlaywright代表環境のみでの代替可否が未確定。</td><td>テスト設計で代表環境・手動確認・N/A条件を明確化する。</td></tr>
+<tr><td>QP003</td><td>要確認</td><td><code>P0/P1</code> プロダクト欠陥が残る場合の承認者、受入基準、リリース判断フローが未指定。</td><td>最終レポートまたは実行フェーズで残存リスクとして扱う。</td></tr>
+<tr><td>QP004</td><td>要確認</td><td>Playwright失敗時video保存の条件が未指定。</td><td>実行フェーズで保存方針を確認し、環境不足時はN/Aとして残す。</td></tr>
+</tbody></table></div>
+<p>最終結論: <code>テスト成果物/テスト計画書.md</code> に修正必須の <code>P0/P1/P2</code> はなく、Phase 1のレビューゲートはPASS。</p>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テストレポートレビュー</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テストレポートレビュー結果</h2>
+<h3>1. レビュー対象</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>項目</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>レビュー対象レポート</td><td><code>テスト成果物/report/20260531223909_report/</code></td></tr>
+<tr><td>HTML</td><td><code>テスト成果物/report/20260531223909_report/index.html</code></td></tr>
+<tr><td>成果物ルート</td><td><code>テスト成果物</code></td></tr>
+<tr><td>コードベース実行結果</td><td><code>テスト成果物/report/20260531221233_コードベーステスト/</code></td></tr>
+<tr><td>E2E自動実行結果</td><td><code>テスト成果物/report/20260531222735_e2e自動テスト/</code></td></tr>
+<tr><td>レビュー結果保存先</td><td><code>テスト成果物/テストレポートレビュー結果.md</code></td></tr>
+</tbody></table></div>
+<h3>2. 参照資料</h3>
+<p><code>テスト成果物/テスト計画書.md</code>, <code>テスト成果物/テスト計画レビュー結果.md</code>, <code>テスト成果物/テスト分析.md</code>, <code>テスト成果物/テスト分析_質問票.md</code>, <code>テスト成果物/テスト分析レビュー結果.md</code>, <code>テスト成果物/テスト設計.md</code>, <code>テスト成果物/テスト設計_質問票.md</code>, <code>テスト成果物/テスト設計レビュー結果.md</code>, <code>テスト成果物/テストケース_コードベース.md</code>, <code>テスト成果物/テストケース_E2E自動.md</code>, <code>テスト成果物/テストケース_人間実行.md</code>, <code>テスト成果物/テストケース_人間実行.csv</code>, <code>テスト成果物/テストケース_質問待ち.md</code>, <code>テスト成果物/テストケースレビュー結果.md</code>, <code>テスト成果物/テスト成果物横断レビュー結果.md</code>, <code>テスト成果物/未実装テストケース_コードベース.md</code>, <code>テスト成果物/未実装テストケース_E2E自動.md</code>, <code>テスト成果物/テストコード実装結果.md</code>, <code>テスト成果物/テストコードレビュー結果.md</code>, <code>テスト成果物/Playwright_E2Eテスト実装結果.md</code>, <code>テスト成果物/Playwright_E2Eテストレビュー結果.md</code>, <code>テスト成果物/report/20260531221233_コードベーステスト/コードベース_発見issue一覧.md</code>, <code>テスト成果物/report/20260531222735_e2e自動テスト/e2e_発見issue一覧.md</code>, <code>skills/create-test-report/scripts/create_test_report.py</code>, <code>raw/manifest.json</code>。</p>
+<h3>3. レビュー観点</h3>
+<p>存在と構造、指定実行フォルダの固定、必須トップセクション順、サマリー件数、Pass率分母、NotRun/質問待ち/未実装/N/A/人間実行未実行の区別、Fail/issue可視性、Case Expansion Ledgerの期待TC数/実TC数/不足数、成果物リンク、raw evidenceとmanifest、静的リンク、ANSI除去、可搬性、機密情報・個人情報パターンを確認した。</p>
+<h3>4. レビュー・修正サマリー</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>イテレーション</th><th>指摘</th><th>修正</th><th>再レビュー結果</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>P2: <code>TC-CB-107</code> が質問待ち9件と未実装1件の両方に掲載されるが、初回生成レポートでは単純加算不可の注記が弱く、標準出力の <code>QuestionWait</code> も表示件数とずれていた。</td><td><code>skills/create-test-report/scripts/create_test_report.py</code> を修正し、質問待ち/未実装重複の注記を <code>index.html</code> に表示、標準出力サマリーを詳細ページ件数に合わせた。</td><td>再生成で解消。</td></tr>
+<tr><td>2</td><td>P2: 参照資料に含まれる <code>テストコード実装結果.md</code> と <code>Playwright_E2Eテスト実装結果.md</code> が成果物リンクに含まれていなかった。</td><td><code>skills/create-test-report/scripts/create_test_report.py</code> の凍結対象Markdownに2ファイルを追加した。</td><td><code>テスト成果物/report/20260531223909_report/</code> を再生成。P0/P1/P2 fix-worthy指摘なし。</td></tr>
+</tbody></table></div>
+<h3>5. 最終レビュー結果</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>優先度</th><th>観点</th><th>問題</th><th>場所</th><th>影響</th><th>修正方針</th></tr></thead>
+<tbody>
+<tr><td>なし</td><td>全観点</td><td>レポート上のP0/P1/P2 fix-worthy指摘なし。</td><td><code>テスト成果物/report/20260531223909_report/index.html</code></td><td>レポートはFail、未実行、質問待ち、未実装、証跡、網羅性メタを区別して参照できる。</td><td>修正不要。</td></tr>
+</tbody></table></div>
+<div class="table-wrap"><table>
+<thead><tr><th>確認項目</th><th>結果</th></tr></thead>
+<tbody>
+<tr><td>index.html</td><td>存在を確認。</td></tr>
+<tr><td>必須トップセクション順</td><td><code>テスト結果サマリー</code> → <code>Failサマリー</code> → <code>バグリスト</code> → <code>まだ実行していないテストケース</code> → <code>質問待ちのテストケース</code> → <code>未実装のテストケース</code> → <code>成果物リンク</code> → <code>実行証跡</code> の順。</td></tr>
+<tr><td>サマリー再計算</td><td>Total 215, Executed 174, Pass 161, Fail 13, N/A 0, NotRun 32, 質問待ち 9, 未実装 1。</td></tr>
+<tr><td>Pass率</td><td>161 / (161 + 13) = 92.5%。N/Aは分母に含めていない。</td></tr>
+<tr><td>重複カテゴリ</td><td><code>TC-CB-107</code> は質問待ちかつ未実装一覧にも掲載。<code>index.html</code> に単純加算不可の注記あり。</td></tr>
+<tr><td>Fail/issue</td><td>Fail 13件は <code>BUG-001</code> から <code>BUG-012</code>, <code>E2E-BUG-001</code> として可視化。Fail優先度はP1 13件。</td></tr>
+<tr><td>Case Expansion Ledger</td><td>期待TC数 215, 実TC数 215, 不足数 0, Ledger行数 240, 代表/集約理由ありTD 60。詳細HTMLにリンクあり。</td></tr>
+<tr><td>成果物リンク</td><td>計画、分析、設計、ケース、質問票、実装結果、レビュー結果、実行済みMarkdown、issue一覧へのHTML/Markdownリンクあり。</td></tr>
+<tr><td>raw evidence</td><td>CSV/JSON/TXTと <code>raw/manifest.json</code> を確認。rawファイル7件、Markdownコピー25件、HTML 29件。</td></tr>
+<tr><td>静的リンク</td><td><code>index.html</code>, 未実行/質問待ち/未実装/網羅性メタ詳細ページの合計351リンクを確認し、欠落0件。</td></tr>
+<tr><td>機密・個人情報</td><td>bearer token, api key, secret, password, cookie, emailの実用パターンをスキャンし、検出0件。</td></tr>
+<tr><td>過剰判断</td><td>総合合否やリリース可否は断定していない。人間実行未実行、質問待ち、未実装、Fail/issueを分けて表示している。</td></tr>
+</tbody></table></div>
+<h3>6. 残課題</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>ID</th><th>種別</th><th>内容</th><th>推奨次アクション</th></tr></thead>
+<tbody>
+<tr><td>BUG-001 - BUG-012</td><td>製品側Fail/issue</td><td>コードベース実行で12件Fail。すべてP1 issueとして記録済み。</td><td>製品修正フェーズで扱う。</td></tr>
+<tr><td>E2E-BUG-001</td><td>製品側Fail/issue</td><td><code>TC-E2E-012</code> が3ブラウザでFail。金融/税務助言ではない旨と実制度・個人差確認の表示欠落。</td><td>製品修正フェーズで扱う。</td></tr>
+<tr><td>TC-MAN-001 - TC-MAN-032</td><td>人間実行未実行</td><td>32件が未実行。</td><td>手動実行フェーズまたは対象外判断で扱う。</td></tr>
+<tr><td>DQ001 - DQ004</td><td>質問待ち</td><td>9件の質問待ちケースが残存。</td><td>回答後に実装、N/A、未実装、未実行へ確定する。</td></tr>
+<tr><td>TC-CB-107</td><td>質問待ち/未実装</td><td>DQ001回答待ちのため未実装一覧にも掲載。</td><td>DQ001回答後に扱いを確定する。</td></tr>
+</tbody></table></div>
+<p>レポート上のP0/P1/P2 fix-worthy指摘は残っていない。上記はレポート欠陥ではなく、レポートが可視化している未完了作業および製品側Fail/issueである。</p>
+</body>
+</html>

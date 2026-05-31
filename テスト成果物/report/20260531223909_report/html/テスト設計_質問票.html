@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テスト設計質問票</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テスト設計 質問票</h2>
+<h3>1. 質問一覧</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>質問ID</th><th>関連テスト設計ID</th><th>関連テスト観点ID</th><th>関連テストアプローチID</th><th>質問</th><th>回答が必要な理由</th><th>回答者候補</th><th>優先度</th></tr></thead>
+<tbody>
+<tr><td>DQ001</td><td>TD049, TD060</td><td>TV041</td><td>TA012</td><td><code>sample_app/test_retirement_simulator.html</code> は仕様・README上の正式回帰資産ですが、現時点のリポジトリファイル一覧では未検出です。後続フェーズで追加対象にしますか、それとも欠落として未実装/未実行/N/Aに残しますか。</td><td>正式回帰資産の設計、ケース化、実装、実行可否、証跡、最終レポートの扱いが変わるため。分析質問 <code>Q001</code> を継続する。</td><td>開発責任者、QA責任者</td><td>高</td></tr>
+<tr><td>DQ002</td><td>TD044, TD055</td><td>TV037</td><td>TA011</td><td>Chrome/Firefox/Safari/Edge の「最新安定版および1つ前」は、実ブラウザで全件確認しますか。それともPlaywright <code>chromium</code>/<code>firefox</code>/<code>webkit</code> を代表確認とし、Safari実機固有差異のみ手動確認にしますか。</td><td>互換性の期待ケース数、手動確認範囲、N/A判断、環境不足時の記録方針が変わるため。分析質問 <code>Q002</code> を継続する。</td><td>QA責任者、リリース判断者</td><td>高</td></tr>
+<tr><td>DQ003</td><td>TD059</td><td>TV048</td><td>TA014</td><td>Playwright失敗時videoは常時保存、失敗時のみ保存、必要時のみ保存のどれを採用しますか。容量制約や保存期間があれば指定してください。</td><td>証跡設定、実行ログ、最終レポートの証跡完全性判断に影響するため。分析質問 <code>Q003</code> を継続する。</td><td>QA責任者、運用担当</td><td>中</td></tr>
+<tr><td>DQ004</td><td>TD057</td><td>TV049</td><td>TA014</td><td><code>P0/P1</code> 相当のプロダクト欠陥が未修正で残る場合の承認者、受入基準、リリース可否判断フローを誰が決定しますか。</td><td>欠陥対応の終了条件と残存リスクの承認可否を推測で埋めないため。分析質問 <code>Q004</code> を継続する。</td><td>プロダクトオーナー、リリース判断者</td><td>高</td></tr>
+</tbody></table></div>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テスト計画</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テスト計画書</h2>
+<h3>1. テスト目的</h3>
+<p>老後資金シミュレーターが、<code>spec/仕様書.md</code> v1.3 に定義された簡易計算モデル、画面操作、オフライン動作、注意表示、証跡方針に一致していることを確認する。特に、利用者が老後資金の目安として参照する計算結果を過信しないよう、計算正確性、入力異常時の安全性、プライバシー説明、シミュレーション限界の表示を重点的に検証する。</p>
+<p>本フェーズではテスト戦略を定義し、後続のテスト分析・設計・ケース作成・自動化・実行で必要な深さを明確にする。詳細なテストケース、実装、実行は後続フェーズで扱う。</p>
+<h3>2. ドキュメント</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>参照資料</th><th>役割</th></tr></thead>
+<tbody>
+<tr><td><code>spec/仕様書.md</code></td><td>正の仕様。機能、計算式、UI、セキュリティ、性能、互換性、正式回帰資産、証跡方針の判定基準として使用する。</td></tr>
+<tr><td><code>sample_app/README.md</code></td><td>利用者向け説明、起動方法、機能概要、テストファイルの説明を確認する。仕様と矛盾する場合は仕様書を正とする。</td></tr>
+<tr><td><code>sample_app/retirement_simulator.html</code></td><td>テスト対象コード。単一HTML内のUI、JavaScript関数、画面表示、簡易組み込みテストの実装確認対象。</td></tr>
+<tr><td><code>README.md</code></td><td><code>$run-test-process</code> のワークフロー、成果物配置、後続フェーズの流れの確認にのみ使用する。製品仕様の根拠にはしない。</td></tr>
+<tr><td><code>テスト成果物/run-test-process_進行状況.md</code></td><td>本計画作成時点では既存内容なし。Phase 1の進行状況記録として更新対象。</td></tr>
+<tr><td><code>テスト成果物/run-test-process_引き継ぎ.md</code></td><td>本計画作成時点では既存内容なし。次フェーズへの入力情報として更新対象。</td></tr>
+</tbody></table></div>
+<h3>3. テストアイテム</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テストアイテム</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td><code>sample_app/retirement_simulator.html</code></td><td>老後資金シミュレーター本体。HTML、CSS、JavaScript、DOMイベント、結果表示を含む。</td></tr>
+<tr><td>F001 手取り計算機能</td><td><code>calculateNetMonthly(salaryAnnual)</code>。社会保険料、課税所得、所得税ブラケット、住民税、月手取り、丸め表示。</td></tr>
+<tr><td>F002 ライフサイクルシミュレーション</td><td><code>simulateRetirement(opts)</code>。開始年齢から100歳12月までの月次資産推移、現役・退職後・年金期間の収入判定。</td></tr>
+<tr><td>F003 投資計算機能</td><td>投資率に基づく積立、年初利息、JavaScript <code>number</code> の内部計算、表示時丸め。</td></tr>
+<tr><td>F004 ランダムイベント生成</td><td>月次イベント判定、イベント種別選択、発生率0%/100%による制御、必要時の乱数差し替え方針。</td></tr>
+<tr><td>F005 投資補填機能</td><td>現金不足時の投資取り崩し、20%税金、投資残高不足時のマイナス現金・総資産許容。</td></tr>
+<tr><td>F006 結果表示機能</td><td>月次結果、金額丸め、桁区切り、スクロール可能な等幅表示、<code>textContent</code> による表示安全性。</td></tr>
+<tr><td>F007 パラメータ設定機能</td><td>入力フィールド、初期値、HTML5バリデーション属性、不正値の0フォールバック、有限数判定。</td></tr>
+<tr><td>F008 給与変更機能</td><td>給与変更エリアの表示切替、追加・削除、年齢・年収検証、同一年齢の優先順位、給与期間外の無影響。</td></tr>
+<tr><td>注意表示</td><td>プライバシー説明、金融・税務助言ではない旨、実制度や個人差の別途確認の明示。</td></tr>
+<tr><td>セキュリティ/プライバシー</td><td>ネットワーク通信なし、外部依存なし、永続化なし、入力値のHTML解釈防止、静的テンプレート内の <code>innerHTML</code> 使用。</td></tr>
+<tr><td>性能/信頼性</td><td>デフォルト入力・イベント0%・1280x720以上で計算100ms以下、描画200ms以下、10回連続実行。</td></tr>
+<tr><td>互換性/アクセシビリティ</td><td>Chrome/Firefox/Safari/Edge 最新安定版および1つ前、Playwright代表環境、800x600以上、基本的なキーボード操作と読み取りやすさ。</td></tr>
+<tr><td>正式回帰テスト資産</td><td><code>sample_app/test_retirement_simulator.html</code>。仕様上は正式回帰資産だが、本計画作成時点のファイル一覧では未確認。存在確認と欠落時の扱いが必要。</td></tr>
+<tr><td>後続E2E自動テスト資産</td><td>Playwright E2Eテスト。主要ユーザーフロー、ブラウザ互換性、外部通信なし、表示安全性を後続フェーズで実装・確認する。</td></tr>
+</tbody></table></div>
+<h3>4. テストスコープ</h3>
+<h4>4.1 対象範囲</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>区分</th><th>スコープ</th></tr></thead>
+<tbody>
+<tr><td>仕様準拠</td><td><code>spec/仕様書.md</code> v1.3 を正として、READMEと実装が一致していることを確認する。</td></tr>
+<tr><td>計算ロジック</td><td>手取り、所得税ブラケット境界、ライフサイクル収入判定、投資利回り、投資補填、ランダムイベント、給与変更を対象にする。</td></tr>
+<tr><td>UI操作</td><td>すべての入力欄、開始ボタン、給与変更トグル、給与変更追加・削除、結果表示を対象にする。</td></tr>
+<tr><td>入力異常</td><td>空欄、0、負値、範囲外、有限数でない値、ブラウザが許容する指数表記、給与変更の無効設定を対象にする。</td></tr>
+<tr><td>セキュリティ/プライバシー</td><td>外部通信なし、外部依存なし、永続化なし、<code>textContent</code> による結果表示、ユーザー入力を埋め込まない静的 <code>innerHTML</code> を対象にする。</td></tr>
+<tr><td>性能</td><td>仕様の標準測定条件での計算処理・画面描画・10回連続実行を対象にする。</td></tr>
+<tr><td>互換性</td><td>Playwrightの <code>chromium</code>、<code>firefox</code>、<code>webkit</code> を代表環境とし、Safari実機固有差異はWebKitで再現できない場合のみ手動確認対象とする。</td></tr>
+<tr><td>アクセシビリティ</td><td>WCAG正式適合ではなく、キーボード操作、ラベルの分かりやすさ、結果表示の読み取りやすさを対象にする。</td></tr>
+<tr><td>証跡</td><td>Markdown/CSVサマリ、実行ログ、Playwright JSON、失敗時スクリーンショット/trace/video、手動確認記録の保存方針を対象にする。</td></tr>
+</tbody></table></div>
+<h4>4.2 対象外・制約</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>区分</th><th>内容</th><th>残存リスク/代替確認</th></tr></thead>
+<tbody>
+<tr><td>実税制・実年金制度</td><td>給与所得控除、復興特別所得税、各種控除、NISA、繰上げ・繰下げ年金などは対象外。</td><td>仕様上の制約事項として、注意表示とREADME説明が過信を抑止していることを確認する。</td></tr>
+<tr><td>インフレ/デフレ</td><td>将来の物価変動は対象外。</td><td>注意表示と制約事項の明示を確認する。</td></tr>
+<tr><td>JavaScript無効環境</td><td>動作対象外。</td><td>前提条件として記録する。</td></tr>
+<tr><td>800x600未満</td><td>スマートフォン幅はベストエフォート。</td><td>正式な合否対象にしないが、重大な表示崩れがあれば残リスクとして記録する。</td></tr>
+<tr><td>Safari実機固有差異</td><td>WebKitで再現できない差異のみ手動確認。</td><td>実機確認要否は後続フェーズで <code>要確認</code> として扱う。</td></tr>
+<tr><td>開発者ツール等で任意スクリプト実行済み環境</td><td>完全防御は対象外。</td><td>通常入力、貼り付け、DOM値として取得される入力差異を対象にする。</td></tr>
+<tr><td>正式回帰HTMLの実行</td><td>Phase 1では実行しない。</td><td>後続フェーズで存在確認し、存在しない場合は未実装/未実行/N/Aとして可視化する。</td></tr>
+</tbody></table></div>
+<h3>5. テスト終了条件</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>終了条件</th><th>判定基準</th></tr></thead>
+<tbody>
+<tr><td>計画・分析・設計・ケースの品質ゲート</td><td>各レビュー成果物で未解消の <code>P0/P1</code> がない。<code>P2</code> 以下は残課題、残存リスク、または後続対応として明示されている。</td></tr>
+<tr><td>仕様トレーサビリティ</td><td>主要機能 F001-F008、UI仕様、データ仕様、性能、エラーハンドリング、互換性、セキュリティ、テスト運用に対して、テスト分析・設計・ケースの追跡IDが対応している。</td></tr>
+<tr><td>自動テスト実装</td><td>コードベーステストとE2E自動テストの実装対象・未実装・N/A・質問待ちが成果物に明示されている。正式回帰HTMLの存在確認結果も記録されている。</td></tr>
+<tr><td>自動テスト実行</td><td>実行可能な自動テストは結果、ログ、証跡を保存し、失敗は <code>BUG-*</code> または <code>E2E-BUG-*</code> として追跡されている。環境不足や未実行は推測せず <code>未実行</code> または <code>N/A</code> として残す。</td></tr>
+<tr><td>欠陥対応</td><td><code>P0/P1</code> 相当のプロダクト欠陥が未修正の場合、リリース可否判断者または扱いが <code>要確認</code> として記録され、残存リスクが明示されている。</td></tr>
+<tr><td>計算期待値</td><td>内部計算は <code>±0.01円</code>、表示金額は <code>Math.round()</code> 後の整数円と桁区切りで判定する。</td></tr>
+<tr><td>性能</td><td>仕様の標準測定条件で、計算処理100ms以下、画面描画200ms以下、10回連続実行で古い結果混入・JavaScript例外・明確な表示遅延がない。</td></tr>
+<tr><td>互換性</td><td>Chrome/Firefox/Safari/Edge の代表環境方針に基づく確認結果が記録される。実行環境不足は <code>N/A</code> または <code>未実行</code> として明示する。</td></tr>
+<tr><td>アクセシビリティ</td><td>キーボード操作、ラベル、ボタン文言、結果表示の基本確認結果が記録される。WCAG 2.2 AA正式適合は終了条件に含めない。</td></tr>
+<tr><td>証跡</td><td>Markdown/CSVサマリ、実行ログ、必要なスクリーンショット/trace/video、手動確認記録が <code>テスト成果物/</code> 配下に保存される。</td></tr>
+<tr><td>未決事項</td><td><code>要確認</code>、未実装、未実行、<code>N/A</code> は推測で埋めず、成果物に残したうえで次フェーズまたは判断者へ引き継がれている。</td></tr>
+</tbody></table></div>
+<h3>6. プロダクトリスク</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>ID</th><th>リスク</th><th>根拠/対象</th><th>発生確率(1-5)</th><th>影響度(1-5)</th><th>リスク度</th><th>対応方針</th></tr></thead>
+<tbody>
+<tr><td>R001</td><td>手取り計算の税・社会保険料・丸めが仕様とずれ、利用者が資金見通しを誤る。</td><td>F001、仕様2.2、5.1</td><td>3</td><td>5</td><td>15</td><td>仕様式ベースの単体テスト、所得税ブラケット境界、内部値許容差、表示丸めを重点確認する。</td></tr>
+<tr><td>R002</td><td>現役・退職後・年金期間の境界条件が誤り、長期シミュレーション全体の収入判定がずれる。</td><td>F002、仕様2.2 年齢条件</td><td>4</td><td>5</td><td>20</td><td>年齢境界、逆転条件、開始年齢から100歳12月までの月次出力を統合/E2Eで確認する。</td></tr>
+<tr><td>R003</td><td>投資利回り、投資積立、現金不足時の投資補填と20%税金の扱いが誤り、総資産推移が大きくずれる。</td><td>F003、F005、仕様5.1、5.2</td><td>4</td><td>5</td><td>20</td><td>単体・統合で年初利息、補填上限、残高不足、マイナス資産許容を確認する。</td></tr>
+<tr><td>R004</td><td>ランダムイベントが非決定的なまま検証され、回帰テストの再現性が失われる。</td><td>F004、仕様5.3</td><td>3</td><td>4</td><td>12</td><td>eventProb 0%/100%、必要時の <code>Math.random()</code> 差し替えまたはイベント1件化を計画し、再現可能な期待値で確認する。</td></tr>
+<tr><td>R005</td><td>給与変更の優先順位、無効値除外、開始年齢以前/同年齢/退職後の扱いが誤り、キャリア変更シナリオが不正確になる。</td><td>F008、仕様2.2</td><td>4</td><td>4</td><td>16</td><td>給与変更の単体・統合・E2Eを分け、同一年齢は最後追加優先、範囲外や退職後無影響を確認する。</td></tr>
+<tr><td>R006</td><td>入力異常、空欄、Infinity/NaN相当、ブラウザ差異により結果が <code>NaN</code>/<code>Infinity</code> や例外になる。</td><td>仕様7.1、7.2</td><td>3</td><td>4</td><td>12</td><td>入力バリデーション、フォールバック、代表ブラウザでの数値入力差異を確認する。</td></tr>
+<tr><td>R007</td><td>ユーザー入力または結果表示がHTMLとして解釈され、XSSや表示崩れにつながる。</td><td>仕様3.1.3、8.2</td><td>2</td><td>5</td><td>10</td><td><code>textContent</code> 表示、静的テンプレートの <code>innerHTML</code> 限定、貼り付け/DOM値操作時の安全性を確認する。</td></tr>
+<tr><td>R008</td><td>オフライン・外部通信なし・外部依存なしの要件に反し、財務情報のプライバシー期待を損なう。</td><td>仕様1.3、8.1、README</td><td>2</td><td>5</td><td>10</td><td>ネットワーク要求、外部リソース参照、永続化の有無をコードレビュー/E2Eで確認する。</td></tr>
+<tr><td>R009</td><td>注意表示が不足し、利用者が金融助言・税務助言または実制度準拠の結果と誤認する。</td><td>仕様3.1.4、11.1</td><td>3</td><td>5</td><td>15</td><td>必須注意文言、README説明、画面上の視認性をE2E/人間確認で検証する。</td></tr>
+<tr><td>R010</td><td>長期出力や連続実行で処理が遅延、古い結果混入、表示破綻、例外が発生する。</td><td>仕様6.1、6.2</td><td>3</td><td>3</td><td>9</td><td>標準測定条件で性能測定し、10回連続実行と出力更新完了を確認する。</td></tr>
+<tr><td>R011</td><td>対応ブラウザや800x600以上の表示条件で操作不能、結果が読めない、キーボード操作不能になる。</td><td>仕様7.3、9.4、11.2</td><td>3</td><td>4</td><td>12</td><td>Playwright代表環境と人間確認で互換性、キーボード操作、ラベル、読み取りやすさを確認する。</td></tr>
+<tr><td>R012</td><td>仕様上の正式回帰テスト資産 <code>sample_app/test_retirement_simulator.html</code> が存在しない、または本体コピー依存で独立性が不足する。</td><td>仕様9.4、sample_app README</td><td>4</td><td>4</td><td>16</td><td>存在確認、欠落時の未実装/未実行記録、仕様式から独立した期待値とE2E/コードレビューの併用を計画する。</td></tr>
+<tr><td>R013</td><td>実装と仕様の差異がREADMEや組み込みテストだけでは検出されず、後続成果物が誤った実装を正としてしまう。</td><td>仕様1.4、対象コード</td><td>3</td><td>5</td><td>15</td><td>仕様を正とし、実装は確認対象として扱う。差異は <code>BUG-*</code> または <code>E2E-BUG-*</code> に追跡する。</td></tr>
+</tbody></table></div>
+<h3>7. テストアプローチ</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テストアプローチID</th><th>内容</th><th>仕様</th><th>リスクID</th></tr></thead>
+<tbody>
+<tr><td>TA001</td><td>Unit testで <code>calculateNetMonthly()</code> の社会保険料、課税所得、所得税ブラケット境界、住民税、内部許容差 <code>±0.01円</code> を仕様式から独立計算して検証する。</td><td>仕様2.2 F001、5.1</td><td>R001, R013</td></tr>
+<tr><td>TA002</td><td>Integration testで開始年齢から100歳12月までの月次結果、現役・退職後・年金の境界、<code>pensionStartAge &lt;= retirementAge</code> の逆転条件を検証する。</td><td>仕様2.2 F002</td><td>R002, R013</td></tr>
+<tr><td>TA003</td><td>Unit/Integration testで投資積立、年初利息、投資補填、20%税金、投資残高不足時のマイナス現金・総資産許容を検証する。</td><td>仕様5.1、5.2</td><td>R003, R013</td></tr>
+<tr><td>TA004</td><td>Unit/Integration testでランダムイベントを eventProb 0%/100%、<code>Math.random()</code> 差し替え、またはイベント1件化で再現可能にし、発生有無と費用反映を検証する。</td><td>仕様5.3、4.1</td><td>R004</td></tr>
+<tr><td>TA005</td><td>Unit/Integration/E2E testで給与変更の追加・削除、表示切替、有効条件、年齢降順、同一年齢の最後追加優先、開始年齢以前/同年齢/退職後の扱いを検証する。</td><td>仕様2.2 F008、3.1.2</td><td>R005, R013</td></tr>
+<tr><td>TA006</td><td>E2E scenario testで主要ユーザーフローとして、デフォルト実行、キャリアアップ型、早期退職型、資産枯渇型、イベント発生型の入力から結果表示までを検証する。</td><td>sample_app README 使用例、仕様2.1、3.1</td><td>R002, R003, R005, R009, R013</td></tr>
+<tr><td>TA007</td><td>Validation/abnormal testで空欄、0、負値、範囲外、有限数でない値、ブラウザが許容する指数表記、給与変更無効設定が例外や <code>NaN</code>/<code>Infinity</code> 表示につながらないことを確認する。</td><td>仕様7.1、7.2</td><td>R006, R007</td></tr>
+<tr><td>TA008</td><td>Security/privacy testで外部通信なし、外部依存なし、永続化なし、結果表示 <code>textContent</code>、ユーザー入力を埋め込まない静的 <code>innerHTML</code> の範囲を確認する。</td><td>仕様8.1、8.2、3.1.3</td><td>R007, R008</td></tr>
+<tr><td>TA009</td><td>E2E/manual confirmationでプライバシー、金融助言・税務助言ではない旨、実制度・個人差の別途確認が画面上に必須表示されることを確認する。</td><td>仕様3.1.4、11.1</td><td>R009</td></tr>
+<tr><td>TA010</td><td>Performance/reliability testでデフォルト入力、イベント0%、1280x720以上、ウォームアップ3回後10回測定の95パーセンタイルが計算100ms以下・描画200ms以下であることを確認する。</td><td>仕様6.2</td><td>R010</td></tr>
+<tr><td>TA011</td><td>Compatibility/accessibility testで Playwright <code>chromium</code>、<code>firefox</code>、<code>webkit</code>、800x600以上、キーボード操作、ラベル、結果表示の読み取りやすさを確認する。</td><td>仕様7.3、9.4、11.2</td><td>R011</td></tr>
+<tr><td>TA012</td><td>Regression/formal asset testで <code>sample_app/test_retirement_simulator.html</code> の存在、実行可否、証跡、独立期待値との補完関係を確認し、欠落時は未実装/未実行/N/Aとして記録する。</td><td>仕様9.3、9.4、sample_app README テスト</td><td>R012, R013</td></tr>
+<tr><td>TA013</td><td>Review/static inspectionで仕様を正として <code>sample_app/retirement_simulator.html</code> の実装差異、組み込み <code>console.assert</code> の限界、READMEとの差異を確認する。</td><td>仕様1.4、10.2</td><td>R012, R013</td></tr>
+<tr><td>TA014</td><td>Evidence/reporting testで自動テスト結果、ログ、Playwright JSON、失敗時スクリーンショット/trace/video、手動確認記録が <code>テスト成果物/</code> 配下に保存されることを確認する。</td><td>仕様9.4、README ワークフロー</td><td>R012, R013</td></tr>
+</tbody></table></div>
+<h3>テスト環境</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>項目</th><th>方針</th></tr></thead>
+<tbody>
+<tr><td>実行対象</td><td><code>sample_app/retirement_simulator.html</code> をブラウザで直接開くスタンドアロンWebアプリ。</td></tr>
+<tr><td>代表ブラウザ</td><td>Playwright <code>chromium</code>、<code>firefox</code>、<code>webkit</code>。Chrome/Firefox/Safari/Edge 最新安定版および1つ前の代替確認として扱う。</td></tr>
+<tr><td>画面条件</td><td>正式対象は800x600以上。性能標準測定は1280x720以上。</td></tr>
+<tr><td>ネットワーク</td><td>通信なし、外部依存なしを前提に確認する。</td></tr>
+<tr><td>テストフレームワーク</td><td>仕様上は独自 <code>TestSuite</code> とPlaywright E2Eを想定。現時点で依存の導入やブラウザのインストールは行わない。</td></tr>
+</tbody></table></div>
+<h3>正式テスト資産/回帰資産</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>資産</th><th>仕様上の扱い</th><th>本計画時点の扱い</th></tr></thead>
+<tbody>
+<tr><td><code>sample_app/test_retirement_simulator.html</code></td><td>正式な回帰テスト資産。ただし本体実装コードのコピーを含むため、仕様式から独立した期待値、E2E、コードレビューと併用する。</td><td>ファイル一覧では未確認。後続フェーズで存在確認し、欠落時は未実装/未実行/N/Aとして可視化する。</td></tr>
+<tr><td>Playwright E2Eテスト</td><td>主要ユーザーフロー、ブラウザ互換性、外部通信なし、表示安全性の回帰確認に利用する。</td><td>後続フェーズで作成・レビュー・実行対象。環境不足時は未実行/N/Aとして記録する。</td></tr>
+<tr><td>組み込み <code>console.assert</code></td><td>開発者向けの簡易ログ。</td><td>正式回帰の十分条件とはせず、静的確認と補助情報として扱う。</td></tr>
+</tbody></table></div>
+<h3>対象ユースケース/主要シナリオ</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>優先度</th><th>利用者/目的</th><th>計画レベルの確認対象</th><th>関連リスク</th></tr></thead>
+<tbody>
+<tr><td>高</td><td>一般利用者がデフォルト値で老後資金の目安を確認する。</td><td>入力初期値、開始操作、月次結果、注意表示、外部通信なし。</td><td>R002, R003, R008, R009</td></tr>
+<tr><td>高</td><td>キャリア変更を含めた将来収入を試算する。</td><td>給与変更表示、追加・削除、複数設定、同一年齢優先、年収表示。</td><td>R005</td></tr>
+<tr><td>高</td><td>退職から年金開始までのつなぎ期間を試算する。</td><td>退職年齢と年金開始年齢の境界、逆転条件、退職後収入。</td><td>R002</td></tr>
+<tr><td>高</td><td>資産不足時の取り崩しと枯渇状態を確認する。</td><td>投資補填、税金、投資残高不足、マイナス現金/総資産継続。</td><td>R003</td></tr>
+<tr><td>中</td><td>突発イベントの影響を確認する。</td><td>発生率0%/100%、イベント費用、再現可能なテスト制御。</td><td>R004</td></tr>
+<tr><td>中</td><td>異常または極端な入力で結果生成が止まらないことを確認する。</td><td>空欄、0、負値、範囲外、有限数でない値、ブラウザ差異。</td><td>R006, R007</td></tr>
+</tbody></table></div>
+<h3>未決事項</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>ID</th><th>種別</th><th>内容</th><th>後続での扱い</th></tr></thead>
+<tbody>
+<tr><td>QP001</td><td>要確認</td><td><code>sample_app/test_retirement_simulator.html</code> が仕様上の正式回帰テスト資産だが、現時点のファイル一覧では確認できない。</td><td>後続フェーズで存在確認し、欠落なら未実装/未実行/N/Aとして記録する。</td></tr>
+<tr><td>QP002</td><td>要確認</td><td>Chrome/Firefox/Safari/Edge の「最新安定版および1つ前」を実ブラウザで確認するか、Playwright代表環境のみで十分とするかの最終判断者が未定。</td><td>互換性テスト設計で代表環境と手動確認の分担を明示する。</td></tr>
+<tr><td>QP003</td><td>要確認</td><td><code>P0/P1</code> プロダクト欠陥が残る場合のリリース可否判断者、承認フロー、受入基準が未指定。</td><td>終了条件では承認者不明として残し、最終レポートで残存リスク扱いにする。</td></tr>
+<tr><td>QP004</td><td>要確認</td><td>失敗時のvideo保存は「必要に応じて」とされており、常時保存か失敗時限定かの運用閾値が未指定。</td><td>実行フェーズで保存可否と容量制約を確認し、未実行/N/Aも可視化する。</td></tr>
+</tbody></table></div>
+</body>
+</html>

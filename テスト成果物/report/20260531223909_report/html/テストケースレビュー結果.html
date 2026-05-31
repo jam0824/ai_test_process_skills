@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テストケースレビュー</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テストケースレビュー結果</h2>
+<h3>1. レビュー対象</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>対象</th><th>パス</th><th>件数</th></tr></thead>
+<tbody>
+<tr><td>コードベース</td><td><code>テスト成果物/テストケース_コードベース.md</code></td><td>106</td></tr>
+<tr><td>E2E自動</td><td><code>テスト成果物/テストケース_E2E自動.md</code></td><td>68</td></tr>
+<tr><td>人間実行</td><td><code>テスト成果物/テストケース_人間実行.md</code></td><td>32</td></tr>
+<tr><td>質問待ち</td><td><code>テスト成果物/テストケース_質問待ち.md</code></td><td>9</td></tr>
+<tr><td>人間実行CSV</td><td><code>テスト成果物/テストケース_人間実行.csv</code></td><td>32</td></tr>
+</tbody></table></div>
+<h3>2. 参照資料</h3>
+<p><code>テスト成果物/テスト設計.md</code>, <code>テスト成果物/テスト設計_質問票.md</code>, <code>テスト成果物/テスト分析.md</code>, <code>テスト成果物/テスト分析_質問票.md</code>, <code>テスト成果物/テスト計画書.md</code>, <code>spec/仕様書.md</code>, <code>sample_app/README.md</code>, <code>sample_app/retirement_simulator.html</code>, <code>テスト成果物/テスト設計レビュー結果.md</code>, <code>テスト成果物/テスト分析レビュー結果.md</code>, <code>テスト成果物/テスト計画レビュー結果.md</code></p>
+<h3>3. レビュー観点</h3>
+<p>トレーサビリティ, Expected Case Yield整合, Case Expansion Ledger, 1ケース1判定, 行独立性, 実行区分, 質問待ち管理, Markdown表構造, CSVパリティを確認した。</p>
+<h3>4. レビュー・修正サマリー</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>イテレーション</th><th>レビュー結果</th><th>修正内容</th><th>再レビュー結果</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>215件のケースを作成し、各 <code>TDxxx</code> の期待TC数と実TC数を照合した。P0, P1, P2の修正必須指摘なし。</td><td>修正なし。</td><td>P0, P1, P2の指摘なし。</td></tr>
+</tbody></table></div>
+<h3>5. 最終レビュー結果</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>優先度</th><th>観点</th><th>問題</th><th>場所</th><th>影響</th><th>修正方針</th></tr></thead>
+<tbody>
+<tr><td>なし</td><td>全観点</td><td>P0, P1, P2の修正必須指摘なし。</td><td>テストケース成果物全体</td><td>後続の実装入力として使用可能。</td><td>修正不要。</td></tr>
+</tbody></table></div>
+<div class="table-wrap"><table>
+<thead><tr><th>確認項目</th><th>結果</th></tr></thead>
+<tbody>
+<tr><td>合計期待TC数</td><td>215</td></tr>
+<tr><td>合計実TC数</td><td>215</td></tr>
+<tr><td>不足数</td><td>0</td></tr>
+<tr><td>質問待ちケース</td><td>9件。DQ001からDQ004へリンク済み。</td></tr>
+<tr><td>Case Expansion Ledger</td><td>TD001からTD060まで全件あり、期待数, 実数, 不足数, 対応TC IDが一致。</td></tr>
+<tr><td>1ケース1判定</td><td>各行は具体入力またはレビュー対象を1単位に分割済み。集約ケースは台帳に集約判定ルールを記録済み。</td></tr>
+<tr><td>行独立性</td><td>実行行に同上, 前述参照, 同条件のショートカットなし。</td></tr>
+<tr><td>実行可能入力</td><td>内部状態だけの入力はなく、対象関数引数, DOM値, ブラウザ操作, レビュー対象を明記。</td></tr>
+<tr><td>Markdown表構造</td><td>必須列を保持し、表を壊すパイプ文字はエスケープ済み。</td></tr>
+<tr><td>Human CSV parity</td><td><code>TC-MAN-001</code> から <code>TC-MAN-032</code> までMarkdownとCSVが一致し、実行記録列は空欄。</td></tr>
+</tbody></table></div>
+<h3>6. 残課題</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>ID</th><th>状態</th><th>内容</th><th>次アクション</th></tr></thead>
+<tbody>
+<tr><td>DQ001</td><td>質問待ち</td><td>正式回帰HTMLの追加対象または欠落扱いが未確定。</td><td>回答後にTC-CB-107とTC-MAN-040を移動またはN/A化する。</td></tr>
+<tr><td>DQ002</td><td>質問待ち</td><td>実ブラウザ確認範囲とSafari実機差異の扱いが未確定。</td><td>回答後にTC-MAN-033とTC-MAN-034を確定する。</td></tr>
+<tr><td>DQ003</td><td>質問待ち</td><td>失敗時videoを含む証跡保存条件が未確定。</td><td>回答後にTC-MAN-036からTC-MAN-039を確定する。</td></tr>
+<tr><td>DQ004</td><td>質問待ち</td><td>P0/P1欠陥残存時の承認フローが未確定。</td><td>回答後にTC-MAN-035を確定する。</td></tr>
+</tbody></table></div>
+</body>
+</html>

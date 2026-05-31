@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テスト設計レビュー</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テスト設計レビュー結果</h2>
+<h3>1. レビュー対象</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>項目</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>レビュー対象</td><td><code>テスト成果物/テスト設計.md</code></td></tr>
+<tr><td>質問票</td><td><code>テスト成果物/テスト設計_質問票.md</code></td></tr>
+<tr><td>レビュー結果</td><td><code>テスト成果物/テスト設計レビュー結果.md</code></td></tr>
+<tr><td>対象フェーズ</td><td>Phase 3 Design（<code>$create-test-design</code> + <code>$review-test-design</code>）</td></tr>
+<tr><td>対象コード</td><td><code>sample_app/retirement_simulator.html</code></td></tr>
+</tbody></table></div>
+<h3>2. 参照資料</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>参照資料</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td><code>テスト成果物/テスト設計.md</code></td><td>レビュー対象。</td></tr>
+<tr><td><code>テスト成果物/テスト設計_質問票.md</code></td><td>設計質問待ち管理の確認。</td></tr>
+<tr><td><code>テスト成果物/テスト分析.md</code></td><td><code>TV001</code> から <code>TV049</code>、<code>SSI001</code> から <code>SSI021</code>、分解候補、リスクIDとの照合。</td></tr>
+<tr><td><code>テスト成果物/テスト分析_質問票.md</code></td><td>未回答 <code>Q001</code> から <code>Q004</code> の引き継ぎ確認。</td></tr>
+<tr><td><code>テスト成果物/テスト分析レビュー結果.md</code></td><td>Phase 2レビューゲート結果の確認。</td></tr>
+<tr><td><code>テスト成果物/テスト計画書.md</code></td><td><code>TA001</code> から <code>TA014</code>、<code>R001</code> から <code>R013</code>、終了条件との整合確認。</td></tr>
+<tr><td><code>テスト成果物/テスト計画レビュー結果.md</code></td><td>Phase 1レビューゲート結果の確認。</td></tr>
+<tr><td><code>spec/仕様書.md</code></td><td>正の仕様として、境界、期待値、性能、互換性、証跡方針を確認。</td></tr>
+<tr><td><code>sample_app/README.md</code></td><td>ユーザーフロー、使用例、正式回帰HTML記述の補助確認。</td></tr>
+<tr><td><code>sample_app/retirement_simulator.html</code></td><td>参照先成果物・静的確認対象の存在確認。</td></tr>
+<tr><td><code>README.md</code></td><td><code>$run-test-process</code> の成果物と未実行/N/A管理方針の確認。</td></tr>
+</tbody></table></div>
+<h3>3. レビュー観点</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>観点</th><th>確認結果</th></tr></thead>
+<tbody>
+<tr><td>トレーサビリティ</td><td>各 <code>TDxxx</code> は <code>TVxxx</code>、<code>TAxxx</code>、仕様、リスクIDまたは質問待ち状態に接続されている。</td></tr>
+<tr><td>観点カバレッジ</td><td><code>TV001</code> から <code>TV049</code> はすべて1件以上の <code>TDxxx</code> に対応している。</td></tr>
+<tr><td>アプローチカバレッジ</td><td><code>TA001</code> から <code>TA014</code> はすべて1件以上の <code>TDxxx</code> に対応している。</td></tr>
+<tr><td>Source Structure Inventory消費</td><td><code>SSI001</code> から <code>SSI021</code> は設計、Expected Case Yield、または質問待ちに接続されている。</td></tr>
+<tr><td>必要十分な設計深度</td><td>高リスク領域はUnit/Integration/E2E/Security/Performance/Compatibility/Accessibility/Regression/Review/Evidenceに分割され、後続ケース作成で値や状態を再推測しない粒度になっている。</td></tr>
+<tr><td>分解候補の反映</td><td>所得税境界、年齢境界、投資補填、イベント8種、給与変更、性能測定、代表環境、証跡はExpected Case Yieldで具体件数化されている。</td></tr>
+<tr><td>Expected Case Yield</td><td><code>TD001</code> から <code>TD060</code> まで全件に具体的な <code>期待TC数</code> がある。合計期待ケース数は215件。</td></tr>
+<tr><td>集約・代表抽出</td><td>集約可または代表抽出の行には、集約判定ルール、代表抽出理由、または残留リスクが記録されている。</td></tr>
+<tr><td>質問待ち管理</td><td><code>DQ001</code> から <code>DQ004</code> は分析質問 <code>Q001</code> から <code>Q004</code> を推測せず引き継ぎ、<code>TD044</code>、<code>TD049</code>、<code>TD055</code>、<code>TD057</code>、<code>TD059</code>、<code>TD060</code> と整合している。</td></tr>
+<tr><td>実施方法の明確性</td><td>各行は主要な実施方法を1つに絞るか、補助的な確認方法として明示している。</td></tr>
+<tr><td>参照成果物の存在</td><td><code>sample_app/retirement_simulator.html</code> は存在確認済み。<code>sample_app/test_retirement_simulator.html</code> は未検出のため質問待ちとして維持されている。</td></tr>
+<tr><td>実行制約</td><td>本フェーズではテスト実行、開発サーバー起動、ブラウザ起動、依存導入を行っていない。</td></tr>
+</tbody></table></div>
+<h3>4. レビュー・修正サマリー</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>イテレーション</th><th>レビュー結果</th><th>修正内容</th><th>再レビュー結果</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><code>TV001</code> から <code>TV049</code> の網羅、<code>TD001</code> から <code>TD060</code> のExpected Case Yield、質問待ち整合、SSI消費、実施方法、集約理由を確認した。<code>P0</code>、<code>P1</code>、fix-worthy <code>P2</code> は検出されなかった。</td><td>修正なし。</td><td>高優先度の未解消指摘なし。</td></tr>
+</tbody></table></div>
+<h3>5. 最終レビュー結果</h3>
+<h4>5.1 指摘一覧</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>優先度</th><th>観点</th><th>問題</th><th>場所</th><th>影響</th><th>修正方針</th></tr></thead>
+<tbody>
+<tr><td>なし</td><td>全観点</td><td><code>P0</code>、<code>P1</code>、fix-worthy <code>P2</code> の指摘なし。</td><td><code>テスト成果物/テスト設計.md</code>、<code>テスト成果物/テスト設計_質問票.md</code> 全体</td><td>現設計は後続のテストケース作成入力として使用可能。</td><td>修正不要。</td></tr>
+</tbody></table></div>
+<h4>5.2 必要十分性の評価</h4>
+<p>テスト設計は、分析の <code>TV001</code> から <code>TV049</code> を60件の <code>TDxxx</code> に展開している。手取り計算、所得税ブラケット、年齢状態、投資利回り、補填、給与変更、イベント、異常入力、セキュリティ、注意表示、性能、互換性、アクセシビリティ、正式資産、証跡、未実行/N/A管理が、後続テストケース作成で再推測しない粒度になっている。</p>
+<p>高リスク領域では、<code>R001</code>、<code>R002</code>、<code>R003</code>、<code>R005</code>、<code>R009</code>、<code>R012</code>、<code>R013</code> を単一の広いシナリオに圧縮せず、単体・統合・E2E・静的確認・証跡確認に分けている。特に所得税境界18件、イベント8種、給与変更境界7件、互換性代表環境3件、入力差異×代表環境9件、性能10回測定など、下流ケース数の根拠が明示されている。</p>
+<h4>5.3 Expected Case Yieldレビュー</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>項目</th><th>結果</th></tr></thead>
+<tbody>
+<tr><td>Yield行数</td><td>60行。<code>TD001</code> から <code>TD060</code> まで全件対応。</td></tr>
+<tr><td>合計期待TC数</td><td>215件。</td></tr>
+<tr><td>非数値・空欄</td><td>なし。</td></tr>
+<tr><td>undercoverage</td><td>修正必須の不足なし。</td></tr>
+<tr><td>集約/代表抽出</td><td>集約可の測定・レビュー・代表抽出行は、判定単位または残留リスクを記録済み。</td></tr>
+<tr><td>質問待ちの期待数</td><td>質問待ち行も具体的な暫定期待数を持ち、回答後に展開またはN/A確定できる形になっている。</td></tr>
+</tbody></table></div>
+<h4>5.4 有限リスト・境界・圧縮確認</h4>
+<p>所得税ブラケット境界は6境界×3点、イベントは8種全件、給与変更有効条件は年齢0/1/100/101と年収0/正値/未入力、性能はウォームアップ後10回測定、互換性代表環境は <code>chromium</code>/<code>firefox</code>/<code>webkit</code> で分割されている。複数値を含む条件は、Expected Case Yieldで後続TC分割単位または代表抽出理由が示されているため、修正必須の圧縮は残っていない。</p>
+<h4>5.5 バグ逃し懸念への対応</h4>
+<p>レビューで想定した主なバグ逃しは、所得税境界ずれ、投資補填の20%税金誤り、年金開始と退職年齢の逆転、給与変更同一年齢優先順位、イベント非再現性、HTML断片の表示安全性、外部通信・永続化混入、注意表示不足、正式回帰HTML欠落、実装差異を仕様として固定することだった。これらは <code>TD002</code>、<code>TD006</code>、<code>TD019</code>、<code>TD012</code>、<code>TD010</code>、<code>TD036</code>、<code>TD039</code>、<code>TD034</code>、<code>TD049</code>、<code>TD053</code> などで設計済みまたは質問待ちとして管理されている。</p>
+<h4>5.6 ゲート判定</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>判定項目</th><th>結果</th></tr></thead>
+<tbody>
+<tr><td><code>P0</code> 指摘</td><td>なし</td></tr>
+<tr><td><code>P1</code> 指摘</td><td>なし</td></tr>
+<tr><td>fix-worthy <code>P2</code> 指摘</td><td>なし</td></tr>
+<tr><td>Phase 3レビューゲート</td><td>PASS</td></tr>
+<tr><td>次フェーズへの入力可否</td><td>入力可能</td></tr>
+</tbody></table></div>
+<h3>6. 残課題</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>ID</th><th>優先度</th><th>内容</th><th>推奨次アクション</th></tr></thead>
+<tbody>
+<tr><td>DQ001</td><td>高</td><td><code>sample_app/test_retirement_simulator.html</code> の追加対象/欠落記録/N/A扱いが未確定。</td><td>後続ケース・実装開始ゲートで質問待ちとして維持する。</td></tr>
+<tr><td>DQ002</td><td>高</td><td>Chrome/Firefox/Safari/Edge 実ブラウザ範囲とPlaywright代表環境の代替可否が未確定。</td><td>互換性ケース作成時に代表環境、手動確認、N/A条件を分ける。</td></tr>
+<tr><td>DQ003</td><td>中</td><td>Playwright失敗時video保存条件が未確定。</td><td>E2E実装・実行フェーズで保存設定とN/A条件を確定する。</td></tr>
+<tr><td>DQ004</td><td>高</td><td><code>P0/P1</code> プロダクト欠陥残存時の承認者、受入基準、リリース判断フローが未確定。</td><td>最終レポートまたは実行フェーズで残存リスクとして扱う。</td></tr>
+</tbody></table></div>
+<p>最終結論: <code>テスト成果物/テスト設計.md</code> と <code>テスト成果物/テスト設計_質問票.md</code> に未解消の <code>P0/P1/P2</code> はなく、Phase 3 DesignのレビューゲートはPASS。</p>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>コードベース実行結果: コードベース_発見issue一覧.md</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>コードベース_発見issue一覧</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Bug ID</th><th>要約</th><th>優先度</th><th>何がどうなったか</th><th>期待結果</th><th>トレーサビリティ</th><th>発見日時</th><th>関連実行済みテストケース</th></tr></thead>
+<tbody>
+<tr><td>BUG-001</td><td>TC-CB-036 残高不足 がFail</td><td>P1</td><td>TC-CB-036 がテスト実行でFailになった。詳細は実行ログを参照。</td><td>draw=25000円, tax=5000円となり、現金不足が残っても投資残高は0円になる。</td><td>TC-CB-036 / 元テスト設計ID: TD006 / テスト観点ID: TV011 / テストアプローチID: TA003 / 仕様: 仕様5.2 / リスクID: R003, R013</td><td>20260531221233</td><td>テスト成果物\report\20260531221233_コードベーステスト\20260531221233_テストケース_コードベース_実行済み.md</td></tr>
+<tr><td>BUG-002</td><td>TC-CB-038 投資残高不足で枯渇 がFail</td><td>P1</td><td>TC-CB-038 がテスト実行でFailになった。詳細は実行ログを参照。</td><td>投資残高を使い切っても例外停止せず、現金不足が残る。</td><td>TC-CB-038 / 元テスト設計ID: TD007 / テスト観点ID: TV012 / テストアプローチID: TA003 / 仕様: 仕様5.2 / リスクID: R003, R013</td><td>20260531221233</td><td>テスト成果物\report\20260531221233_コードベーステスト\20260531221233_テストケース_コードベース_実行済み.md</td></tr>
+<tr><td>BUG-003</td><td>TC-CB-039 補填後も現金マイナス継続 がFail</td><td>P1</td><td>TC-CB-039 がテスト実行でFailになった。詳細は実行ログを参照。</td><td>補填後も現金がマイナスのまま月次結果へ表示される。</td><td>TC-CB-039 / 元テスト設計ID: TD007 / テスト観点ID: TV012 / テストアプローチID: TA003 / 仕様: 仕様5.2 / リスクID: R003, R013</td><td>20260531221233</td><td>テスト成果物\report\20260531221233_コードベーステスト\20260531221233_テストケース_コードベース_実行済み.md</td></tr>
+<tr><td>BUG-004</td><td>TC-CB-052 給与変更年齢0は無効 がFail</td><td>P1</td><td>TC-CB-052 がテスト実行でFailになった。詳細は実行ログを参照。</td><td>給与変更は採用されず、基本年収が使われる。</td><td>TC-CB-052 / 元テスト設計ID: TD011 / テスト観点ID: TV017 / テストアプローチID: TA005 / 仕様: 仕様2.2 F008, 7.2 / リスクID: R005, R006, R013</td><td>20260531221233</td><td>テスト成果物\report\20260531221233_コードベーステスト\20260531221233_テストケース_コードベース_実行済み.md</td></tr>
+<tr><td>BUG-005</td><td>TC-CB-056 給与変更年収0は無効 がFail</td><td>P1</td><td>TC-CB-056 がテスト実行でFailになった。詳細は実行ログを参照。</td><td>給与変更は採用されず、基本年収が使われる。</td><td>TC-CB-056 / 元テスト設計ID: TD011 / テスト観点ID: TV017 / テストアプローチID: TA005 / 仕様: 仕様2.2 F008, 7.2 / リスクID: R005, R006, R013</td><td>20260531221233</td><td>テスト成果物\report\20260531221233_コードベーステスト\20260531221233_テストケース_コードベース_実行済み.md</td></tr>
+<tr><td>BUG-006</td><td>TC-CB-058 給与変更年収未入力は無効 がFail</td><td>P1</td><td>TC-CB-058 がテスト実行でFailになった。詳細は実行ログを参照。</td><td>未入力の給与変更は無効設定として無視される。</td><td>TC-CB-058 / 元テスト設計ID: TD011 / テスト観点ID: TV017 / テストアプローチID: TA005 / 仕様: 仕様2.2 F008, 7.2 / リスクID: R005, R006, R013</td><td>20260531221233</td><td>テスト成果物\report\20260531221233_コードベーステスト\20260531221233_テストケース_コードベース_実行済み.md</td></tr>
+<tr><td>BUG-007</td><td>TC-CB-060 複数年齢給与変更 がFail</td><td>P1</td><td>TC-CB-060 がテスト実行でFailになった。詳細は実行ログを参照。</td><td>40歳以後は7,000,000円、35歳から39歳は4,000,000円が使われる。</td><td>TC-CB-060 / 元テスト設計ID: TD012 / テスト観点ID: TV019 / テストアプローチID: TA005 / 仕様: 仕様2.2 F008 / リスクID: R005, R013</td><td>20260531221233</td><td>テスト成果物\report\20260531221233_コードベーステスト\20260531221233_テストケース_コードベース_実行済み.md</td></tr>
+<tr><td>BUG-008</td><td>TC-CB-061 同一年齢最後追加優先 がFail</td><td>P1</td><td>TC-CB-061 がテスト実行でFailになった。詳細は実行ログを参照。</td><td>35歳以後は最後に追加された年収5,000,000円が使われる。</td><td>TC-CB-061 / 元テスト設計ID: TD012 / テスト観点ID: TV019 / テストアプローチID: TA005 / 仕様: 仕様2.2 F008 / リスクID: R005, R013</td><td>20260531221233</td><td>テスト成果物\report\20260531221233_コードベーステスト\20260531221233_テストケース_コードベース_実行済み.md</td></tr>
+<tr><td>BUG-009</td><td>TC-CB-065 Infinity相当フォールバック がFail</td><td>P1</td><td>TC-CB-065 がテスト実行でFailになった。詳細は実行ログを参照。</td><td>0にフォールバックし、出力文字列にInfinityが出ない。</td><td>TC-CB-065 / 元テスト設計ID: TD013 / テスト観点ID: TV023 / テストアプローチID: TA007 / 仕様: 仕様7.1, 7.2 / リスクID: R006, R007</td><td>20260531221233</td><td>テスト成果物\report\20260531221233_コードベーステスト\20260531221233_テストケース_コードベース_実行済み.md</td></tr>
+<tr><td>BUG-010</td><td>TC-CB-094 複数年齢の月次反映 がFail</td><td>P1</td><td>TC-CB-094 がテスト実行でFailになった。詳細は実行ログを参照。</td><td>35歳行は年収4,000,000円、40歳行は年収7,000,000円として出力される。</td><td>TC-CB-094 / 元テスト設計ID: TD025 / テスト観点ID: TV019 / テストアプローチID: TA005 / 仕様: 仕様2.2 F008 / リスクID: R005, R013</td><td>20260531221233</td><td>テスト成果物\report\20260531221233_コードベーステスト\20260531221233_テストケース_コードベース_実行済み.md</td></tr>
+<tr><td>BUG-011</td><td>TC-CB-095 同一年齢最後追加の月次反映 がFail</td><td>P1</td><td>TC-CB-095 がテスト実行でFailになった。詳細は実行ログを参照。</td><td>35歳行は最後に追加した年収5,000,000円として出力される。</td><td>TC-CB-095 / 元テスト設計ID: TD025 / テスト観点ID: TV019 / テストアプローチID: TA005 / 仕様: 仕様2.2 F008 / リスクID: R005, R013</td><td>20260531221233</td><td>テスト成果物\report\20260531221233_コードベーステスト\20260531221233_テストケース_コードベース_実行済み.md</td></tr>
+<tr><td>BUG-012</td><td>TC-CB-099 全主要数値欄のInfinity相当代表 がFail</td><td>P1</td><td>TC-CB-099 がテスト実行でFailになった。詳細は実行ログを参照。</td><td>有限数でない値は0へフォールバックし、出力にInfinityが混入しない。</td><td>TC-CB-099 / 元テスト設計ID: TD027 / テスト観点ID: TV023 / テストアプローチID: TA007 / 仕様: 仕様7.1, 7.2 / リスクID: R006, R007</td><td>20260531221233</td><td>テスト成果物\report\20260531221233_コードベーステスト\20260531221233_テストケース_コードベース_実行済み.md</td></tr>
+</tbody></table></div>
+</body>
+</html>

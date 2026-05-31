@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テスト設計</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テスト設計</h2>
+<h3>1. 設計対象</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>項目</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>対象フェーズ</td><td>Phase 3 Design（<code>$create-test-design</code> + <code>$review-test-design</code>）</td></tr>
+<tr><td>テスト対象コード</td><td><code>sample_app/retirement_simulator.html</code></td></tr>
+<tr><td>コードベーステスト実装対象</td><td><code>sample_app/retirement_simulator.html</code></td></tr>
+<tr><td>E2E自動テスト実装対象</td><td><code>sample_app/retirement_simulator.html</code></td></tr>
+<tr><td>正の仕様</td><td><code>spec/仕様書.md</code> v1.3</td></tr>
+<tr><td>設計方針</td><td><code>TV001</code> から <code>TV049</code> をすべて <code>TDxxx</code> に展開し、仕様構造 <code>SSI001</code> から <code>SSI021</code> の境界・有限リスト・状態・環境・証跡を後続ケース作成で再推測しない形にする。</td></tr>
+</tbody></table></div>
+<h3>2. 参照資料</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>参照資料</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td><code>テスト成果物/テスト分析.md</code></td><td><code>TV001</code> から <code>TV049</code>、<code>SSI001</code> から <code>SSI021</code>、分解候補、リスクIDの入力。</td></tr>
+<tr><td><code>テスト成果物/テスト分析_質問票.md</code></td><td>未回答 <code>Q001</code> から <code>Q004</code> を設計質問へ引き継ぎ。</td></tr>
+<tr><td><code>テスト成果物/テスト分析レビュー結果.md</code></td><td>Phase 2レビューゲートPASSと残課題の確認。</td></tr>
+<tr><td><code>テスト成果物/テスト計画書.md</code></td><td><code>TA001</code> から <code>TA014</code>、<code>R001</code> から <code>R013</code>、終了条件、未決事項の参照。</td></tr>
+<tr><td><code>テスト成果物/テスト計画レビュー結果.md</code></td><td>Phase 1レビューゲートPASSと残課題の確認。</td></tr>
+<tr><td><code>spec/仕様書.md</code></td><td>期待値、境界、許容差、性能、互換性、証跡、正式資産の正。</td></tr>
+<tr><td><code>sample_app/README.md</code></td><td>ユーザーフロー、使用例、正式回帰HTML記述の補助確認。</td></tr>
+<tr><td><code>sample_app/retirement_simulator.html</code></td><td>実装確認対象。仕様と異なる場合は不具合候補として扱う。</td></tr>
+<tr><td><code>README.md</code></td><td><code>$run-test-process</code> の成果物配置、未実行/N/A管理、後続フェーズ文脈の確認。</td></tr>
+</tbody></table></div>
+<h3>3. テスト設計</h3>
+<h4>3.1 Unit</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストパターン</th><th>条件/入力</th><th>実施方法</th><th>期待結果/判定観点</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TD001</td><td>TV001</td><td>TA001</td><td>Unit</td><td>高</td><td>同値分割: 手取り計算の代表値</td><td>年収0円、1,200,000円、3,000,000円、10,000,000円を後続TCで分割。</td><td>自動ユニットテスト</td><td>社会保険料14%、基礎控除480,000円、所得税、住民税を仕様式で独立算出し、月手取り内部値が±0.01円以内。</td><td>仕様2.2 F001、5.1</td><td>R001, R013</td><td>設計済み</td></tr>
+<tr><td>TD002</td><td>TV002</td><td>TA001</td><td>Unit</td><td>高</td><td>境界値分析: 所得税ブラケット</td><td>課税所得上限1,950,000 / 3,300,000 / 6,950,000 / 9,000,000 / 18,000,000 / 40,000,000円の直前・境界・直後を後続TCで分割。</td><td>自動ユニットテスト</td><td>各境界で適用税率が仕様ブラケットに一致し、内部値が±0.01円以内。</td><td>仕様2.2 F001</td><td>R001, R013</td><td>設計済み</td></tr>
+<tr><td>TD003</td><td>TV003</td><td>TA001</td><td>Unit</td><td>高</td><td>境界値分析: 課税所得下限</td><td>年収0円、課税所得0円となる低所得、課税所得1円相当を後続TCで分割。</td><td>自動ユニットテスト</td><td>課税所得は0未満にならず、所得税・住民税・月手取りが仕様式に一致。</td><td>仕様2.2 F001</td><td>R001, R013</td><td>設計済み</td></tr>
+<tr><td>TD004</td><td>TV004</td><td>TA001</td><td>Unit</td><td>高</td><td>表示丸め分離</td><td>内部値に小数が出る年収と整数表示になる年収を後続TCで分割。</td><td>自動ユニットテスト + 表示関数相当確認</td><td>内部値は丸めず保持し、画面表示は<code>Math.round()</code>後の整数円と桁区切り。</td><td>仕様2.2 F001、3.1.3、5.1</td><td>R001, R013</td><td>設計済み</td></tr>
+<tr><td>TD005</td><td>TV010</td><td>TA003</td><td>Unit</td><td>高</td><td>境界値分析: 年初利息</td><td>1月と2月、利回り0%、4%、-1%を後続TCで分割。</td><td>自動ユニットテスト</td><td>利息は開始年を除く各年1月のみ適用され、月次内部値は丸めない。</td><td>仕様5.1</td><td>R003, R013</td><td>設計済み</td></tr>
+<tr><td>TD006</td><td>TV011</td><td>TA003</td><td>Unit</td><td>高</td><td>境界値分析: 投資補填上限</td><td>補填不要、全額補填、残高ちょうど、残高不足を後続TCで分割。</td><td>自動ユニットテスト</td><td><code>draw=min(need, investBal/1.2)</code>、税金20%、投資残高0未満禁止、現金加算は補填額のみ。</td><td>仕様5.2</td><td>R003, R013</td><td>設計済み</td></tr>
+<tr><td>TD007</td><td>TV012</td><td>TA003</td><td>Unit</td><td>高</td><td>異常値: 資産枯渇継続</td><td>投資0円、投資残高不足、補填後も現金マイナス継続を後続TCで分割。</td><td>自動ユニットテスト</td><td>投資残高を使い切っても例外停止せず、現金・総資産のマイナス表示を許容。</td><td>仕様5.2</td><td>R003, R013</td><td>設計済み</td></tr>
+<tr><td>TD008</td><td>TV013</td><td>TA004</td><td>Unit</td><td>中</td><td>境界値分析: イベント発生率</td><td><code>eventProb</code> 0%と100%を後続TCで分割。</td><td>自動ユニットテスト</td><td>0%ではイベントなし、100%では毎月イベント判定が発生する。</td><td>仕様5.3</td><td>R004</td><td>設計済み</td></tr>
+<tr><td>TD009</td><td>TV014</td><td>TA004</td><td>Unit</td><td>中</td><td>有限リスト全件: イベント種別</td><td>入院200,000円、歯科治療50,000円、薬の購入20,000円、家電故障100,000円、車検80,000円、冠婚葬祭120,000円、健康診断30,000円、引越し200,000円。</td><td>自動ユニットテスト</td><td>各イベント名・費用が仕様定義と一致し、発生時に現金から費用が差し引かれる。</td><td>仕様4.1、5.3</td><td>R004</td><td>設計済み</td></tr>
+<tr><td>TD010</td><td>TV015</td><td>TA004</td><td>Unit</td><td>中</td><td>テスト容易性: 乱数固定</td><td><code>Math.random()</code> 差し替え、イベント種別1件化を後続TCで分割。</td><td>自動ユニットテスト</td><td>イベント有無・種別を再現可能に制御でき、本番機能としてseed設定を要求しない。</td><td>仕様5.3</td><td>R004</td><td>設計済み</td></tr>
+<tr><td>TD011</td><td>TV017</td><td>TA005</td><td>Unit</td><td>高</td><td>境界値分析: 給与変更有効条件</td><td>年齢0/1/100/101、年収0/正値、未入力を後続TCで分割。</td><td>自動ユニットテスト</td><td><code>age &gt;= 1 &amp;&amp; age &lt;= 100 &amp;&amp; salary &gt; 0</code> の設定だけが給与変更として採用される。</td><td>仕様2.2 F008、7.2</td><td>R005, R006, R013</td><td>設計済み</td></tr>
+<tr><td>TD012</td><td>TV019</td><td>TA005</td><td>Unit</td><td>高</td><td>組み合わせ: 給与変更優先順位</td><td>単一、複数年齢、同一年齢複数、削除後を後続TCで分割。</td><td>自動ユニットテスト</td><td>年齢降順で適用され、同一年齢では最後に追加された設定が優先される。</td><td>仕様2.2 F008</td><td>R005, R013</td><td>設計済み</td></tr>
+<tr><td>TD013</td><td>TV023</td><td>TA007</td><td>Unit</td><td>高</td><td>異常値: 非数値フォールバック</td><td>空欄、NaN相当、Infinity相当を後続TCで分割。</td><td>自動ユニットテスト</td><td>0にフォールバックし、結果文字列に<code>NaN</code>/<code>Infinity</code>が出ない。</td><td>仕様7.1、7.2</td><td>R006, R007</td><td>設計済み</td></tr>
+<tr><td>TD014</td><td>TV024</td><td>TA007</td><td>Unit</td><td>中</td><td>異常値: 負値自然処理</td><td>現金、投資、生活費、収入系の負値代表を後続TCで分割。</td><td>自動ユニットテスト</td><td>例外停止せず、仕様上許容される自然処理またはマイナス資産表示になる。</td><td>仕様7.2、5.2</td><td>R006, R007</td><td>設計済み</td></tr>
+<tr><td>TD015</td><td>TV028</td><td>TA008</td><td>Unit</td><td>高</td><td>コードレビュー: 静的<code>innerHTML</code>範囲</td><td>給与変更項目テンプレートとユーザー入力値の埋め込み有無。</td><td>コードレビュー</td><td><code>innerHTML</code> は静的テンプレート限定で、ユーザー入力値をHTMLとして埋め込まない。</td><td>仕様8.2</td><td>R007</td><td>設計済み</td></tr>
+<tr><td>TD016</td><td>TV045</td><td>TA013</td><td>Unit</td><td>中</td><td>回帰補助: 組み込み<code>console.assert</code></td><td><code>runTests()</code> 内のアサーション対象、期待値の独立性、失敗時の可視性。</td><td>コードレビュー</td><td>組み込みアサートは正式回帰の十分条件ではなく、補助ログとして扱う範囲を明示できる。</td><td>仕様9.4、10.2</td><td>R012, R013</td><td>設計済み</td></tr>
+</tbody></table></div>
+<h4>3.2 Integration</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストパターン</th><th>条件/入力</th><th>実施方法</th><th>期待結果/判定観点</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TD017</td><td>TV005</td><td>TA002</td><td>Integration</td><td>高</td><td>境界値分析: ループ範囲</td><td><code>startAge</code> 30、100、101を後続TCで分割。</td><td>自動統合テスト</td><td><code>startAge</code>から100歳12月まで各月が生成され、<code>startAge=100</code>は12か月、<code>startAge&gt;100</code>は空配列相当になる。</td><td>仕様2.2 F002、6.1</td><td>R002, R013</td><td>設計済み</td></tr>
+<tr><td>TD018</td><td>TV006</td><td>TA002</td><td>Integration</td><td>高</td><td>状態遷移: 収入種別境界</td><td>退職直前、退職年齢、年金開始直前、年金開始年齢を後続TCで分割。</td><td>自動統合テスト</td><td>給与、退職後収入、年金の判定順が仕様通りで、境界月の表示行が一致。</td><td>仕様2.2 F002</td><td>R002, R013</td><td>設計済み</td></tr>
+<tr><td>TD019</td><td>TV007</td><td>TA002</td><td>Integration</td><td>高</td><td>異常系状態遷移: 年齢逆転</td><td><code>pensionStartAge &lt;= retirementAge</code> の同年齢、年金開始が退職前を後続TCで分割。</td><td>自動統合テスト</td><td>入力エラーにせず、退職前は給与、退職後は年金へ遷移する。</td><td>仕様2.2 F002</td><td>R002, R013</td><td>設計済み</td></tr>
+<tr><td>TD020</td><td>TV008</td><td>TA002</td><td>Integration</td><td>高</td><td>デシジョンテーブル: 状態別生活費</td><td>現役、退職後、年金期間の3状態を後続TCで分割。</td><td>自動統合テスト</td><td>各状態で対応する生活費 <code>expenseCurrent</code>、<code>expenseGap</code>、<code>expenseRetired</code> が差し引かれる。</td><td>仕様2.2 F002、3.1.2</td><td>R002, R013</td><td>設計済み</td></tr>
+<tr><td>TD021</td><td>TV009</td><td>TA003</td><td>Integration</td><td>高</td><td>計算連携: 投資積立</td><td>現役期間、投資率0%、20%、100%を後続TCで分割。</td><td>自動統合テスト</td><td>月手取りの投資率分が投資残高へ、残額が現金へ加算される。</td><td>仕様2.2 F002、5.1</td><td>R003, R013</td><td>設計済み</td></tr>
+<tr><td>TD022</td><td>TV011</td><td>TA003</td><td>Integration</td><td>高</td><td>計算連携: 補填後表示</td><td>現金不足が発生する月で、補填額・税金・現金・投資・総資産を確認。</td><td>自動統合テスト</td><td>投資補填表示、税金表示、各残高表示が仕様式と表示丸めに一致。</td><td>仕様5.2、3.1.3</td><td>R003, R013</td><td>設計済み</td></tr>
+<tr><td>TD023</td><td>TV016</td><td>TA005</td><td>Integration</td><td>高</td><td>ライフサイクル/CRUDマトリクス: 給与変更UI状態</td><td>表示、非表示、追加、削除、再実行を後続TCで分割。</td><td>DOM統合テスト</td><td>設定一覧の状態がシミュレーション入力に反映され、削除後の設定は反映されない。</td><td>仕様2.2 F008、3.1.2</td><td>R005, R013</td><td>設計済み</td></tr>
+<tr><td>TD024</td><td>TV018</td><td>TA005</td><td>Integration</td><td>高</td><td>状態遷移: 給与変更適用時期</td><td><code>age &lt; startAge</code>、<code>age === startAge</code>、<code>age &gt;= retirementAge</code> を後続TCで分割。</td><td>自動統合テスト</td><td>開始前は適用済み、開始同年齢は開始月から、退職年齢以後は結果に影響しない。</td><td>仕様2.2 F008</td><td>R005, R013</td><td>設計済み</td></tr>
+<tr><td>TD025</td><td>TV019</td><td>TA005</td><td>Integration</td><td>高</td><td>組み合わせ: 複数給与変更の月次反映</td><td>年齢降順の複数設定、同一年齢最後追加、削除後の再実行。</td><td>自動統合テスト</td><td>出力の年収表示と給与額が、適用される給与変更設定に一致。</td><td>仕様2.2 F008</td><td>R005, R013</td><td>設計済み</td></tr>
+<tr><td>TD026</td><td>TV022</td><td>TA006</td><td>Integration</td><td>高</td><td>組み合わせ: 年齢境界×給与変更×補填×イベント</td><td>退職境界、給与変更同年齢、投資補填、イベント100%を含む複合条件。</td><td>自動統合テスト</td><td>収入種別・給与変更・イベント費用・補填・表示が同一月で破綻せず、仕様の判定順に従う。</td><td>仕様2.2、5.1、5.2、5.3</td><td>R002, R003, R005, R013</td><td>設計済み</td></tr>
+<tr><td>TD027</td><td>TV023</td><td>TA007</td><td>Integration</td><td>高</td><td>異常値連携: 表示安全なフォールバック</td><td>全主要数値欄の空欄代表、Infinity相当代表、NaN相当代表を後続TCで分割。</td><td>DOM統合テスト</td><td>例外なく結果が生成され、出力に<code>NaN</code>/<code>Infinity</code>が混入しない。</td><td>仕様7.1、7.2</td><td>R006, R007</td><td>設計済み</td></tr>
+<tr><td>TD028</td><td>TV025</td><td>TA007</td><td>Integration</td><td>中</td><td>互換性入力: 指数表記/貼り付け</td><td>指数表記、貼り付け、DOM値設定を後続TCで分割し、代表環境ごとは互換性設計で分割。</td><td>DOM統合テスト</td><td>最終DOM値として有効な数値は通常数値として扱い、無効値は0フォールバック。</td><td>仕様7.1、7.2、9.4</td><td>R006</td><td>設計済み</td></tr>
+<tr><td>TD029</td><td>TV026</td><td>TA007</td><td>Integration</td><td>高</td><td>セキュリティ異常値: HTML断片</td><td>数値入力へのHTML断片貼り付け、DOM値直接設定、特殊文字列を後続TCで分割。</td><td>DOM統合テスト</td><td>スクリプト実行やHTML解釈が起きず、結果表示が安全に処理される。</td><td>仕様7.2、8.2</td><td>R007</td><td>設計済み</td></tr>
+</tbody></table></div>
+<h4>3.3 E2E</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストパターン</th><th>条件/入力</th><th>実施方法</th><th>期待結果/判定観点</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TD030</td><td>TV020</td><td>TA006</td><td>E2E</td><td>高</td><td>代表シナリオ: デフォルト実行</td><td>初期値のまま開始ボタンを押す。</td><td>Playwright E2E</td><td>月次結果、現金・投資・総資産、注意表示が確認でき、結果表示が更新される。</td><td>README使い方、仕様2.1、3.1</td><td>R002, R003, R009, R013</td><td>設計済み</td></tr>
+<tr><td>TD031</td><td>TV021</td><td>TA006</td><td>E2E</td><td>高</td><td>シナリオ全件: README使用例</td><td>デフォルト、キャリアアップ、早期退職、資産枯渇、イベント発生を後続TCで分割。</td><td>Playwright E2E</td><td>各シナリオが結果表示まで到達し、対象機能連携の代表行が確認できる。</td><td>README使用例、仕様2.1、3.1</td><td>R002, R003, R005, R009, R013</td><td>設計済み</td></tr>
+<tr><td>TD032</td><td>TV016</td><td>TA005</td><td>E2E</td><td>高</td><td>UIイベント全件: 給与変更操作</td><td>トグル、追加、削除、開始を後続TCで分割。</td><td>Playwright E2E</td><td>操作不能にならず、給与変更設定が結果表示の年収行へ反映される。</td><td>仕様2.2 F008、3.1.2</td><td>R005, R013</td><td>設計済み</td></tr>
+<tr><td>TD033</td><td>TV030</td><td>TA009</td><td>E2E</td><td>高</td><td>表示確認: プライバシー説明</td><td>初期表示および結果表示後。</td><td>Playwright E2E</td><td>ネットワーク通信なし・外部送信なしの説明が画面上に視認できる。</td><td>仕様3.1.4、8.1</td><td>R009</td><td>設計済み</td></tr>
+<tr><td>TD034</td><td>TV031</td><td>TA009</td><td>E2E</td><td>高</td><td>表示確認: 助言ではない旨</td><td>初期表示および結果表示後。</td><td>Playwright E2E + 人間確認</td><td>金融助言・税務助言ではない旨、実制度や個人差の別途確認が画面上に必須表示される。</td><td>仕様3.1.4、11.1</td><td>R009</td><td>設計済み</td></tr>
+<tr><td>TD035</td><td>TV032</td><td>TA009</td><td>E2E</td><td>中</td><td>文書整合: README/画面注意</td><td>README注意事項と画面注意表示の必須文言差分。</td><td>人間確認 + コードレビュー</td><td>仕様の必須表示内容を満たし、READMEや実装の不足を正として扱わない。</td><td>仕様1.4、3.1.4、README注意事項</td><td>R009, R013</td><td>設計済み</td></tr>
+</tbody></table></div>
+<h4>3.4 Security</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストパターン</th><th>条件/入力</th><th>実施方法</th><th>期待結果/判定観点</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TD036</td><td>TV026</td><td>TA007</td><td>Security</td><td>高</td><td>XSS入力: 通常入力/貼り付け/DOM値</td><td><code>&lt;img onerror=...&gt;</code>、<code>&lt;script&gt;...&lt;/script&gt;</code>、記号列を後続TCで分割。</td><td>Playwright E2E</td><td>アラート・スクリプト実行・HTML解釈が発生せず、結果表示がテキストとして扱われる。</td><td>仕様7.2、8.2</td><td>R007</td><td>設計済み</td></tr>
+<tr><td>TD037</td><td>TV027</td><td>TA008</td><td>Security</td><td>高</td><td>表示安全性: <code>textContent</code></td><td>シミュレーション結果とユーザー入力が出力される経路。</td><td>コードレビュー + E2E補助</td><td>結果表示に<code>textContent</code>を使い、ユーザー入力をHTMLとして解釈しない。</td><td>仕様3.1.3、8.2</td><td>R007, R008</td><td>設計済み</td></tr>
+<tr><td>TD038</td><td>TV028</td><td>TA008</td><td>Security</td><td>高</td><td>静的テンプレート監査</td><td><code>innerHTML</code>使用箇所の全件確認。</td><td>コードレビュー</td><td><code>innerHTML</code>使用が静的テンプレートに限定され、ユーザー入力値を含まない。</td><td>仕様8.2</td><td>R007</td><td>設計済み</td></tr>
+<tr><td>TD039</td><td>TV029</td><td>TA008</td><td>Security</td><td>高</td><td>プライバシー全件: 通信/依存/永続化</td><td>network要求、外部リソース、localStorage/sessionStorage/cookie/IndexedDBを後続TCで分割。</td><td>コードレビュー + DevTools network確認</td><td>外部通信、外部ライブラリ/CDN、ストレージ永続化がなく、財務情報がローカルブラウザ内に留まる。</td><td>仕様1.3、8.1</td><td>R008</td><td>設計済み</td></tr>
+</tbody></table></div>
+<h4>3.5 Performance</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストパターン</th><th>条件/入力</th><th>実施方法</th><th>期待結果/判定観点</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TD040</td><td>TV033</td><td>TA010</td><td>Performance</td><td>中</td><td>性能測定: 計算95パーセンタイル</td><td>デフォルト入力、イベント0%、1280x720以上、Chromium系、ウォームアップ3回後10回測定。</td><td>性能測定スクリプト</td><td><code>simulateRetirement()</code> 呼び出し前後の95パーセンタイルが100ms以下。</td><td>仕様6.2</td><td>R010</td><td>設計済み</td></tr>
+<tr><td>TD041</td><td>TV034</td><td>TA010</td><td>Performance</td><td>中</td><td>性能測定: 描画95パーセンタイル</td><td>開始操作から<code>#output</code>テキスト更新完了まで、同一測定条件。</td><td>Playwright性能測定</td><td>描画95パーセンタイルが200ms以下。</td><td>仕様6.2</td><td>R010</td><td>設計済み</td></tr>
+<tr><td>TD042</td><td>TV035</td><td>TA010</td><td>Performance</td><td>中</td><td>信頼性: 10回連続実行</td><td>入力値を変えながら10回連続実行。</td><td>Playwright E2E</td><td>古い結果混入、JavaScript例外、明確な表示遅延がない。</td><td>仕様6.2</td><td>R010</td><td>設計済み</td></tr>
+</tbody></table></div>
+<h4>3.6 Compatibility</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストパターン</th><th>条件/入力</th><th>実施方法</th><th>期待結果/判定観点</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TD043</td><td>TV036</td><td>TA011</td><td>Compatibility</td><td>中</td><td>互換性マトリクス: Playwright代表環境</td><td><code>chromium</code>、<code>firefox</code>、<code>webkit</code>を後続TCで独立分割。</td><td>Playwright E2E</td><td>主要入力と結果生成が可能で、各代表環境は独立Fail判定できる。</td><td>仕様7.3、9.4</td><td>R011</td><td>設計済み</td></tr>
+<tr><td>TD044</td><td>TV037</td><td>TA011</td><td>Compatibility</td><td>高</td><td>質問待ち: 実ブラウザ確認範囲</td><td>Chrome/Firefox/Safari/Edge 最新安定版および1つ前の実ブラウザ全件確認範囲は要確認。</td><td>要確認</td><td>Playwright代表環境で代替する範囲、Safari実機固有差異の手動確認条件は回答後に確定する。</td><td>仕様7.3、要確認</td><td>R011</td><td>質問待ち</td></tr>
+<tr><td>TD045</td><td>TV025</td><td>TA007</td><td>Compatibility</td><td>中</td><td>ブラウザ差異: number input</td><td>指数表記、貼り付け、スピンボタン差異を代表環境ごとに後続TCで分割。</td><td>Playwright E2E</td><td>UI差異そのものではなく、最終DOM値のパースと結果生成が止まらないことを判定。</td><td>仕様7.1、7.2、9.4</td><td>R006</td><td>設計済み</td></tr>
+</tbody></table></div>
+<h4>3.7 Accessibility</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストパターン</th><th>条件/入力</th><th>実施方法</th><th>期待結果/判定観点</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TD046</td><td>TV038</td><td>TA011</td><td>Accessibility</td><td>中</td><td>レイアウト境界: 800x600以上</td><td>800x600、1280x720を後続TCで分割。</td><td>Playwright E2E + スクリーンショット確認</td><td>入力、給与変更設定、開始ボタン、結果表示が操作不能または読取不能にならない。</td><td>仕様11.2、13 C002</td><td>R011</td><td>設計済み</td></tr>
+<tr><td>TD047</td><td>TV039</td><td>TA011</td><td>Accessibility</td><td>中</td><td>キーボード操作全件</td><td>入力移動、給与変更表示、追加、削除、開始を後続TCで分割。</td><td>Playwright E2E + 人間確認</td><td>マウスなしで主要操作が可能。</td><td>仕様9.4、13 C003</td><td>R011</td><td>設計済み</td></tr>
+<tr><td>TD048</td><td>TV040</td><td>TA011</td><td>Accessibility</td><td>中</td><td>読み取りやすさ/名前推測</td><td>入力ラベル、ボタン文言、結果表示。</td><td>人間確認 + DOM確認</td><td>支援技術上も意味を推測でき、結果表示が読み取りやすい。WCAG 2.2 AA正式適合は対象外。</td><td>仕様9.4、11.2、13 C003</td><td>R011</td><td>設計済み</td></tr>
+</tbody></table></div>
+<h4>3.8 Regression</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストパターン</th><th>条件/入力</th><th>実施方法</th><th>期待結果/判定観点</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TD049</td><td>TV041</td><td>TA012</td><td>Regression</td><td>高</td><td>質問待ち: 正式回帰HTML存在確認</td><td><code>sample_app/test_retirement_simulator.html</code> は現時点で未検出。追加対象か欠落記録か要確認。</td><td>要確認</td><td>存在する場合は実行可否・証跡保存を設計し、欠落扱いなら未実装/未実行/N/Aとして記録する。</td><td>仕様9.3、9.4、sample_app READMEテスト</td><td>R012, R013</td><td>質問待ち</td></tr>
+<tr><td>TD050</td><td>TV042</td><td>TA012</td><td>Regression</td><td>高</td><td>補完設計: 独立期待値/E2E/コードレビュー</td><td>正式回帰HTMLが存在する場合と欠落する場合の両方。</td><td>コードレビュー + 自動テスト設計確認</td><td>本体コピー依存の限界を踏まえ、仕様式から独立した期待値・E2E・コードレビューで補完できる。</td><td>仕様9.4</td><td>R012, R013</td><td>設計済み</td></tr>
+<tr><td>TD051</td><td>TV043</td><td>TA012</td><td>Regression</td><td>中</td><td>証跡設計: 既存HTMLテスト</td><td>ブラウザ結果画面、実行ブラウザ、失敗時ログ。</td><td>手動/自動実行記録確認</td><td>既存HTMLテストを実行する場合に必要証跡を残せる。存在欠落時はTD049に従う。</td><td>仕様9.4</td><td>R012, R013</td><td>設計済み</td></tr>
+</tbody></table></div>
+<h4>3.9 Code review</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストパターン</th><th>条件/入力</th><th>実施方法</th><th>期待結果/判定観点</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TD052</td><td>TV044</td><td>TA013</td><td>Code review</td><td>高</td><td>静的差異確認: 仕様正</td><td>計算式、入力属性、表示、注意文言、セキュリティ方針、正式資産記述を後続TCで分割。</td><td>コードレビュー</td><td>仕様とREADME/実装の差異を検出し、実装追随の期待値にすり替えない。</td><td>仕様1.4、10.2</td><td>R012, R013</td><td>設計済み</td></tr>
+<tr><td>TD053</td><td>TV046</td><td>TA013</td><td>Code review</td><td>高</td><td>差異追跡方針: <code>BUG-*</code>/<code>E2E-BUG-*</code></td><td>仕様差異を検出した場合の記録、分類、後続成果物反映。</td><td>成果物レビュー</td><td>差異は欠陥候補として追跡し、設計・ケース・実行結果で仕様を正として扱い続ける。</td><td>仕様1.4、計画5</td><td>R013</td><td>設計済み</td></tr>
+</tbody></table></div>
+<h4>3.10 Manual</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストパターン</th><th>条件/入力</th><th>実施方法</th><th>期待結果/判定観点</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TD054</td><td>TV032</td><td>TA009</td><td>Manual</td><td>中</td><td>文言確認: 過信抑止</td><td>画面注意表示、README注意事項、仕様必須文言。</td><td>人間確認</td><td>注意表示が利用者に確認できる位置・文意であり、金融/税務助言ではない旨が欠落しない。</td><td>仕様1.4、3.1.4、11.1</td><td>R009, R013</td><td>設計済み</td></tr>
+<tr><td>TD055</td><td>TV037</td><td>TA011</td><td>Manual</td><td>高</td><td>質問待ち: 実機Safari固有差異</td><td>WebKitで再現できないSafari実機差異の扱い。</td><td>要確認</td><td>手動確認の要否、対象バージョン、N/A条件はQ002回答後に確定する。</td><td>仕様7.3、要確認</td><td>R011</td><td>質問待ち</td></tr>
+</tbody></table></div>
+<h4>3.11 Exploratory</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストパターン</th><th>条件/入力</th><th>実施方法</th><th>期待結果/判定観点</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TD056</td><td>TV022</td><td>TA006</td><td>Exploratory</td><td>高</td><td>探索的: 高リスク複合</td><td>年齢境界、給与変更、投資率、イベント発生率、補填不足が同時に絡む条件を後続TCで分割。</td><td>探索的E2E</td><td>仕様の判定順・表示・補填が破綻せず、差異があれば<code>E2E-BUG-*</code>候補として記録。</td><td>仕様2.2、5.1、5.2、5.3</td><td>R002, R003, R005, R013</td><td>設計済み</td></tr>
+<tr><td>TD057</td><td>TV049</td><td>TA014</td><td>Exploratory</td><td>高</td><td>質問待ち/運用: 未確定管理</td><td>質問待ち、未実装、未実行、N/A、欠陥残存を後続成果物で分ける。</td><td>成果物レビュー</td><td>推測でPass/Failに埋めず、Pass率計算や最終レポートで状態が保持される。<code>P0/P1</code>欠陥承認フローは要確認。</td><td>READMEワークフロー、計画5</td><td>R012, R013</td><td>質問待ち</td></tr>
+</tbody></table></div>
+<h4>3.12 Evidence/reporting</h4>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストパターン</th><th>条件/入力</th><th>実施方法</th><th>期待結果/判定観点</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TD058</td><td>TV047</td><td>TA014</td><td>Evidence/reporting</td><td>中</td><td>証跡全件: 自動テスト成果</td><td>Markdown/CSVサマリ、実行ログ、Playwright JSONを後続TCで分割。</td><td>成果物レビュー</td><td>自動テスト結果の証跡が<code>テスト成果物/</code>配下に保存される。</td><td>仕様9.4、READMEワークフロー</td><td>R012, R013</td><td>設計済み</td></tr>
+<tr><td>TD059</td><td>TV048</td><td>TA014</td><td>Evidence/reporting</td><td>中</td><td>質問待ち: 失敗時証跡</td><td>スクリーンショット、trace、video、手動確認記録。video保存条件は要確認。</td><td>成果物レビュー</td><td>スクリーンショット/trace/手動確認記録は残し、videoはQ003回答後に常時・失敗時・必要時の扱いを確定する。</td><td>仕様9.4、要確認</td><td>R012, R013</td><td>質問待ち</td></tr>
+<tr><td>TD060</td><td>TV041</td><td>TA012</td><td>Evidence/reporting</td><td>高</td><td>未実装/N/A証跡: 正式資産欠落</td><td>正式回帰HTML欠落時の未実装・未実行・N/A記録。</td><td>成果物レビュー</td><td>欠落を推測で解消せず、質問待ちまたは未実装/N/Aとして後続成果物に残す。</td><td>仕様9.3、9.4</td><td>R012, R013</td><td>質問待ち</td></tr>
+</tbody></table></div>
+<h3>4. 質問待ち項目</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>質問ID</th><th>関連テスト設計ID</th><th>関連テスト観点ID</th><th>内容</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>DQ001</td><td>TD049, TD060</td><td>TV041</td><td><code>sample_app/test_retirement_simulator.html</code> を追加対象にするか、欠落として未実装/未実行/N/Aに残すか。分析質問 <code>Q001</code> を継続。</td><td>質問待ち</td></tr>
+<tr><td>DQ002</td><td>TD044, TD055</td><td>TV037</td><td>Chrome/Firefox/Safari/Edge 最新安定版および1つ前の実ブラウザ確認範囲とPlaywright代表環境による代替可否。分析質問 <code>Q002</code> を継続。</td><td>質問待ち</td></tr>
+<tr><td>DQ003</td><td>TD059</td><td>TV048</td><td>Playwright失敗時video保存を常時、失敗時のみ、必要時のみのどれにするか。分析質問 <code>Q003</code> を継続。</td><td>質問待ち</td></tr>
+<tr><td>DQ004</td><td>TD057</td><td>TV049</td><td><code>P0/P1</code> 相当のプロダクト欠陥が未修正で残る場合の承認者、受入基準、リリース判断フロー。分析質問 <code>Q004</code> を継続。</td><td>質問待ち</td></tr>
+</tbody></table></div>
+<h3>5. 上流成果物への追記・更新</h3>
+<p>本設計では、テスト分析・テスト計画に新しい <code>TVxxx</code>、<code>TAxxx</code>、<code>Rxxx</code>、<code>SSIxxx</code> を追加する必要は検出しなかった。<code>Q001</code> から <code>Q004</code> は未回答のため、回答を推測せず、<code>DQ001</code> から <code>DQ004</code> として設計質問票へ引き継いだ。</p>
+<h3>6. カバレッジ確認</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>確認項目</th><th>結果</th></tr></thead>
+<tbody>
+<tr><td>テスト観点網羅</td><td><code>TV001</code> から <code>TV049</code> はすべて1件以上の <code>TDxxx</code> に対応済み。</td></tr>
+<tr><td>テストアプローチ網羅</td><td><code>TA001</code> から <code>TA014</code> はすべて1件以上の <code>TDxxx</code> に対応済み。</td></tr>
+<tr><td>Source Structure Inventory消費</td><td><code>SSI001</code> から <code>SSI021</code> は設計または質問待ち・対象外確認に接続済み。</td></tr>
+<tr><td>高リスク密度</td><td><code>R001</code>、<code>R002</code>、<code>R003</code>、<code>R005</code>、<code>R009</code>、<code>R012</code>、<code>R013</code> はUnit/Integration/E2E/Review/Evidenceに分割して設計。</td></tr>
+<tr><td>分解候補の反映</td><td>所得税境界、年齢境界、補填境界、イベント8種、給与変更境界、性能測定、代表環境、証跡はExpected Case Yieldで具体件数化済み。</td></tr>
+<tr><td>質問待ち整合</td><td><code>TD044</code>、<code>TD049</code>、<code>TD055</code>、<code>TD057</code>、<code>TD059</code>、<code>TD060</code> は質問票 <code>DQ001</code> から <code>DQ004</code> と対応済み。</td></tr>
+<tr><td>実行制約</td><td>本フェーズではテストコマンド、開発サーバー、ブラウザ、依存導入は行っていない。</td></tr>
+</tbody></table></div>
+<h3>7. Expected Case Yield（期待ケース数）</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>分割元構造ID</th><th>分割方針</th><th>期待TC数</th><th>集約可否</th><th>集約判定ルール/代表抽出理由</th><th>備考</th></tr></thead>
+<tbody>
+<tr><td>TD001</td><td>SSI004, TV001</td><td>代表抽出</td><td>4</td><td>不可</td><td>年収0/低所得/標準/高所得の税計算経路を独立判定。</td><td></td></tr>
+<tr><td>TD002</td><td>SSI003, TV002</td><td>境界展開</td><td>18</td><td>不可</td><td>6つの有限境界それぞれ直前・境界・直後。</td><td>Infinityは上限なしのため境界TCに含めない。</td></tr>
+<tr><td>TD003</td><td>SSI004, TV003</td><td>境界展開</td><td>3</td><td>不可</td><td>年収0、課税所得0、課税発生直後。</td><td></td></tr>
+<tr><td>TD004</td><td>SSI004, TV004</td><td>境界展開</td><td>2</td><td>不可</td><td>内部値と表示値の判定が異なる2代表。</td><td></td></tr>
+<tr><td>TD005</td><td>SSI007, TV010</td><td>境界展開</td><td>5</td><td>不可</td><td>1月/2月、利回り0/正/負を独立判定。</td><td></td></tr>
+<tr><td>TD006</td><td>SSI008, TV011</td><td>境界展開</td><td>4</td><td>不可</td><td>補填不要/全額補填/残高ちょうど/残高不足。</td><td></td></tr>
+<tr><td>TD007</td><td>SSI008, TV012</td><td>境界展開</td><td>3</td><td>不可</td><td>投資0/残高不足/マイナス継続。</td><td></td></tr>
+<tr><td>TD008</td><td>SSI010, TV013</td><td>境界展開</td><td>2</td><td>不可</td><td>0%と100%。</td><td></td></tr>
+<tr><td>TD009</td><td>SSI009, TV014</td><td>全件展開</td><td>8</td><td>不可</td><td>イベント8種全件。</td><td>同額200,000円の入院/引越しは名称差分を保持。</td></tr>
+<tr><td>TD010</td><td>SSI010, TV015</td><td>全件展開</td><td>2</td><td>不可</td><td>乱数差し替え、イベント1件化。</td><td></td></tr>
+<tr><td>TD011</td><td>SSI002, TV017</td><td>境界展開</td><td>7</td><td>不可</td><td>年齢0/1/100/101、年収0/正値/未入力。</td><td></td></tr>
+<tr><td>TD012</td><td>SSI011, TV019</td><td>組み合わせ展開</td><td>4</td><td>不可</td><td>単一/複数/同一年齢/削除後。</td><td></td></tr>
+<tr><td>TD013</td><td>SSI014, TV023</td><td>境界展開</td><td>3</td><td>不可</td><td>空欄/NaN相当/Infinity相当。</td><td></td></tr>
+<tr><td>TD014</td><td>SSI014, TV024</td><td>代表抽出</td><td>4</td><td>可</td><td>主要入力群から現金・投資・生活費・収入系の負値代表を抽出し、例外停止なしを同一証跡で判定。</td><td>残留リスクは個別項目差分。</td></tr>
+<tr><td>TD015</td><td>SSI015, TV028</td><td>全件展開</td><td>1</td><td>可</td><td><code>innerHTML</code>使用箇所が限定的なため1レビュー単位で全件確認。</td><td></td></tr>
+<tr><td>TD016</td><td>SSI019, TV045</td><td>全件展開</td><td>1</td><td>可</td><td><code>runTests()</code>の補助ログ範囲を1レビュー単位で確認。</td><td></td></tr>
+<tr><td>TD017</td><td>SSI006, TV005</td><td>境界展開</td><td>3</td><td>不可</td><td>startAge30/100/101。</td><td></td></tr>
+<tr><td>TD018</td><td>SSI005, TV006</td><td>境界展開</td><td>4</td><td>不可</td><td>退職直前/退職年齢/年金開始直前/年金開始年齢。</td><td></td></tr>
+<tr><td>TD019</td><td>SSI005, TV007</td><td>境界展開</td><td>2</td><td>不可</td><td>同年齢、年金開始が退職前。</td><td></td></tr>
+<tr><td>TD020</td><td>SSI001, SSI005, TV008</td><td>全件展開</td><td>3</td><td>不可</td><td>現役/退職後/年金期間の生活費3種。</td><td></td></tr>
+<tr><td>TD021</td><td>SSI007, TV009</td><td>境界展開</td><td>3</td><td>不可</td><td>投資率0/20/100%。</td><td></td></tr>
+<tr><td>TD022</td><td>SSI008, TV011</td><td>境界展開</td><td>1</td><td>不可</td><td>補填が発生する統合表示の代表月。</td><td>TD006で計算境界を分離済み。</td></tr>
+<tr><td>TD023</td><td>SSI011, SSI012, TV016</td><td>全件展開</td><td>5</td><td>不可</td><td>表示/非表示/追加/削除/再実行。</td><td></td></tr>
+<tr><td>TD024</td><td>SSI011, TV018</td><td>全件展開</td><td>3</td><td>不可</td><td>開始前/開始同年齢/退職年齢以後。</td><td></td></tr>
+<tr><td>TD025</td><td>SSI011, TV019</td><td>組み合わせ展開</td><td>3</td><td>不可</td><td>複数年齢/同一年齢最後追加/削除後再実行。</td><td></td></tr>
+<tr><td>TD026</td><td>SSI005, SSI008, SSI010, SSI011, TV022</td><td>組み合わせ展開</td><td>1</td><td>可</td><td>高リスク複合の代表1シナリオで相互作用を総合判定。</td><td>個別境界はTD018/TD022/TD024/TD025で分離。</td></tr>
+<tr><td>TD027</td><td>SSI001, SSI014, TV023</td><td>代表抽出</td><td>3</td><td>可</td><td>空欄/Infinity相当/NaN相当を主要入力群へ代表適用し、出力汚染を同一基準で判定。</td><td></td></tr>
+<tr><td>TD028</td><td>SSI014, SSI017, TV025</td><td>全件展開</td><td>3</td><td>不可</td><td>指数表記/貼り付け/DOM値設定。</td><td>代表環境差分はTD045。</td></tr>
+<tr><td>TD029</td><td>SSI014, SSI015, TV026</td><td>全件展開</td><td>3</td><td>不可</td><td>HTML断片貼り付け/DOM値設定/特殊文字列。</td><td></td></tr>
+<tr><td>TD030</td><td>SSI012, SSI013, TV020</td><td>全件展開</td><td>1</td><td>不可</td><td>デフォルト実行1フロー。</td><td>初期値全件はTD052でも静的確認。</td></tr>
+<tr><td>TD031</td><td>SSI013, TV021</td><td>全件展開</td><td>5</td><td>不可</td><td>デフォルト/キャリアアップ/早期退職/資産枯渇/イベント発生。</td><td></td></tr>
+<tr><td>TD032</td><td>SSI011, SSI012, TV016</td><td>全件展開</td><td>4</td><td>不可</td><td>トグル/追加/削除/開始。</td><td></td></tr>
+<tr><td>TD033</td><td>SSI015, TV030</td><td>全件展開</td><td>1</td><td>不可</td><td>プライバシー表示1件。</td><td></td></tr>
+<tr><td>TD034</td><td>SSI021, TV031</td><td>全件展開</td><td>1</td><td>不可</td><td>金融・税務助言ではない旨と別途確認の必須表示を1判定に集約。</td><td>必須文言一式が欠ければFail。</td></tr>
+<tr><td>TD035</td><td>SSI021, TV032</td><td>全件展開</td><td>2</td><td>不可</td><td>README注意事項、画面注意表示。</td><td></td></tr>
+<tr><td>TD036</td><td>SSI014, SSI015, TV026</td><td>全件展開</td><td>3</td><td>不可</td><td>img onerror/script/記号列。</td><td></td></tr>
+<tr><td>TD037</td><td>SSI015, TV027</td><td>全件展開</td><td>2</td><td>不可</td><td>結果表示経路、ユーザー入力経路。</td><td></td></tr>
+<tr><td>TD038</td><td>SSI015, TV028</td><td>全件展開</td><td>1</td><td>可</td><td><code>innerHTML</code>使用箇所全件を1レビューで確認。</td><td></td></tr>
+<tr><td>TD039</td><td>SSI015, TV029</td><td>全件展開</td><td>4</td><td>不可</td><td>network/外部リソース/storage/API使用。</td><td></td></tr>
+<tr><td>TD040</td><td>SSI016, TV033</td><td>全件展開</td><td>10</td><td>可</td><td>ウォームアップ後10回測定し95パーセンタイルで集約判定。</td><td>各測定値は証跡に残す。</td></tr>
+<tr><td>TD041</td><td>SSI016, TV034</td><td>全件展開</td><td>10</td><td>可</td><td>ウォームアップ後10回測定し95パーセンタイルで集約判定。</td><td></td></tr>
+<tr><td>TD042</td><td>SSI016, TV035</td><td>全件展開</td><td>10</td><td>可</td><td>入力変更あり10回連続を1ケース内10反復で判定。</td><td>古い結果混入は反復ごとに確認。</td></tr>
+<tr><td>TD043</td><td>SSI017, TV036</td><td>全件展開</td><td>3</td><td>不可</td><td>chromium/firefox/webkit。</td><td></td></tr>
+<tr><td>TD044</td><td>SSI017, TV037</td><td>質問待ち</td><td>1</td><td>質問待ち</td><td>Q002回答後に実ブラウザ8種へ展開するか代表環境に集約する。</td><td>DQ002。</td></tr>
+<tr><td>TD045</td><td>SSI014, SSI017, TV025</td><td>組み合わせ展開</td><td>9</td><td>不可</td><td>3入力差異×3代表環境。</td><td></td></tr>
+<tr><td>TD046</td><td>SSI018, TV038</td><td>境界展開</td><td>2</td><td>不可</td><td>800x600、1280x720。</td><td></td></tr>
+<tr><td>TD047</td><td>SSI018, TV039</td><td>全件展開</td><td>5</td><td>不可</td><td>入力移動/トグル/追加/削除/開始。</td><td></td></tr>
+<tr><td>TD048</td><td>SSI018, TV040</td><td>全件展開</td><td>3</td><td>不可</td><td>入力ラベル/ボタン文言/結果表示。</td><td></td></tr>
+<tr><td>TD049</td><td>SSI019, TV041</td><td>質問待ち</td><td>1</td><td>質問待ち</td><td>Q001回答後に実行可否確認へ展開または欠落記録へ確定。</td><td>DQ001。</td></tr>
+<tr><td>TD050</td><td>SSI019, TV042</td><td>全件展開</td><td>2</td><td>不可</td><td>正式HTML存在時/欠落時。</td><td></td></tr>
+<tr><td>TD051</td><td>SSI020, TV043</td><td>全件展開</td><td>3</td><td>不可</td><td>結果画面/実行ブラウザ/失敗時ログ。</td><td></td></tr>
+<tr><td>TD052</td><td>SSI001-SSI021, TV044</td><td>全件展開</td><td>6</td><td>不可</td><td>計算式/入力属性/表示/注意文言/セキュリティ方針/正式資産記述。</td><td></td></tr>
+<tr><td>TD053</td><td>SSI020, TV046</td><td>全件展開</td><td>2</td><td>不可</td><td>BUG追跡、E2E-BUG追跡。</td><td></td></tr>
+<tr><td>TD054</td><td>SSI021, TV032</td><td>全件展開</td><td>2</td><td>不可</td><td>画面注意表示、README注意事項。</td><td></td></tr>
+<tr><td>TD055</td><td>SSI017, TV037</td><td>質問待ち</td><td>1</td><td>質問待ち</td><td>Safari実機手動確認の要否はQ002回答後に確定。</td><td>DQ002。</td></tr>
+<tr><td>TD056</td><td>SSI005, SSI007, SSI008, SSI010, SSI011, TV022</td><td>組み合わせ展開</td><td>4</td><td>不可</td><td>年齢境界×給与変更、投資率×補填、イベント×補填、逆転条件×表示。</td><td></td></tr>
+<tr><td>TD057</td><td>SSI020, TV049</td><td>質問待ち</td><td>1</td><td>質問待ち</td><td>Q004回答後に欠陥残存時の承認フローを確定。</td><td>DQ004。</td></tr>
+<tr><td>TD058</td><td>SSI020, TV047</td><td>全件展開</td><td>3</td><td>不可</td><td>Markdown/CSVサマリ、実行ログ、Playwright JSON。</td><td></td></tr>
+<tr><td>TD059</td><td>SSI020, TV048</td><td>質問待ち</td><td>4</td><td>質問待ち</td><td>スクリーンショット/trace/video/手動確認記録。video条件はQ003回答待ち。</td><td>DQ003。</td></tr>
+<tr><td>TD060</td><td>SSI019, SSI020, TV041</td><td>質問待ち</td><td>1</td><td>質問待ち</td><td>正式資産欠落時の未実装/未実行/N/A記録はQ001回答待ち。</td><td>DQ001。</td></tr>
+</tbody></table></div>
+</body>
+</html>
