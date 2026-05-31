@@ -1,13 +1,13 @@
 ---
 name: review-test-design
-description: Review Japanese Markdown test design artifacts and design questionnaires against test analysis, test plans, specifications, and QA design quality criteria. Use when Codex needs to assess or improve テスト設計, traceable test design tables, necessary-and-sufficient design depth, test level/type grouping, or design questionnaires; prioritize findings, fix P0/P1/P2 fix-worthy issues, re-review until no P0/P1/P2 fix-worthy issues remain, and save the final review result as Markdown.
+description: Review Japanese Markdown test design artifacts and design questionnaires against test analysis, test plans, specifications, and QA design quality criteria. Use when Codex needs to assess or improve テスト設計, traceable test design tables, necessary-and-sufficient design depth, source-listed boundary/value coverage, test level/type grouping, execution-method clarity, or design questionnaires; prioritize findings, fix P0/P1/P2 fix-worthy issues, re-review until no P0/P1/P2 fix-worthy issues remain, and save the final review result as Markdown.
 ---
 
 # Review Test Design
 
 ## Overview
 
-Review and improve a test design artifact by checking whether it can move smoothly into test case creation and execution. Focus on traceability, viewpoint coverage, necessary-and-sufficient design depth, test level/type assignment, test pattern specificity, conditions, expected-result judgment, questionnaire handling, execution feasibility, upstream consistency, anti-compression, and maintainability.
+Review and improve a test design artifact by checking whether it can move smoothly into test case creation and execution. Focus on traceability, viewpoint coverage, necessary-and-sufficient design depth, source-listed value coverage, test level/type assignment, execution-method clarity, test pattern specificity, conditions, expected-result judgment, questionnaire handling, execution feasibility, upstream consistency, anti-compression, and maintainability.
 
 Treat formal coverage as necessary but not sufficient. A `TVxxx` that appears only once may still be under-designed when its risk, analysis `備考`, or generic QA technique implies multiple partitions, states, environments, roles, or failure modes.
 
@@ -35,8 +35,8 @@ Default to Japanese output. This skill may edit the reviewed test design and des
 Use these priorities consistently:
 
 - **P0 - Blocker**: The design cannot be used for test case creation. Examples: missing design target, missing design table, no `TDxxx` IDs, missing traceability to `TVxxx`, or broken question-wait management that makes many rows unverifiable.
-- **P1 - High**: The design is usable but has a problem that should be fixed before relying on it. Examples: missing coverage for any `TVxxx`, high-risk area too thin, high-risk `TVxxx` compressed into one broad `TDxxx`, ignored `ケース分解候補`, missing or unsuitable design technique, downstream test case creation would collapse many conditions into one case, untestable or judgment-impossible expected result, missing required question, wrong test level/type that would mislead execution, or contradiction with analysis or plan.
-- **P2 - Medium**: The design can be used, but clarity, completeness, or maintainability should be improved. Examples: minor duplication, vague condition/input, weak grouping, inconsistent terminology, or non-critical missing references.
+- **P1 - High**: The design is usable but has a problem that should be fixed before relying on it. Examples: missing coverage for any `TVxxx`, high-risk area too thin, high-risk `TVxxx` compressed into one broad `TDxxx`, ignored `ケース分解候補`, missing high-risk source-listed boundary/status/environment item, missing or unsuitable design technique, downstream test case creation would collapse many conditions into one case, untestable or judgment-impossible expected result, blocking questionnaire/design inconsistency, wrong test level/type that would mislead execution, or contradiction with analysis or plan.
+- **P2 - Medium**: The design can be used, but clarity, completeness, or maintainability should be improved. Examples: minor duplication, vague condition/input, weak grouping, inconsistent terminology, representative sampling without rationale for lower-risk lists, ambiguous execution method that will not block implementation, or non-critical missing references.
 - **P3 - Low**: Nice-to-have cleanup. Examples: formatting polish, wording consistency, or optional extra examples.
 
 Treat `P0`, `P1`, and `P2` as fix-worthy findings. Continue the fix/re-review loop until none remain, except when the finding cannot be fixed because required information is unavailable; in that case, record the blocker clearly and add or confirm a questionnaire entry. Treat `P3` as optional cleanup.
@@ -48,9 +48,11 @@ Use this review to judge whether the design has enough depth, not merely whether
 - A `TDxxx` row must be concrete enough that a later test-case creator can generate executable cases without guessing the intended partition, state, role, environment, or expected result.
 - For high-risk `TVxxx`, verify that the design covers the technique-appropriate partitions: representative values, boundaries, abnormal values, state transitions, combinations, environments, error/recovery paths, security/privacy, performance/reliability, accessibility/usability, persistence, concurrency, or observability as applicable.
 - If the analysis `備考` includes `ケース分解候補`, the design must reflect it in multiple rows or explicitly document why splitting is unnecessary or blocked by missing information.
+- If specifications or analysis contain finite lists, boundary tables, enum/status values, roles, permissions, browser/device matrices, file formats, API statuses, feature flags, dependency versions, or event types, the design must cover every materially relevant item or document why a representative subset is enough.
 - If the analysis `備考` includes `由来: 汎用QA`, confirm that the generic concern was translated into a target-appropriate test design pattern, not copied as a vague label.
 - Imagine the downstream case yield: if the current design would likely produce only one broad test case for many materially different conditions, classify the issue as `P1` for high-risk areas and `P2` for lower-risk areas.
 - Imagine typical escaped bugs at design level: validation gaps, off-by-one boundaries, authorization bypass, missing rollback, stale persistence, race conditions, locale/time errors, unsupported platforms, unclear accessibility judgment, or missing evidence. If the current design would not expose a high-impact escaped bug, add or require a design row.
+- Cross-check questionnaire consistency: `TDxxx` status, `## 4. 質問待ち項目`, and `テスト設計_質問票.md` must agree for every blocking question.
 
 ## Review Perspectives
 
@@ -61,15 +63,19 @@ Review from these perspectives:
 - **Necessary and sufficient design depth**: Confirm each design is deep enough for its risk and generic QA concern, without demanding irrelevant rows.
 - **Risk-based depth**: Confirm high-risk areas have enough design rows across representative, boundary, abnormal, state, combination, integration, security, performance, compatibility, accessibility, recovery, persistence, concurrency, or exploratory concerns.
 - **Analysis hint consumption**: Confirm `由来`, `ケース分解候補`, unresolved questions, and risk notes in analysis `備考` are reflected, explicitly deferred, or questioned.
+- **Source-listed finite set consumption**: Confirm concrete lists from specifications, analysis, plans, or supported-environment statements are fully consumed or intentionally sampled with a source-supported rationale.
 - **Design technique adequacy**: Confirm the chosen technique, such as equivalence partitioning, boundary value analysis, decision table, state transition, pairwise, role matrix, compatibility matrix, or error/recovery pattern, fits the viewpoint.
 - **Anti-compression and decomposability**: Confirm one broad row does not hide distinct values, states, roles, environments, failures, or expected results that should become separate designs.
+- **Compressed-list scan**: Treat `/`, `、`, comma lists, ranges, "all", "each", and matrix wording in `条件/入力`, `テストパターン`, or `期待結果/判定観点` as smells. Confirm they are either split, explicitly marked as downstream case split units, or justified as one aggregate design.
 - **Downstream case yield**: Confirm later test case creation would produce enough meaningful cases from the `TDxxx` rows, especially for high-risk viewpoints.
 - **Test level/type validity**: Confirm `Unit`, `Integration`, `E2E`, `Security`, `Performance`, `Compatibility`, `Accessibility`, `Manual`, `Code review`, `Exploratory`, and `Regression` are assigned appropriately and grouped by `テストレベル/タイプ`.
+- **Execution method clarity**: Confirm each row has one primary execution method. If multiple implementation lanes are named, confirm the row is split or the primary/supplementary relationship is explicit.
 - **Test pattern specificity**: Confirm each design states what pattern is being tested clearly enough to become a test case.
 - **Condition/input clarity**: Confirm input values, states, data combinations, environment conditions, and preconditions are concrete or explicitly marked `要確認`.
 - **Expected-result judgment clarity**: Confirm the pass/fail judgment can be made. If an expected value, threshold, tolerance, environment, or acceptance rule is unknown, it must be marked `要確認` and linked to the questionnaire.
-- **Question-wait management**: Confirm each `質問待ち` design row is represented in `## 4. 質問待ち項目` and in `テスト設計_質問票.md`.
+- **Question-wait management**: Confirm each `質問待ち` design row is represented in `## 4. 質問待ち項目` and in `テスト設計_質問票.md`; also confirm each blocking questionnaire row has a matching `質問待ち` design row and section entry.
 - **Execution feasibility**: Confirm execution methods are realistic using available automation, existing tests, manual browser checks, code review, DevTools, or measurable criteria.
+- **Referenced artifact existence**: For local files, existing tests, pages, fixtures, APIs, schemas, datasets, or named assets referenced by design rows, confirm existence when accessible or mark the row as `要確認` / `質問待ち`.
 - **Duplication, gaps, and contradictions**: Confirm there is no harmful duplication, missing valuable design, contradiction between design and questionnaire, or unsupported assumption.
 - **Escaped-bug imagination**: List typical bugs that could pass through the current design and require added design rows or questionnaire items when impact is material.
 - **Upstream alignment**: Confirm the design remains consistent with the test analysis, analysis questionnaire, test plan, product risks, and scope.
@@ -91,11 +97,16 @@ Guidelines:
 - Treat missing coverage for any `TVxxx` as at least `P1`.
 - Treat a high-risk `TVxxx` that is represented only by a broad, non-decomposable `TDxxx` as `P1` even when formal coverage exists.
 - Treat ignored `ケース分解候補` as `P1` for high-risk viewpoints and `P2` for lower-risk viewpoints unless the design explains why splitting is unnecessary.
+- Treat missing materially relevant items from a source-listed finite set as `P1` for high-risk, contractual, security, calculation, or compatibility behavior, and usually `P2` for lower-risk representative sampling without rationale.
+- Treat slash-separated, comma-separated, range-like, or matrix-like condition lists as findings when they hide downstream split units; use `P1` for high-risk compression and `P2` for lower-risk ambiguity.
 - Treat missing generic design technique selection as `P1` when it prevents reliable downstream case creation for a high-risk viewpoint.
 - Treat a design that would likely generate too few downstream test cases as `P1` for high-risk areas and `P2` for limited-impact areas.
 - Treat likely escaped bugs as `P1` when the impact is high, and `P2` when the impact is limited but worth addressing.
 - Treat a `質問待ち` row without a linked questionnaire entry as at least `P1`.
+- Treat any blocking questionnaire entry that is not mirrored by a `質問待ち` design row and `## 4. 質問待ち項目` entry as at least `P1`. Treat contradictory claims such as "no questions" while real question rows exist as `P1`.
 - Treat an expected-result judgment that cannot be used for pass/fail and is not marked `要確認` as at least `P1`.
+- Treat an ambiguous execution method such as "A or B" as `P2`; raise to `P1` when it could route implementation to the wrong lane or leave a high-risk design unimplemented.
+- Treat a referenced local artifact or existing test asset that is missing as `P1` when the design depends on it, otherwise `P2` with a clear verification action.
 - Mark unavailable source facts as `要確認`; do not invent them.
 - If no findings exist at a priority, say so clearly.
 
@@ -109,6 +120,10 @@ When fixing artifacts:
 - Split broad high-risk design rows into multiple focused `TDxxx` rows when analysis hints, risk, or generic test design techniques require separate partitions.
 - Record the selected design technique or pattern family in `テストパターン` rather than adding new columns.
 - Reflect `ケース分解候補` in `条件/入力` and `期待結果/判定観点`, or add a questionnaire item when the exact split cannot be supported.
+- Add missing source-listed boundaries, statuses, roles, environments, error codes, or other finite values as separate design rows or record an explicit representative-sampling rationale.
+- Replace ambiguous value or environment bundles with split rows or with wording that clearly identifies downstream test-case split units.
+- Align questionnaire rows, `質問待ち` section entries, and `状態` values. If a question blocks pass/fail judgment or execution, mark the row `質問待ち`; if it is non-blocking, make that explicit and do not claim there are no questions.
+- Replace ambiguous execution methods with one primary method, or split rows when different implementation lanes are required.
 - Keep the artifact at test-design level. Do not expand into low-level click-by-click test cases or execution results unless explicitly requested.
 - Prefer explicit traceability, `要確認`, and questionnaire entries over vague assumptions.
 - If the review reveals a missing analysis viewpoint, add the viewpoint to the test analysis and record the action in the final review result.
@@ -137,6 +152,8 @@ Final result requirements:
 - Include the test analysis, test plan, and source documents used.
 - Include the review perspectives applied.
 - Include a short necessary-and-sufficient design review summary, including high-risk design density and downstream case-yield concerns.
+- Include the result of source-listed finite set and boundary coverage checks.
+- Include the result of compressed-list, execution-method clarity, referenced-artifact existence, and question-wait consistency checks.
 - Include any typical escaped bugs considered and whether design rows or questionnaire items were added.
 - Summarize each review/fix iteration.
 - State clearly that no `P0`, `P1`, or `P2` findings remain, or explain any remaining fix-worthy finding that could not be fixed because required information was unavailable.

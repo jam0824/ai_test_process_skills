@@ -1,6 +1,6 @@
 ---
 name: create-test-design
-description: Create Japanese Markdown test design artifacts from test analysis viewpoints, questionnaires, test plans, specifications, README files, existing tests, and implementation notes. Use when Codex needs to expand test viewpoints into traceable, sufficiently decomposed test designs (テスト設計), test patterns, conditions, execution methods, expected-result judgment points, and a Markdown questionnaire for unknowns from テスト分析.
+description: Create Japanese Markdown test design artifacts from test analysis viewpoints, questionnaires, test plans, specifications, README files, existing tests, and implementation notes. Use when Codex needs to expand test viewpoints into traceable, sufficiently decomposed test designs (テスト設計), consume source-listed boundaries and finite value sets, define execution methods and expected-result judgment points, and create a Markdown questionnaire for unknowns from テスト分析.
 ---
 
 # Create Test Design
@@ -11,7 +11,7 @@ Create a test design document that answers "how should each test viewpoint be te
 
 Default to Japanese output. Preserve traceability from each test design back to the originating test viewpoint, test approach, specification, and product risk.
 
-When test analysis records origin or decomposition hints in `備考` such as `由来: 仕様準拠`, `由来: 汎用QA`, or `ケース分解候補: 境界直前/境界/境界直後`, consume those hints during design. Keep the existing output table columns unchanged; express technique, partition, and decomposition intent inside `テストパターン`, `条件/入力`, `期待結果/判定観点`, and `状態`.
+When test analysis records origin or decomposition hints in `備考` such as `由来: 仕様準拠`, `由来: 汎用QA`, or `ケース分解候補: 境界直前/境界/境界直後`, consume those hints during design. Also consume finite lists from source material, such as thresholds, statuses, roles, error codes, supported platforms, file formats, plan tiers, event types, or browser/device matrices. Keep the existing output table columns unchanged; express technique, partition, and decomposition intent inside `テストパターン`, `条件/入力`, `期待結果/判定観点`, and `状態`.
 
 ## Workflow
 
@@ -32,7 +32,9 @@ When test analysis records origin or decomposition hints in `備考` such as `�
    - Choose one or more generic test design techniques appropriate to the target type and risk.
    - Create one or more test designs for every viewpoint.
    - Split high-risk, boundary, abnormal, calculation, security, performance, compatibility, accessibility, state, combination, recovery, persistence, concurrency, and environment-difference viewpoints into multiple design rows when one row would hide important defect classes.
-7. If a design depends on unanswered information, keep the design row, set `状態` to `質問待ち`, mark unclear fields as `要確認`, and add a linked question to the design questionnaire.
+   - For source-listed finite sets, cover every materially relevant item or explicitly record the representative subset and exclusion rationale.
+   - Choose one primary execution method for each row. If both code-level, E2E, manual, review, or performance lanes are materially required, split the row or state the primary and supplementary method clearly.
+7. If a design depends on unanswered information, keep the design row, set `状態` to `質問待ち`, mark unclear fields as `要確認`, add the row to `## 4. 質問待ち項目`, and add a linked question to the design questionnaire.
 8. If design reveals a missing analysis viewpoint, product risk, or test approach, update upstream artifacts directly when supported by source material. Record all changes in the design document.
 9. Run the design density self-check before finishing.
 10. Save the test design document and questionnaire. If the user does not specify paths, save them next to the analysis as `テスト設計.md` and `テスト設計_質問票.md`.
@@ -50,11 +52,14 @@ For each `TVxxx`, expand from analysis-level intent into design-level patterns i
 3. Decompose meaningful partitions.
    - Use `ケース分解候補` from analysis when present.
    - Split into multiple `TDxxx` rows when different values, states, roles, environments, timings, error modes, or recovery paths need distinct expected results or execution methods.
+   - If the specification or analysis lists concrete boundaries, tiers, statuses, roles, permissions, error codes, browsers, devices, locales, file formats, API statuses, event types, or other finite values, make the consumed items visible in the design. If only a representative subset is appropriate, record why that subset is sufficient.
+   - If several values remain in one `TDxxx`, state whether they are downstream test-case split units. Do not leave slash-separated or comma-separated values as an ambiguous bundle.
 4. Define conditions and expected judgment.
    - Put value ranges, partitions, states, preconditions, input classes, or environment combinations in `条件/入力`.
    - Put observable outcomes, invariants, acceptance criteria, logs/evidence, or failure-handling expectations in `期待結果/判定観点`.
 5. Mark uncertainty explicitly.
    - Use `状態=質問待ち` and add a questionnaire item when a design depends on unsupported assumptions.
+   - Do not mark a row `設計済み` when its pass/fail criterion, execution method, input partition, or expected result still depends on an unanswered question.
 
 The output should prepare executable units for later test case creation. A later case-generation skill should be able to create concrete cases from each `TDxxx` without guessing the intended partition or risk.
 
@@ -86,6 +91,7 @@ Do not compress materially different design concerns into a single broad row whe
 - Do not hide `境界直前/境界/境界直後`, `最小/最大/超過`, or `空/不正/未指定` inside one generic boundary row when separate outcomes matter.
 - Do not combine role/permission, state/lifecycle, browser/platform, locale/time, or configuration differences into one row when they change behavior or risk.
 - Do not combine success, validation failure, system failure, retry, rollback, and recovery into one row for high-risk behavior.
+- Treat separators such as `/`, `、`, comma lists, ranges, and "all/each" wording in `条件/入力` as compression smells. Keep them only when the row clearly defines the partition list and the later test-case split units.
 - Keep design rows focused enough that test cases can be generated mechanically from the row, but stop before click-by-click or command-by-command procedure details.
 
 ## Design Density Self-Check
@@ -96,6 +102,9 @@ Before saving, inspect the design density from the perspective of downstream tes
 - If a high-risk `TVxxx` has only one design row, either split it or record why one row is sufficient.
 - If `ケース分解候補` exists, confirm that each meaningful candidate is visible in `テストパターン` or `条件/入力`.
 - If a design row would require the next skill to infer values, states, roles, environments, or expected results, refine it or mark it `質問待ち`.
+- If source material contains finite lists or boundary tables, confirm the design covers each materially relevant item or records a representative-selection rationale.
+- Confirm each design row has a clear primary execution method; split rows whose methods belong to different implementation lanes unless the secondary method is only supporting evidence.
+- Cross-check question consistency: every blocking design question must have a `質問待ち` row, a `## 4. 質問待ち項目` entry, and a questionnaire row that all reference each other.
 - Avoid adding low-value rows only to increase count; sufficiency means risk-appropriate coverage, not mechanical expansion.
 
 ## Output: Test Design
@@ -129,11 +138,11 @@ Column guidance:
 - **優先度**: Use `高`, `中`, or `低`. Prioritize by product risk, user impact, defect likelihood, and execution value.
 - **テストパターン**: Name the design pattern concisely, such as representative value, boundary value, invalid input, browser comparison, random fixed condition, or code review.
 - **条件/入力**: State concrete input conditions, data combinations, environment conditions, or `要確認`.
-- **実施方法**: State how to test, such as automated unit test, existing test extension, browser E2E, manual browser check, DevTools network check, performance measurement, or code review.
+- **実施方法**: State one primary way to test, such as automated unit test, existing test extension, browser E2E, manual browser check, DevTools network check, performance measurement, or code review. If multiple methods are required, split the row or clearly identify primary versus supplementary evidence.
 - **期待結果/判定観点**: State the pass/fail judgment point. If the expected value or threshold is unknown, use `要確認` and link a question.
 - **仕様**: Reference specification sections, feature IDs, README sections, existing tests, or `要確認`.
 - **リスクID**: Reference product risk IDs. Use `なし` when no direct risk exists.
-- **状態**: Use `設計済み`, `質問待ち`, or `上流更新済み` as the base values.
+- **状態**: Use `設計済み`, `質問待ち`, or `上流更新済み` as the base values. Use `質問待ち` when a linked question affects pass/fail judgment, execution method, test partitioning, or expected results.
 
 ## Test Design Guidance
 
@@ -152,6 +161,8 @@ Derive design rows using these patterns as applicable. These categories may be u
 - **Exploratory**: High-risk combinations, ambiguous requirements, user misunderstanding, overtrust, surprising outputs.
 
 When analysis `備考` contains a decomposition hint, reflect it in separate rows or explain the reason for not splitting in the design narrative or questionnaire. For example, a boundary hint should result in design patterns that distinguish the relevant boundary classes, not a single opaque row.
+
+When source material contains a finite list, design from that list explicitly. Examples include thresholds, business-rule tiers, enum/status values, roles, permissions, API response codes, browser/device matrices, file formats, locales, time zones, feature flags, dependency versions, and event types. Cover all materially relevant items, or document why representative sampling is enough.
 
 Keep each design row actionable enough for later test case creation. Do not over-specify exact click-by-click procedures unless the source material already defines them or the user explicitly asks.
 
@@ -189,6 +200,8 @@ Question guidance:
 - Ask only questions that affect test design, expected results, input patterns, execution method, environment, evidence, automation feasibility, or upstream artifact updates.
 - Carry forward unresolved analysis questions when they still block test design, and link them to the affected `TDxxx`.
 - Use concrete questions about expected values, rounding tolerance, target browsers, performance measurement method, randomness control, accessibility criteria, evidence format, and acceptable behavior for ambiguous edge cases.
+- If a question blocks design or pass/fail judgment, the related `TDxxx` must be `状態=質問待ち`, the uncertainty must be marked `要確認`, and the same item must appear under `## 4. 質問待ち項目`.
+- Do not write `現時点で質問はありません。` when the questionnaire table contains any real question rows. Do not keep non-blocking notes in the questionnaire unless they are clearly marked as non-blocking and mirrored in the design document.
 - Use priorities `高`, `中`, and `低`.
 - If there are no questions, still save the questionnaire and state `現時点で質問はありません。`
 
@@ -198,8 +211,9 @@ Question guidance:
 - Confirm every `TAxxx` from the test plan remains covered through at least one `TDxxx`.
 - Confirm every high-risk product risk has enough design depth to support later test case creation.
 - Confirm analysis `備考` was consumed: `由来` should be preserved in intent, and `ケース分解候補` must be reflected or explicitly deferred.
+- Confirm source-listed finite values, boundaries, statuses, environments, and matrices are reflected or explicitly sampled with rationale.
 - Confirm selected design techniques are visible in `テストパターン` or clear from the design row.
-- Confirm all `質問待ち` rows have linked questionnaire entries.
+- Confirm all `質問待ち` rows have linked questionnaire entries, and all blocking questionnaire entries have matching `質問待ち` rows and section entries.
 - Confirm all upstream updates are actually applied and documented.
 
 ## Quality Checklist
@@ -212,10 +226,13 @@ Before finishing:
 - Confirm the design table shape is unchanged; no extra columns were added.
 - Confirm analysis `備考` origin and decomposition hints were considered.
 - Confirm `ケース分解候補` is reflected in `TDxxx` rows or the reason for deferral is recorded.
+- Confirm finite source lists and boundary tables have not been partially consumed without rationale.
 - Confirm high-risk `TVxxx` entries are decomposed enough to cover normal, boundary, abnormal, state/combination, and relevant non-functional or security concerns where applicable.
+- Confirm slash-separated, comma-separated, range-like, or matrix-like condition lists are either split into separate design rows or explicitly marked as downstream case split units.
+- Confirm each row's primary execution method is unambiguous.
 - Confirm `テストパターン` makes the selected design technique or pattern family visible.
 - Confirm no high-risk row compresses materially different defect classes into one vague design.
 - Confirm the design is detailed enough to become test cases, but is not merely a test execution log.
 - Confirm unsupported details are marked `要確認` rather than invented.
-- Confirm the questionnaire only contains questions that materially affect design or execution.
+- Confirm the questionnaire only contains questions that materially affect design or execution, and that questionnaire content, `## 4. 質問待ち項目`, and `状態` values are mutually consistent.
 - Confirm traceability from `TDxxx` to `TVxxx`, `TAxxx`, specification, and `Rxxx` is clear.

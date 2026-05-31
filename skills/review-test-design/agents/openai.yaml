@@ -1,4 +1,4 @@
 interface:
   display_name: "テスト設計レビュー"
-  short_description: "テスト設計の漏れ、必要十分性、分解粒度をレビューしP2まで改善する支援"
-  default_prompt: "Use $review-test-design to review necessary-and-sufficient design depth, fix P0/P1/P2 fix-worthy issues, re-review, and save the final Markdown review result."
+  short_description: "テスト設計の漏れ、仕様リスト消費、質問整合性をP2までレビュー改善する支援"
+  default_prompt: "Use $review-test-design to review necessary-and-sufficient design depth, source-listed value coverage, compressed-condition risks, execution-method clarity, question consistency, fix P0/P1/P2 fix-worthy issues, re-review, and save the final Markdown review result."

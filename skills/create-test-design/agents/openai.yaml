@@ -1,4 +1,4 @@
 interface:
   display_name: "テスト設計作成"
-  short_description: "テスト観点を設計技法で分解し、追跡可能な設計表と質問票を作成する支援"
-  default_prompt: "Use $create-test-design to expand test analysis viewpoints into sufficiently decomposed, traceable test design tables and a Markdown questionnaire."
+  short_description: "テスト観点を仕様リストや境界まで分解し、追跡可能な設計表と質問票を作成する支援"
+  default_prompt: "Use $create-test-design to expand test analysis viewpoints into sufficiently decomposed, traceable test design tables that consume source-listed values and boundaries, clarify execution methods, and create a consistent Markdown questionnaire."
