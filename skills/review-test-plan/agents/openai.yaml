@@ -1,0 +1,4 @@
+interface:
+  display_name: "テスト計画レビュー"
+  short_description: "テスト計画をレビューし高優先度問題を改善して保存する支援"
+  default_prompt: "Use $review-test-plan to review, fix, re-review, and save the final Markdown review result for a test plan."

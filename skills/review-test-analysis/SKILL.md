@@ -1,0 +1,108 @@
+---
+name: review-test-analysis
+description: Review Japanese Markdown test analysis artifacts and questionnaires against a test plan, product specifications, and QA analysis quality criteria. Use when Codex needs to assess or improve テスト分析, test viewpoint lists, test analysis matrices, or analysis questionnaires; prioritize findings, fix high-priority issues in the analysis artifacts, re-review until no high-priority fix-worthy issues remain, and save the final review result as Markdown.
+---
+
+# Review Test Analysis
+
+## Overview
+
+Review and improve a test analysis artifact by checking whether it can feed good test design. Focus on coverage, traceability, viewpoint quality, risk-based depth, open questions, and whether the analysis stays at viewpoint level instead of becoming detailed test cases.
+
+Default to Japanese output. This skill may edit the reviewed test analysis and questionnaire when the user asks for the full review-and-fix workflow. Do not edit product specifications, README files, product code, or unrelated artifacts unless the user explicitly asks. Edit the test plan only when the analysis review uncovers a clear plan-level gap that should be fixed and the user request allows fixing related artifacts.
+
+## Workflow
+
+1. Locate the test analysis artifact. If the user does not specify one, prefer `テスト成果物/テスト分析.md` or similarly named Markdown files.
+2. Locate the related questionnaire. If not specified, prefer `テスト成果物/テスト分析_質問票.md`.
+3. Gather source material in this order:
+   - User-provided review instructions and acceptance criteria.
+   - Test analysis and questionnaire.
+   - Test plan, especially test approaches, product risks, scope, and exit criteria.
+   - Product specifications such as `spec/`, `docs/`, files named `仕様書`, requirement IDs, or feature lists.
+   - README, existing tests, QA artifacts, and implementation files only when they clarify the analysis.
+4. Review the test analysis using the review perspectives below.
+5. List findings with priority, grounded in the analysis and source material.
+6. Fix all `P0` and `P1` findings that are actually fixable from available information. Fix `P2` findings only when the correction is low-risk and clearly supported by the source material.
+7. Re-review the edited artifacts. Repeat review and fix until no `P0` or `P1` findings remain.
+8. Save the final review result as Markdown. If the user does not specify a path, save it next to the reviewed analysis as `テスト分析レビュー結果.md`.
+
+## Priority Rules
+
+Use these priorities consistently:
+
+- **P0 - Blocker**: The analysis cannot be used for test design. Examples: missing analysis target, missing viewpoint table, no traceability to test approaches, or severe contradiction with the test plan.
+- **P1 - High**: The analysis is usable but has a problem that should be fixed before relying on it. Examples: missing coverage for a test approach, high-risk area too thin, missing required question, major specification traceability gap, or viewpoint granularity that prevents test design.
+- **P2 - Medium**: The analysis can be used, but clarity, completeness, or maintainability should be improved. Examples: minor duplication, unclear wording, weak categorization, or non-critical missing references.
+- **P3 - Low**: Nice-to-have cleanup. Examples: formatting polish, wording consistency, or optional extra examples.
+
+Treat `P0` and `P1` as high-priority fix-worthy findings. Continue the fix/re-review loop until none remain.
+
+## Review Perspectives
+
+Review from these perspectives:
+
+- **Test plan alignment**: Confirm all test approaches from the plan, such as `TA001`, are covered and that related product risks, scope, and exit conditions are respected.
+- **Specification traceability**: Confirm each viewpoint links to a specification section, feature ID, README section, existing test, or is explicitly marked `要確認`.
+- **Viewpoint granularity**: Confirm viewpoints are more concrete than test-plan approaches but not detailed test cases. They should be ready to become test design conditions.
+- **Viewpoint category coverage**: Confirm normal, default value, boundary, abnormal, state transition, calculation, compatibility, usability, accessibility, security, performance, regression, and exploratory concerns are included when relevant.
+- **Risk-based depth**: Confirm high-risk areas have enough viewpoints and low-risk areas are not over-expanded at the expense of critical behavior.
+- **Boundary and abnormal quality**: Confirm values such as zero, empty, negative, maximum, decimal, over-maximum, age transitions, inconsistent ranges, asset depletion, and random behavior are considered when relevant.
+- **Questionnaire validity**: Confirm questions are necessary, specific, prioritized, and linked to viewpoint IDs and test approach IDs. Questions should unblock test design, acceptance criteria, execution feasibility, or plan updates.
+- **Test plan update judgment**: Confirm the analysis identifies whether new risks or approaches require updates to the test plan, and that the update or no-update decision is justified.
+- **Execution feasibility**: Confirm viewpoints can realistically become tests using available tools, existing tests, manual browser checks, code review, or measurable criteria.
+- **Duplication, gaps, and contradictions**: Confirm there is no harmful duplication, missing high-value viewpoint, contradiction between analysis and questionnaire, or unsupported assumption.
+
+## Finding Format
+
+During each review pass, present findings first and sort by priority. Use this table:
+
+```markdown
+| 優先度 | 観点 | 問題 | 場所 | 影響 | 修正方針 |
+|---|---|---|---|---|---|
+```
+
+Guidelines:
+
+- Ground every finding in the analysis, questionnaire, test plan, or source material.
+- Do not create a finding merely because optional detail is absent.
+- Treat missing coverage for any test approach as at least `P1`.
+- Treat a missing question that blocks test design or acceptance criteria as at least `P1`.
+- Mark unavailable source facts as `要確認`; do not invent them.
+- If no findings exist at a priority, say so clearly.
+
+## Fix Rules
+
+When fixing the analysis artifacts:
+
+- Preserve existing file names, section order, ID style, and traceability style unless the issue requires structural correction.
+- Fix high-priority issues directly in the test analysis or questionnaire using source-supported content.
+- Add viewpoint IDs sequentially, such as `TV064`, and question IDs sequentially, such as `Q018`.
+- Keep analysis at viewpoint level. Do not add detailed test steps or expected results unless explicitly requested.
+- Prefer explicit traceability, `要確認`, or questionnaire entries over vague assumptions.
+- If the analysis reveals a necessary test plan update, update the test plan and record that action in the final review result.
+
+## Final Review Result
+
+Save a Markdown review result with this structure:
+
+```markdown
+# テスト分析レビュー結果
+
+## 1. レビュー対象
+## 2. 参照資料
+## 3. レビュー観点
+## 4. レビュー・修正サマリー
+## 5. 最終レビュー結果
+## 6. 残課題
+```
+
+Final result requirements:
+
+- Include the reviewed analysis path, questionnaire path, and final review result path.
+- Include the test plan and source documents used.
+- Include the review perspectives applied.
+- Summarize each review/fix iteration.
+- State clearly that no `P0` or `P1` findings remain, or explain any remaining high-priority finding that could not be fixed because required information was unavailable.
+- List remaining `P2` and `P3` issues, if any, with recommended next actions.
+- Mention any updates made to the test analysis, questionnaire, or test plan.

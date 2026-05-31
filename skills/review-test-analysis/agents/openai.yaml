@@ -1,0 +1,4 @@
+interface:
+  display_name: "テスト分析レビュー"
+  short_description: "テスト分析をレビューし高優先度問題を改善して保存する支援"
+  default_prompt: "Use $review-test-analysis to review, fix, re-review, and save the final Markdown review result for a test analysis."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "テスト分析作成"
+  short_description: "テスト計画から観点と質問票を作成し追記候補も整理する支援"
+  default_prompt: "Use $create-test-analysis to create traceable test analysis viewpoints and a Markdown questionnaire from the test plan."
