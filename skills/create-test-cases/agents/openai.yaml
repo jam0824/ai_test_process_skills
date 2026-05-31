@@ -1,0 +1,4 @@
+interface:
+  display_name: "テストケース作成"
+  short_description: "テスト設計から実行区分別のMarkdownテストケースを作成する支援"
+  default_prompt: "Use $create-test-cases to create traceable Markdown test cases from the test design."
