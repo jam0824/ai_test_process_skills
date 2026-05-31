@@ -26,12 +26,13 @@ Default to Japanese output. Preserve traceability from each analysis viewpoint b
    - README and user-facing documentation.
    - Existing tests and implementation files only when they clarify behavior or missing viewpoints.
 3. Extract every test approach ID from the test plan, such as `TA001`, `TA002`, and its content, specification reference, risk ID, related scope, and exit-condition implications.
-4. Run **Pass 1: Specification-Driven Viewpoints**. Derive viewpoints that cover all test approaches from explicitly documented specifications, README behavior, existing tests, product risks, constraints, and acceptance thresholds.
-5. Run **Pass 2: Generic QA Viewpoints**. Classify the test target type in generic terms, such as Web UI, API, CLI, library/module, batch/job, data pipeline, mobile app, document/report output, integration, infrastructure, or configuration-driven system. Compare the Pass 1 viewpoints against the Generic QA Viewpoint Catalog below and add source-supported or generally necessary viewpoints that are missing.
-6. Mark each viewpoint's origin in the existing `備考` column. Use phrases such as `由来: 仕様準拠`, `由来: 汎用QA`, and `ケース分解候補: 境界直前/境界/境界直後`. Do not add new table columns.
-7. If analysis reveals a missing product risk or missing test approach that belongs in the test plan, update the test plan directly and record the change in the analysis document.
-8. If information is unclear or should be asked of stakeholders, save it in a Markdown questionnaire. Do not invent expected values, supported environments, owners, or thresholds.
-9. Perform the viewpoint-density self-check described below, then save the test analysis document and questionnaire. If the user does not specify paths, save them next to the test plan as `テスト分析.md` and `テスト分析_質問票.md`.
+4. Inventory source-defined structures before writing viewpoints. Look for finite lists, enums, state sets, decision tables, pricing/tax/rate tiers, role/permission sets, supported environments, input ranges, boundary values, thresholds, defaults, and explicitly documented exclusions.
+5. Run **Pass 1: Specification-Driven Viewpoints**. Derive viewpoints that cover all test approaches from explicitly documented specifications, README behavior, existing tests, product risks, constraints, acceptance thresholds, and the source-defined structures found above.
+6. Run **Pass 2: Generic QA Viewpoints**. Classify the test target type in generic terms, such as Web UI, API, CLI, library/module, batch/job, data pipeline, mobile app, document/report output, integration, infrastructure, or configuration-driven system. Compare the Pass 1 viewpoints against the Generic QA Viewpoint Catalog below and add source-supported or generally necessary viewpoints that are missing.
+7. Mark each viewpoint's origin in the existing `備考` column. Use phrases such as `由来: 仕様準拠`, `由来: 汎用QA`, and `ケース分解候補: 境界直前/境界/境界直後`. Do not add new table columns.
+8. If analysis reveals a missing product risk or missing test approach that belongs in the test plan, update the test plan directly and record the change in the analysis document.
+9. If information is unclear or should be asked of stakeholders, save it in a Markdown questionnaire. Do not invent expected values, supported environments, owners, or thresholds.
+10. Perform the viewpoint-density self-check described below, then save the test analysis document and questionnaire. If the user does not specify paths, save them next to the test plan as `テスト分析.md` and `テスト分析_質問票.md`.
 
 ## Two-Pass Analysis Model
 
@@ -45,6 +46,15 @@ Use Pass 1 to preserve strict requirement traceability. For each `TAxxx`, create
 - Existing implementation details only when they clarify testability or reveal a documented behavior gap.
 
 Pass 1 viewpoints should usually use `備考` values such as `由来: 仕様準拠` or `由来: 既存テスト`.
+
+### Source Structure Preservation
+
+When a source document defines a finite structure, preserve enough of that structure for later test design to expand it without rediscovery.
+
+- For finite lists, enums, status values, roles, event types, supported platforms, browser sets, currencies, locales, file formats, and similar source-defined sets, either name the list in the viewpoint or add a `備考` note such as `対象リスト: ...` or `代表/全件判断: ...`.
+- For ranges, thresholds, tiers, brackets, service levels, performance limits, date/time cutovers, or validity rules, include the relevant boundary set or point to the exact source section in `仕様` and add a case-splitting hint such as `ケース分解候補: 最小/最大/境界直前/境界/境界直後`.
+- Do not convert the analysis into detailed cases. Preserve the structure compactly so downstream design can decide representative, pairwise, risk-based, or exhaustive coverage intentionally.
+- If the source-defined structure is too large to list in the table, summarize its category and cite the source section precisely.
 
 ### Pass 2: Generic QA Viewpoints
 
@@ -106,6 +116,14 @@ For each test approach, derive viewpoints from these categories as applicable:
 - **Exploratory concerns**: Combinations likely to surprise users, ambiguous requirements, high-risk workflows, overtrust or misunderstanding.
 
 When one viewpoint contains many meaningful values or conditions, do not turn it into detailed test cases, but add a compact case-splitting hint in `備考`, such as `ケース分解候補: 最小/最大/最大超` or `ケース分解候補: 初回/再実行/削除後`.
+
+When values in the same category have different expected handling, do not hide the difference behind one vague viewpoint. Split the viewpoint or state the handling difference in `備考`, for example `期待処理差分: 空は既定値/範囲外はエラー/未対応値は無視`.
+
+Avoid unresolved question-style viewpoints such as `扱えるか確認する`, `問題ないか確認する`, or `適切に処理されるか` unless they are classified. Rewrite them as one of:
+
+- A confirmed viewpoint with the expected handling from the source.
+- A `仕様=要確認` viewpoint linked to the questionnaire.
+- A source-supported precondition or exclusion, noted as `仕様前提` or `対象外確認` in `備考`.
 
 ## Output: Test Analysis
 
@@ -181,7 +199,7 @@ Question guidance:
 - Ask only questions that affect analysis, test design, acceptance criteria, execution feasibility, or plan updates.
 - Prefer concrete questions such as supported browser versions, performance measurement method, default value rationale, acceptable rounding tolerance, random behavior reproducibility, and formal regression asset status.
 - Use priorities `高`, `中`, `低`.
-- If there are no questions, still save the questionnaire and state `現時点で質問はありません。`
+- If there are no questions, still save the questionnaire and state `現時点で質問はありません。`. Do not add a dummy row such as `| - | - | - |`; either omit the table or leave only the header and separator.
 
 ## Quality Checklist
 
@@ -194,7 +212,11 @@ Before finishing:
 - Confirm normal, boundary, abnormal, default value, compatibility, security/privacy, performance, and exploratory concerns are considered when relevant.
 - Confirm high-risk `TAxxx` entries have sufficient viewpoint density across normal, boundary, abnormal, state/combination, and relevant non-functional or security categories.
 - Confirm generic QA catalog categories relevant to the target type were considered.
+- Confirm source-defined finite lists, boundaries, thresholds, supported environments, defaults, and exclusions were preserved or precisely cited for downstream design.
 - Confirm case-splitting hints are present in `備考` when a viewpoint would otherwise compress many meaningful test cases.
+- Confirm viewpoints with different expected handling are split or explicitly describe the handling difference.
+- Confirm question-style viewpoints are classified as confirmed, `要確認`, precondition, or exclusion.
 - Confirm any test plan updates are actually applied and documented.
 - Confirm open questions are saved in a questionnaire Markdown file.
+- Confirm a no-question questionnaire has no dummy placeholder data rows.
 - Confirm the analysis stays at viewpoint level and does not become detailed test cases.

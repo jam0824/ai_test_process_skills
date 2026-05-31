@@ -21,11 +21,12 @@ Default to Japanese output. This skill may edit the reviewed test analysis and q
    - Test plan, especially test approaches, product risks, scope, and exit criteria.
    - Product specifications such as `spec/`, `docs/`, files named `仕様書`, requirement IDs, or feature lists.
    - README, existing tests, QA artifacts, and implementation files only when they clarify the analysis.
-4. Review the test analysis using the review perspectives below.
-5. List findings with priority, grounded in the analysis and source material.
-6. Fix all `P0`, `P1`, and `P2` findings that are actually fixable from available information. Fix `P3` findings only when the correction is low-risk and clearly supported by the source material.
-7. Re-review the edited artifacts. Repeat review and fix until no `P0`, `P1`, or `P2` findings remain.
-8. Save the final review result as Markdown. If the user does not specify a path, save it next to the reviewed analysis as `テスト分析レビュー結果.md`.
+4. Inventory source-defined structures before judging the analysis: finite lists, enums, state sets, decision tables, pricing/tax/rate tiers, role/permission sets, supported environments, input ranges, boundary values, thresholds, defaults, and explicitly documented exclusions.
+5. Review the test analysis using the review perspectives below.
+6. List findings with priority, grounded in the analysis and source material.
+7. Fix all `P0`, `P1`, and `P2` findings that are actually fixable from available information. Fix `P3` findings only when the correction is low-risk and clearly supported by the source material.
+8. Re-review the edited artifacts. Repeat review and fix until no `P0`, `P1`, or `P2` findings remain.
+9. Save the final review result as Markdown. If the user does not specify a path, save it next to the reviewed analysis as `テスト分析レビュー結果.md`.
 
 ## Priority Rules
 
@@ -50,6 +51,7 @@ For each high-risk product risk or high-risk `TAxxx`, check whether the analysis
 - State transition, ordering, retry, repeated execution, or interaction behavior when the target has state or workflow.
 - Relevant generic QA concerns for the target type, such as security/privacy, performance/reliability, compatibility, accessibility/usability, persistence/data integrity, concurrency/timing, configuration/environment, observability, or locale/time/numeric display.
 - Case-splitting hints in `備考` when one viewpoint contains many meaningful values or conditions.
+- Preservation of source-defined finite lists, boundaries, tiers, thresholds, supported environments, defaults, and exclusions so later design does not have to rediscover them.
 
 If a high-risk area has only a normal-flow viewpoint, only representative values, or a single broad boundary row that would collapse many cases downstream, record a `P1` finding and add or request additional viewpoints. For medium or low-risk areas, minor thinness is usually `P2` unless it blocks test design or hides a likely serious defect.
 
@@ -61,6 +63,7 @@ Review from these perspectives:
 
 - **Test plan alignment**: Confirm all test approaches from the plan, such as `TA001`, are covered and that related product risks, scope, and exit conditions are respected.
 - **Specification traceability**: Confirm each viewpoint links to a specification section, feature ID, README section, existing test, or is explicitly marked `要確認`.
+- **Source structure preservation**: Confirm source-defined finite lists, enums, states, roles, supported environments, boundary sets, thresholds, defaults, and exclusions are represented in viewpoints, `備考`, or precise source references.
 - **Viewpoint granularity**: Confirm viewpoints are more concrete than test-plan approaches but not detailed test cases. They should be ready to become test design conditions.
 - **Viewpoint category coverage**: Confirm normal, default value, boundary, abnormal, state transition, calculation, compatibility, usability, accessibility, security, performance, regression, and exploratory concerns are included when relevant.
 - **Risk-based depth**: Confirm high-risk areas have enough viewpoints and low-risk areas are not over-expanded at the expense of critical behavior.
@@ -69,9 +72,11 @@ Review from these perspectives:
 - **Generic QA catalog alignment**: Confirm the analysis considered generally expected QA categories for the target type, not only the requirements explicitly written in the specification.
 - **Boundary and abnormal quality**: Confirm values such as zero, empty, negative, maximum, decimal, over-maximum, date/time transitions, inconsistent ranges, resource exhaustion, and nondeterministic behavior are considered when relevant.
 - **Boundary and abnormal decomposability**: Confirm broad boundary or abnormal viewpoints include enough detail or `備考` case-splitting hints to be decomposed into meaningful designs later.
+- **Expected-handling separation**: Confirm values or states with different expected handling are not compressed into one vague viewpoint unless the handling differences are explicit in `備考`.
+- **Question-style viewpoint clarity**: Confirm wording such as `扱えるか確認する`, `問題ないか確認する`, or `適切に処理されるか` is rewritten or classified as confirmed behavior, `要確認`, source precondition, or exclusion.
 - **Bug escape imagination**: Identify typical bugs that would likely pass undetected if the current analysis were used as-is, then decide whether they require new viewpoints, questions, or plan updates.
 - **Downstream design readiness**: Confirm viewpoints include enough category, condition, origin, and case-splitting information for `create-test-design` to avoid collapsing many cases into one.
-- **Questionnaire validity**: Confirm questions are necessary, specific, prioritized, and linked to viewpoint IDs and test approach IDs. Questions should unblock test design, acceptance criteria, execution feasibility, or plan updates.
+- **Questionnaire validity**: Confirm questions are necessary, specific, prioritized, and linked to viewpoint IDs and test approach IDs. Questions should unblock test design, acceptance criteria, execution feasibility, or plan updates. If there are no questions, confirm the questionnaire contains no dummy placeholder data rows.
 - **Test plan update judgment**: Confirm the analysis identifies whether new risks or approaches require updates to the test plan, and that the update or no-update decision is justified.
 - **Execution feasibility**: Confirm viewpoints can realistically become tests using available tools, existing tests, manual browser checks, code review, or measurable criteria.
 - **Duplication, gaps, and contradictions**: Confirm there is no harmful duplication, missing high-value viewpoint, contradiction between analysis and questionnaire, or unsupported assumption.
@@ -93,6 +98,10 @@ Guidelines:
 - Treat high-risk viewpoint thinness as `P1` when the analysis would allow important defects to escape, even if the `TAxxx` appears in the table.
 - Treat missing consideration of relevant generic QA categories as `P1` for high-risk areas and usually `P2` for medium or low-risk areas.
 - Treat boundary, abnormal, or combination viewpoints that are too broad to become useful test design as `P1` when attached to high-risk functionality.
+- Treat missing preservation of source-defined finite lists, boundary sets, thresholds, or supported-environment sets as `P1` when the structure is tied to high-risk behavior, otherwise usually `P2`.
+- Treat a viewpoint that combines values or states with different expected handling as `P1` when it can mislead later design for high-risk behavior, otherwise usually `P2`.
+- Treat unresolved question-style wording as `P1` when it hides an acceptance criterion or required stakeholder question, otherwise usually `P2`.
+- Treat dummy placeholder rows in a no-question questionnaire as `P2` when they could be consumed as real questions, otherwise `P3`.
 - Treat a likely serious "bug escape" found during review as `P1` when it can be addressed from available information; use `P2` when it is lower impact or mostly clarity-related.
 - Treat a missing question that blocks test design or acceptance criteria as at least `P1`.
 - Mark unavailable source facts as `要確認`; do not invent them.
@@ -108,7 +117,11 @@ When fixing the analysis artifacts:
 - Keep analysis at viewpoint level. Do not add detailed test steps or expected results unless explicitly requested.
 - Prefer explicit traceability, `要確認`, or questionnaire entries over vague assumptions.
 - When fixing high-risk thinness, add multiple focused viewpoints rather than one broad catch-all row. Preserve the existing table shape and put origin/case-splitting information in `備考`.
+- When fixing source-structure loss, add compact list/boundary/set information to `備考` or cite the exact source section. Do not expand analysis into detailed test cases.
+- When fixing mixed expected handling, split the viewpoint or add a concise `期待処理差分: ...` note.
+- When fixing question-style wording, classify it as confirmed behavior, `要確認` plus questionnaire entry, source precondition, or exclusion.
 - When fixing generic QA omissions, add only relevant target-type viewpoints and mark unsupported expectations as `要確認` or questionnaire items.
+- When fixing a no-question questionnaire, remove dummy placeholder rows and leave `現時点で質問はありません。` with either no table or an empty header-only table.
 - When a "bug escape" cannot be resolved from source material, add or confirm a questionnaire entry instead of inventing expected behavior.
 - If the analysis reveals a necessary test plan update, update the test plan and record that action in the final review result.
 
