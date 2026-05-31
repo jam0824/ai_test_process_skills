@@ -1,15 +1,15 @@
 ---
 name: execute-playwright-e2e-tests
-description: Execute Playwright E2E automated tests and record traceable run results. Use when Codex needs to run tests derived from `テストケース_E2E自動.md`, parse Playwright JSON reporter output for `TC-E2E-*`, create timestamped executed Markdown and CSV copies with Pass/Fail/N/A per test case, save raw logs and JSON results, and append discovered bugs to `e2e_発見issue一覧.md` with `E2E-BUG-001` style IDs.
+description: Execute Playwright E2E automated tests and record traceable run results. Use when Codex needs to run tests derived from `テストケース_E2E自動.md`, parse Playwright JSON reporter output for `TC-E2E-*`, create a timestamped report folder under `テスト成果物/report`, save executed Markdown/CSV/raw log/JSON with Pass/Fail/N/A, and write discovered bugs to that run's `e2e_発見issue一覧.md` with `E2E-BUG-001` style IDs.
 ---
 
 # Execute Playwright E2E Tests
 
 ## Overview
 
-Run Playwright E2E tests, map JSON reporter results back to `TC-E2E-*` test cases, and save human-readable execution records. Prefer deterministic recording through the bundled script; do not infer `Pass` from the overall command result when an individual `TC-E2E-*` is absent.
+Run Playwright E2E tests, map JSON reporter results back to `TC-E2E-*` test cases, and save human-readable execution records under a timestamped report folder. Prefer deterministic recording through the bundled script; do not infer `Pass` from the overall command result when an individual `TC-E2E-*` is absent.
 
-Default to Japanese output. Do not edit product code, specifications, README files, or the source `テストケース_E2E自動.md`; write only timestamped execution artifacts and the E2E issue list.
+Default to Japanese output. Do not edit product code, specifications, README files, or the source `テストケース_E2E自動.md`; write only timestamped execution artifacts and the E2E issue list inside the run report directory.
 
 ## Workflow
 
@@ -34,12 +34,13 @@ python skills\execute-playwright-e2e-tests\scripts\record_playwright_e2e_test_ru
 ```
 
 4. Review generated artifacts:
+   - Timestamped report directory under `テスト成果物/report/`.
    - Timestamped executed Markdown.
    - Timestamped executed CSV.
    - Timestamped raw log.
    - Timestamped Playwright JSON result file.
-   - `テスト成果物/e2e_発見issue一覧.md`.
-5. Report output paths, command, summary counts, and any newly created `E2E-BUG-*`.
+   - `e2e_発見issue一覧.md` in the same report directory.
+5. Report the report directory, output paths, command, summary counts, and any newly created `E2E-BUG-*`.
 
 ## Result Mapping Rules
 
@@ -61,19 +62,20 @@ Default inputs and outputs:
 | Purpose | Default |
 |---|---|
 | Input test cases | `テスト成果物/テストケース_E2E自動.md` |
-| Output directory | `テスト成果物` |
-| Issue file | `テスト成果物/e2e_発見issue一覧.md` |
-| Executed Markdown | `yyyyMMddHHmmss_テストケース_E2E自動_実行済み.md` |
-| Executed CSV | `yyyyMMddHHmmss_テストケース_E2E自動_実行済み.csv` |
-| Raw log | `yyyyMMddHHmmss_E2E自動テスト実行ログ.txt` |
-| JSON result | `yyyyMMddHHmmss_Playwright_E2E実行結果.json` |
+| Report root | `テスト成果物/report` |
+| Report directory | `テスト成果物/report/yyyyMMddHHmmss_e2e自動テスト` |
+| Issue file | `テスト成果物/report/yyyyMMddHHmmss_e2e自動テスト/e2e_発見issue一覧.md` |
+| Executed Markdown | `テスト成果物/report/yyyyMMddHHmmss_e2e自動テスト/yyyyMMddHHmmss_テストケース_E2E自動_実行済み.md` |
+| Executed CSV | `テスト成果物/report/yyyyMMddHHmmss_e2e自動テスト/yyyyMMddHHmmss_テストケース_E2E自動_実行済み.csv` |
+| Raw log | `テスト成果物/report/yyyyMMddHHmmss_e2e自動テスト/yyyyMMddHHmmss_E2E自動テスト実行ログ.txt` |
+| JSON result | `テスト成果物/report/yyyyMMddHHmmss_e2e自動テスト/yyyyMMddHHmmss_Playwright_E2E実行結果.json` |
 
 Important options:
 
 ```text
 --test-cases PATH     Input Markdown test case table.
---output-dir PATH     Directory for execution artifacts.
---issue-file PATH     Existing/new E2E issue Markdown file.
+--output-dir PATH     Report root. The script creates PATH/yyyyMMddHHmmss_e2e自動テスト/.
+--issue-file PATH     Existing/new E2E issue Markdown file. If omitted, write inside the report directory.
 --timestamp VALUE     Timestamp override in yyyyMMddHHmmss form.
 --command-name TEXT   Command text written to the execution record.
 --json-file PATH      Parse an existing Playwright JSON result instead of running a command.
@@ -126,4 +128,4 @@ Traceability must include at least the test case ID and available `TDxxx`, `TVxx
 - Confirm every row has one of `Pass`, `Fail`, or `N/A`.
 - Confirm failed rows have a `Bug ID` and a matching issue row.
 - Confirm `N/A` rows explain why they could not be mapped.
-- Mention generated Markdown, CSV, raw log, JSON result, issue file, and command summary in the final response.
+- Mention the report directory, generated Markdown, CSV, raw log, JSON result, issue file, and command summary in the final response.

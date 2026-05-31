@@ -1,13 +1,13 @@
 ---
 name: execute-codebase-tests
-description: Execute code-based automated tests and record traceable run results. Use when Codex needs to run tests derived from `テストケース_コードベース.md`, create timestamped executed Markdown and CSV copies with Pass/Fail/N/A per `TC-CB-*`, save raw logs, and append discovered bugs to `発見issue一覧.md` with `BUG-001` style IDs.
+description: Execute code-based automated tests and record traceable run results. Use when Codex needs to run tests derived from `テストケース_コードベース.md`, create a timestamped report folder under `テスト成果物/report`, save executed Markdown/CSV/raw log with Pass/Fail/N/A per `TC-CB-*`, and write discovered bugs to that run's `発見issue一覧.md` with `BUG-001` style IDs.
 ---
 
 # Execute Codebase Tests
 
 ## Overview
 
-Run code-based tests, map the output back to `TC-CB-*` test cases, and save human-readable execution records. The skill is language-agnostic: choose the test command from the repository, then use the bundled recorder to produce Markdown, CSV, raw log, and discovered issue artifacts.
+Run code-based tests, map the output back to `TC-CB-*` test cases, and save human-readable execution records under a timestamped report folder. The skill is language-agnostic: choose the test command from the repository, then use the bundled recorder to produce Markdown, CSV, raw log, and discovered issue artifacts.
 
 ## Workflow
 
@@ -30,11 +30,12 @@ python skills\execute-codebase-tests\scripts\record_codebase_test_run.py --comma
 ```
 
 4. Review the generated artifacts:
+   - Timestamped report directory under `テスト成果物/report/`.
    - Timestamped executed Markdown.
    - Timestamped executed CSV.
    - Timestamped raw log.
-   - `発見issue一覧.md`.
-5. Report the output paths, command, summary counts, and any newly created `BUG-*`.
+   - `発見issue一覧.md` in the same report directory.
+5. Report the report directory, output paths, command, summary counts, and any newly created `BUG-*`.
 
 ## Result Mapping Rules
 
@@ -53,18 +54,19 @@ Default inputs and outputs:
 | Purpose | Default |
 |---|---|
 | Input test cases | `テスト成果物/テストケース_コードベース.md` |
-| Output directory | `テスト成果物` |
-| Issue file | `テスト成果物/発見issue一覧.md` |
-| Executed Markdown | `yyyyMMddHHmmss_テストケース_コードベース_実行済み.md` |
-| Executed CSV | `yyyyMMddHHmmss_テストケース_コードベース_実行済み.csv` |
-| Raw log | `yyyyMMddHHmmss_コードベーステスト実行ログ.txt` |
+| Report root | `テスト成果物/report` |
+| Report directory | `テスト成果物/report/yyyyMMddHHmmss_コードベーステスト` |
+| Issue file | `テスト成果物/report/yyyyMMddHHmmss_コードベーステスト/発見issue一覧.md` |
+| Executed Markdown | `テスト成果物/report/yyyyMMddHHmmss_コードベーステスト/yyyyMMddHHmmss_テストケース_コードベース_実行済み.md` |
+| Executed CSV | `テスト成果物/report/yyyyMMddHHmmss_コードベーステスト/yyyyMMddHHmmss_テストケース_コードベース_実行済み.csv` |
+| Raw log | `テスト成果物/report/yyyyMMddHHmmss_コードベーステスト/yyyyMMddHHmmss_コードベーステスト実行ログ.txt` |
 
 Important options:
 
 ```text
 --test-cases PATH     Input Markdown test case table.
---output-dir PATH     Directory for executed Markdown, CSV, raw log, and issue file.
---issue-file PATH     Existing/new issue Markdown file.
+--output-dir PATH     Report root. The script creates PATH/yyyyMMddHHmmss_コードベーステスト/.
+--issue-file PATH     Existing/new issue Markdown file. If omitted, write inside the report directory.
 --timestamp VALUE     Timestamp override in yyyyMMddHHmmss form.
 --command-name TEXT   Command text written to the execution record.
 --log-file PATH       Parse an existing log instead of running a command.
@@ -115,4 +117,4 @@ Traceability must include at least the test case ID and available `TDxxx`, `TVxx
 - Confirm every row has one of `Pass`, `Fail`, or `N/A`.
 - Confirm failed rows have a `Bug ID` and a matching issue row.
 - Confirm `N/A` rows explain why they could not be mapped.
-- Mention the generated Markdown, CSV, raw log, issue file, and command summary in the final response.
+- Mention the report directory, generated Markdown, CSV, raw log, issue file, and command summary in the final response.

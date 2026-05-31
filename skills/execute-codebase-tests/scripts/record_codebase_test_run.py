@@ -277,7 +277,7 @@ def write_outputs(
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Record code-based test execution results.")
     parser.add_argument("--test-cases", default="テスト成果物/テストケース_コードベース.md")
-    parser.add_argument("--output-dir", default="テスト成果物")
+    parser.add_argument("--output-dir", default="テスト成果物/report")
     parser.add_argument("--issue-file", default=None)
     parser.add_argument("--timestamp", default=None)
     parser.add_argument("--command-name", default=None)
@@ -294,12 +294,13 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 def main(argv: list[str]) -> int:
     args = parse_args(argv)
     timestamp = args.timestamp or datetime.now().strftime("%Y%m%d%H%M%S")
-    output_dir = Path(args.output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
-    issue_file = Path(args.issue_file) if args.issue_file else output_dir / "発見issue一覧.md"
-    executed_md = output_dir / f"{timestamp}_テストケース_コードベース_実行済み.md"
-    executed_csv = output_dir / f"{timestamp}_テストケース_コードベース_実行済み.csv"
-    raw_log = output_dir / f"{timestamp}_コードベーステスト実行ログ.txt"
+    report_root = Path(args.output_dir)
+    report_dir = report_root / f"{timestamp}_コードベーステスト"
+    report_dir.mkdir(parents=True, exist_ok=True)
+    issue_file = Path(args.issue_file) if args.issue_file else report_dir / "発見issue一覧.md"
+    executed_md = report_dir / f"{timestamp}_テストケース_コードベース_実行済み.md"
+    executed_csv = report_dir / f"{timestamp}_テストケース_コードベース_実行済み.csv"
+    raw_log = report_dir / f"{timestamp}_コードベーステスト実行ログ.txt"
     command_name = args.command_name or (" ".join(args.command) if args.command else f"log-file: {args.log_file}")
 
     command_result = load_log(args)
@@ -359,6 +360,7 @@ def main(argv: list[str]) -> int:
     append_issues(issue_file, issue_rows)
     write_outputs(source_lines, table, header, rows, executed_md, executed_csv)
 
+    print(f"report_dir={report_dir}")
     print(f"executed_markdown={executed_md}")
     print(f"executed_csv={executed_csv}")
     print(f"raw_log={raw_log}")
