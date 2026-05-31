@@ -1,5 +1,5 @@
 ---
-name: run-test-workflow
+name: run-test-process
 description: Orchestrate the full Japanese QA workflow by invoking existing skills in order, from test plan creation through reviews, analysis, design, test cases, code-based and Playwright E2E test implementation, execution recording, and final HTML report generation. Use when Codex needs to run the whole test artifact lifecycle with provided specifications and test targets while leaving human-executed tests unexecuted and visible in the final report.
 ---
 
