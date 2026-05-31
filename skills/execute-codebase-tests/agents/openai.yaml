@@ -1,0 +1,4 @@
+interface:
+  display_name: "コードベーステスト実行記録"
+  short_description: "コードベーステストを実行し結果とissueを記録する支援"
+  default_prompt: "Use $execute-codebase-tests to run code-based tests and record Pass/Fail/N/A results, CSV output, logs, and discovered issues."

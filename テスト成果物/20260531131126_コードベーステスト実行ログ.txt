@@ -1,0 +1,212 @@
+Command: node --test sample_app\retirement_simulator.test.js
+ExitCode: 0
+Timestamp: 20260531131126
+
+TAP version 13
+# Subtest: TC-CB-001 年収300万円の月手取りを計算できる
+ok 1 - TC-CB-001 年収300万円の月手取りを計算できる
+  ---
+  duration_ms: 0.7191
+  type: 'test'
+  ...
+# Subtest: TC-CB-002 年収600万円の月手取りを計算できる
+ok 2 - TC-CB-002 年収600万円の月手取りを計算できる
+  ---
+  duration_ms: 0.12
+  type: 'test'
+  ...
+# Subtest: TC-CB-003 年収1000万円の月手取りを計算できる
+ok 3 - TC-CB-003 年収1000万円の月手取りを計算できる
+  ---
+  duration_ms: 0.0887
+  type: 'test'
+  ...
+# Subtest: TC-CB-007 年収600万円の控除と税率適用順を確認できる
+ok 4 - TC-CB-007 年収600万円の控除と税率適用順を確認できる
+  ---
+  duration_ms: 0.1446
+  type: 'test'
+  ...
+# Subtest: TC-CB-008 基礎控除480000円を差し引いて課税所得を計算できる
+ok 5 - TC-CB-008 基礎控除480000円を差し引いて課税所得を計算できる
+  ---
+  duration_ms: 0.121
+  type: 'test'
+  ...
+# Subtest: TC-CB-009 課税所得に住民税10%を反映できる
+ok 6 - TC-CB-009 課税所得に住民税10%を反映できる
+  ---
+  duration_ms: 0.0756
+  type: 'test'
+  ...
+# Subtest: TC-CB-010 開始年齢の月は給与収入になる
+ok 7 - TC-CB-010 開始年齢の月は給与収入になる
+  ---
+  duration_ms: 14.1727
+  type: 'test'
+  ...
+# Subtest: TC-CB-011 退職年齢直前の月は給与収入になる
+ok 8 - TC-CB-011 退職年齢直前の月は給与収入になる
+  ---
+  duration_ms: 3.0453
+  type: 'test'
+  ...
+# Subtest: TC-CB-012 退職年齢の月は退職後収入になる
+ok 9 - TC-CB-012 退職年齢の月は退職後収入になる
+  ---
+  duration_ms: 3.3086
+  type: 'test'
+  ...
+# Subtest: TC-CB-013 年金開始年齢直前の月は退職後収入になる
+ok 10 - TC-CB-013 年金開始年齢直前の月は退職後収入になる
+  ---
+  duration_ms: 3.0402
+  type: 'test'
+  ...
+# Subtest: TC-CB-014 年金開始年齢の月は年金収入になる
+ok 11 - TC-CB-014 年金開始年齢の月は年金収入になる
+  ---
+  duration_ms: 2.6864
+  type: 'test'
+  ...
+# Subtest: TC-CB-015 投資率20%で月手取りの20%を投資へ積み立てる
+ok 12 - TC-CB-015 投資率20%で月手取りの20%を投資へ積み立てる
+  ---
+  duration_ms: 2.5839
+  type: 'test'
+  ...
+# Subtest: TC-CB-016 年収600万円でも投資率分を投資へ積み立てる
+ok 13 - TC-CB-016 年収600万円でも投資率分を投資へ積み立てる
+  ---
+  duration_ms: 2.0503
+  type: 'test'
+  ...
+# Subtest: TC-CB-017 標準生活費差引前の現金加算と投資額を確認できる
+ok 14 - TC-CB-017 標準生活費差引前の現金加算と投資額を確認できる
+  ---
+  duration_ms: 2.3731
+  type: 'test'
+  ...
+# Subtest: TC-CB-018 開始年齢の1月には年初利息を適用しない
+ok 15 - TC-CB-018 開始年齢の1月には年初利息を適用しない
+  ---
+  duration_ms: 2.1505
+  type: 'test'
+  ...
+# Subtest: TC-CB-019 開始翌年の1月に年利10%を適用する
+ok 16 - TC-CB-019 開始翌年の1月に年利10%を適用する
+  ---
+  duration_ms: 1.9604
+  type: 'test'
+  ...
+# Subtest: TC-CB-020 開始翌年の1月に年利5%を適用する
+ok 17 - TC-CB-020 開始翌年の1月に年利5%を適用する
+  ---
+  duration_ms: 2.2037
+  type: 'test'
+  ...
+# Subtest: TC-CB-024 投資補填時に20%税金を投資残高から差し引く
+ok 18 - TC-CB-024 投資補填時に20%税金を投資残高から差し引く
+  ---
+  duration_ms: 2.5232
+  type: 'test'
+  ...
+# Subtest: TC-CB-025 35歳で変更後年収400万円を適用する
+ok 19 - TC-CB-025 35歳で変更後年収400万円を適用する
+  ---
+  duration_ms: 2.2741
+  type: 'test'
+  ...
+# Subtest: TC-CB-026 45歳で35歳設定より45歳設定を優先する
+ok 20 - TC-CB-026 45歳で35歳設定より45歳設定を優先する
+  ---
+  duration_ms: 2.2277
+  type: 'test'
+  ...
+# Subtest: TC-CB-027 55歳で最新の該当給与変更を選択する
+ok 21 - TC-CB-027 55歳で最新の該当給与変更を選択する
+  ---
+  duration_ms: 3.337
+  type: 'test'
+  ...
+# Subtest: TC-CB-030 年またぎでは年初利息行を月次処理より前に出力する
+ok 22 - TC-CB-030 年またぎでは年初利息行を月次処理より前に出力する
+  ---
+  duration_ms: 2.1325
+  type: 'test'
+  ...
+# Subtest: TC-CB-031 年利5%の利息適用後に31歳1月の月次処理が続く
+ok 23 - TC-CB-031 年利5%の利息適用後に31歳1月の月次処理が続く
+  ---
+  duration_ms: 2.3312
+  type: 'test'
+  ...
+# Subtest: TC-CB-032 イベントなし条件ではイベント行を出力しない
+ok 24 - TC-CB-032 イベントなし条件ではイベント行を出力しない
+  ---
+  duration_ms: 2.4007
+  type: 'test'
+  ...
+# Subtest: TC-CB-033 期間をまたいでも資産状態を引き継ぐ
+ok 25 - TC-CB-033 期間をまたいでも資産状態を引き継ぐ
+  ---
+  duration_ms: 1.2909
+  type: 'test'
+  ...
+# Subtest: TC-CB-034 現金不足時に不足額を投資から補填して現金を0円に戻す
+ok 26 - TC-CB-034 現金不足時に不足額を投資から補填して現金を0円に戻す
+  ---
+  duration_ms: 2.2973
+  type: 'test'
+  ...
+# Subtest: TC-CB-035 補填税差引後も投資残高が残り結果生成が継続する
+ok 27 - TC-CB-035 補填税差引後も投資残高が残り結果生成が継続する
+  ---
+  duration_ms: 1.7767
+  type: 'test'
+  ...
+# Subtest: TC-CB-036 投資残高不足時も現金・投資・総資産を一貫表示する
+ok 28 - TC-CB-036 投資残高不足時も現金・投資・総資産を一貫表示する
+  ---
+  duration_ms: 1.8575
+  type: 'test'
+  ...
+# Subtest: TC-CB-038 イベント費用から現金不足と投資補填へ連携する
+ok 29 - TC-CB-038 イベント費用から現金不足と投資補填へ連携する
+  ---
+  duration_ms: 2.7229
+  type: 'test'
+  ...
+# Subtest: TC-CB-039 月次結果の現金・投資・総資産は整合する
+ok 30 - TC-CB-039 月次結果の現金・投資・総資産は整合する
+  ---
+  duration_ms: 7.31
+  type: 'test'
+  ...
+# Subtest: TC-CB-040 イベント発生月の同月内で投資補填を処理する
+ok 31 - TC-CB-040 イベント発生月の同月内で投資補填を処理する
+  ---
+  duration_ms: 2.6757
+  type: 'test'
+  ...
+# Subtest: TC-CB-041 車検イベントで不足70000円と税金14000円を処理する
+ok 32 - TC-CB-041 車検イベントで不足70000円と税金14000円を処理する
+  ---
+  duration_ms: 2.6057
+  type: 'test'
+  ...
+# Subtest: TC-CB-042 給与変更・イベント・投資補填の複合条件を同月に反映する
+ok 33 - TC-CB-042 給与変更・イベント・投資補填の複合条件を同月に反映する
+  ---
+  duration_ms: 2.9191
+  type: 'test'
+  ...
+1..33
+# tests 33
+# suites 0
+# pass 33
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 141.6974
