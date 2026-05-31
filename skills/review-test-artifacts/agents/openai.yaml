@@ -1,0 +1,4 @@
+interface:
+  display_name: "テスト成果物横断レビュー"
+  short_description: "テスト計画からテストケースまでを横断レビューし高優先度問題を改善して保存する支援"
+  default_prompt: "Use $review-test-artifacts to review test plan, analysis, design, and test cases end-to-end, fix high-priority issues, re-review, and save the final Markdown result."
