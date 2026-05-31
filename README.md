@@ -2,7 +2,7 @@
 
 このリポジトリは、仕様書やREADME、対象コードからテスト成果物を作成し、レビュー、テストコード実装、実行記録、HTMLレポート作成まで進めるための Codex skills をまとめたものです。
 
-メインの入口は `$run-test-process` です。必要に応じて、テスト計画だけ、テスト設計だけ、E2Eテスト実装だけのように個別 skill も実行できます。
+メインの入口は `$run-test-process` です。ユーザーから見ると一度の依頼で最終レポートまで進めますが、内部ではフェーズごとに進行状況と引き継ぎを保存し、長い会話履歴に依存しすぎないようにします。必要に応じて、テスト計画だけ、テスト設計だけ、E2Eテスト実装だけのように個別 skill も実行できます。
 
 ## 使い方
 
@@ -22,7 +22,7 @@ Codex に依頼するときは、使いたい skill 名を `$skill-name` の形�
 
 ### `$run-test-process`
 
-テスト計画から最終HTMLレポートまで、既存 skill を順番に使うオーケストレーション skill です。
+テスト計画から最終HTMLレポートまで、既存 skill を順番に使うオーケストレーション skill です。実行中は `テスト成果物/run-test-process_進行状況.md` と `テスト成果物/run-test-process_引き継ぎ.md` を更新し、次フェーズはその成果物を正として進めます。
 
 実行順は次のとおりです。
 
@@ -44,6 +44,16 @@ Codex に依頼するときは、使いたい skill 名を `$skill-name` の形�
 16. `$create-test-report`
 
 各レビュー工程では、高優先度の問題がなくなるまで修正と再レビューを繰り返します。実装対象や実行環境が足りない場合は、その工程だけ未実装または未実行として記録し、可能な範囲でレポート作成まで進めます。
+
+内部フェーズは次の単位で区切ります。
+
+1. 計画: `$create-test-plan` + `$review-test-plan`
+2. 分析: `$create-test-analysis` + `$review-test-analysis`
+3. 設計: `$create-test-design` + `$review-test-design`
+4. ケースと実装開始ゲート: `$create-test-cases` + `$review-test-cases` + `$review-test-artifacts` + Implementation Entry Gate
+5. コードベース自動テスト: `$create-test-code` + `$review-test-code` + `$execute-codebase-tests`
+6. Playwright E2E: `$create-playwright-e2e-tests` + `$review-playwright-e2e-tests` + `$execute-playwright-e2e-tests`
+7. 最終レポート: `$create-test-report` + `$review-test-report`
 
 ## 個別 Skills
 
