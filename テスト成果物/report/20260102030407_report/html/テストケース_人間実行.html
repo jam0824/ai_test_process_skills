@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テストケース（人間実行）</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テストケース（人間実行）</h2>
+<h3>1. 作成対象</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>項目</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>テスト対象</td><td><code>sample_app/retirement_simulator.html</code></td></tr>
+<tr><td>入力となるテスト設計</td><td><code>テスト成果物/テスト設計.md</code></td></tr>
+<tr><td>入力となるテスト設計質問票</td><td><code>テスト成果物/テスト設計_質問票.md</code></td></tr>
+<tr><td>出力方針</td><td>コードベース、E2E自動、人間実行、質問待ちを別ファイルとして出力する</td></tr>
+<tr><td>作成日</td><td>2026-05-31</td></tr>
+</tbody></table></div>
+<h3>2. 参照資料</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>種別</th><th>参照先</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td>テスト設計</td><td><code>テスト成果物/テスト設計.md</code></td><td><code>TDxxx</code>、実行方法、期待結果、状態の根拠</td></tr>
+<tr><td>テスト設計質問票</td><td><code>テスト成果物/テスト設計_質問票.md</code></td><td><code>質問待ち</code> ケースの関連質問IDの根拠</td></tr>
+<tr><td>テスト分析</td><td><code>テスト成果物/テスト分析.md</code></td><td><code>TVxxx</code> と観点の根拠</td></tr>
+<tr><td>テスト計画</td><td><code>テスト成果物/テスト計画書.md</code></td><td><code>TAxxx</code>、リスク、スコープの根拠</td></tr>
+<tr><td>仕様書</td><td><code>spec/仕様書.md</code></td><td>期待結果、制約、性能、セキュリティの根拠</td></tr>
+<tr><td>README</td><td><code>sample_app/README.md</code></td><td>使用例、デフォルト値、注意事項の根拠</td></tr>
+<tr><td>実装・既存テスト</td><td><code>sample_app/retirement_simulator.html</code>, <code>sample_app/test_retirement_simulator.html</code></td><td>実行方法と既存テスト活用の補助確認</td></tr>
+</tbody></table></div>
+<h3>3. 人間が実行する必要があるテストケース</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テストケースID</th><th>元テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>実行区分</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストケース名</th><th>前提条件</th><th>入力/データ</th><th>手順</th><th>期待結果</th><th>確認方法/証跡</th><th>関連質問ID</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TC-MAN-007</td><td>TD033</td><td>TV033</td><td>TA009</td><td>人間実行</td><td>Manual</td><td>中</td><td>結果表示可読性 - 標準結果</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>標準結果</td><td>人間が「標準結果」を条件に、画面上で金額、年齢、月、収入種別、総資産、スクロールを確認する。</td><td>結果が読み取り可能で、スクロールして確認できること</td><td>手動確認記録、スクリーンショット</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.3</td><td>R008</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-008</td><td>TD033</td><td>TV033</td><td>TA009</td><td>人間実行</td><td>Manual</td><td>中</td><td>結果表示可読性 - 長期結果</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>長期結果</td><td>人間が「長期結果」を条件に、画面上で金額、年齢、月、収入種別、総資産、スクロールを確認する。</td><td>結果が読み取り可能で、スクロールして確認できること</td><td>手動確認記録、スクリーンショット</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.3</td><td>R008</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-010</td><td>TD055</td><td>TV055</td><td>TA016</td><td>人間実行</td><td>Manual</td><td>中</td><td>800x600表示 - 800×600以上の画面</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>800×600以上の画面</td><td>人間が「800×600以上の画面」を条件に、ブラウザサイズを指定して入力フォームと結果表示を確認する。</td><td>入力、給与変更、結果表示が利用可能であること</td><td>手動確認記録、スクリーンショット</td><td>なし</td><td><code>spec/仕様書.md</code> 11.2</td><td>R009</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-011</td><td>TD055</td><td>TV055</td><td>TA016</td><td>人間実行</td><td>Manual</td><td>中</td><td>800x600表示 - 標準ズーム</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>標準ズーム</td><td>人間が「標準ズーム」を条件に、ブラウザサイズを指定して入力フォームと結果表示を確認する。</td><td>入力、給与変更、結果表示が利用可能であること</td><td>手動確認記録、スクリーンショット</td><td>なし</td><td><code>spec/仕様書.md</code> 11.2</td><td>R009</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-014</td><td>TD024</td><td>TV024</td><td>TA006</td><td>人間実行</td><td>Code review</td><td>中</td><td>イベントマスタ確認 - 定義済みイベント8種</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>定義済みイベント8種</td><td>人間が「定義済みイベント8種」を条件に、実装内のイベント名と費用を仕様表と照合する。</td><td>イベント名称と費用が仕様の定義と一致すること</td><td>コードレビュー記録、確認箇所メモ</td><td>なし</td><td><code>spec/仕様書.md</code> 4.1</td><td>R005</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-015</td><td>TD042</td><td>TV042</td><td>TA012</td><td>人間実行</td><td>Code review</td><td>高</td><td>外部依存なし - HTML内のscript</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>HTML内のscript</td><td>人間が「HTML内のscript」を条件に、コードレビューで外部参照有無を検索確認する。</td><td>外部script、外部CSS、CDN参照がなく単体ファイルとして動作すること</td><td>コードレビュー記録、確認箇所メモ</td><td>なし</td><td><code>spec/仕様書.md</code> 1.3、8.1、10.1</td><td>R007</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-016</td><td>TD042</td><td>TV042</td><td>TA012</td><td>人間実行</td><td>Code review</td><td>高</td><td>外部依存なし - CSS</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>CSS</td><td>人間が「CSS」を条件に、コードレビューで外部参照有無を検索確認する。</td><td>外部script、外部CSS、CDN参照がなく単体ファイルとして動作すること</td><td>コードレビュー記録、確認箇所メモ</td><td>なし</td><td><code>spec/仕様書.md</code> 1.3、8.1、10.1</td><td>R007</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-017</td><td>TD042</td><td>TV042</td><td>TA012</td><td>人間実行</td><td>Code review</td><td>高</td><td>外部依存なし - CDN</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>CDN</td><td>人間が「CDN」を条件に、コードレビューで外部参照有無を検索確認する。</td><td>外部script、外部CSS、CDN参照がなく単体ファイルとして動作すること</td><td>コードレビュー記録、確認箇所メモ</td><td>なし</td><td><code>spec/仕様書.md</code> 1.3、8.1、10.1</td><td>R007</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-018</td><td>TD042</td><td>TV042</td><td>TA012</td><td>人間実行</td><td>Code review</td><td>高</td><td>外部依存なし - 外部URL</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>外部URL</td><td>人間が「外部URL」を条件に、コードレビューで外部参照有無を検索確認する。</td><td>外部script、外部CSS、CDN参照がなく単体ファイルとして動作すること</td><td>コードレビュー記録、確認箇所メモ</td><td>なし</td><td><code>spec/仕様書.md</code> 1.3、8.1、10.1</td><td>R007</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-019</td><td>TD045</td><td>TV045</td><td>TA013</td><td>人間実行</td><td>Code review</td><td>高</td><td>結果表示XSS - 結果表示処理</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>結果表示処理</td><td>人間が「結果表示処理」を条件に、コードレビューで <code>textContent</code> 等の安全な出力方式を確認する。</td><td>ユーザー入力がHTMLとして解釈されないこと</td><td>コードレビュー記録、確認箇所メモ</td><td>なし</td><td><code>spec/仕様書.md</code> 8.2、3.1.3</td><td>R010</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-020</td><td>TD045</td><td>TV045</td><td>TA013</td><td>人間実行</td><td>Code review</td><td>高</td><td>結果表示XSS - ユーザー入力反映箇所</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>ユーザー入力反映箇所</td><td>人間が「ユーザー入力反映箇所」を条件に、コードレビューで <code>textContent</code> 等の安全な出力方式を確認する。</td><td>ユーザー入力がHTMLとして解釈されないこと</td><td>コードレビュー記録、確認箇所メモ</td><td>なし</td><td><code>spec/仕様書.md</code> 8.2、3.1.3</td><td>R010</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-021</td><td>TD046</td><td>TV046</td><td>TA013</td><td>人間実行</td><td>Code review</td><td>高</td><td>動的HTML生成 - 給与変更UIの <code>innerHTML</code> 生成箇所</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>給与変更UIの <code>innerHTML</code> 生成箇所</td><td>人間が「給与変更UIの <code>innerHTML</code> 生成箇所」を条件に、コードレビューでユーザー入力値がHTML文字列に直接埋め込まれていないことを確認する。</td><td>動的生成箇所が入力値由来のHTML注入につながらないこと</td><td>コードレビュー記録、確認箇所メモ</td><td>なし</td><td><code>spec/仕様書.md</code> 8.2、2.2 F008</td><td>R010</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-023</td><td>TD040</td><td>TV040</td><td>TA011</td><td>人間実行</td><td>Exploratory</td><td>中</td><td>極端シナリオ - 高利回り</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>高利回り</td><td>人間が「高利回り」を条件に、探索的に組み合わせを実行し、表示破綻と誤解しやすい結果を確認する。</td><td>結果生成が止まらず、金融的妥当性の範囲外でも表示が破綻しないこと</td><td>探索的テストメモ、スクリーンショット</td><td>なし</td><td><code>sample_app/README.md</code> 注意事項</td><td>R002, R003, R006</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-024</td><td>TD040</td><td>TV040</td><td>TA011</td><td>人間実行</td><td>Exploratory</td><td>中</td><td>極端シナリオ - 生活費過大</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>生活費過大</td><td>人間が「生活費過大」を条件に、探索的に組み合わせを実行し、表示破綻と誤解しやすい結果を確認する。</td><td>結果生成が止まらず、金融的妥当性の範囲外でも表示が破綻しないこと</td><td>探索的テストメモ、スクリーンショット</td><td>なし</td><td><code>sample_app/README.md</code> 注意事項</td><td>R002, R003, R006</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-025</td><td>TD040</td><td>TV040</td><td>TA011</td><td>人間実行</td><td>Exploratory</td><td>中</td><td>極端シナリオ - 年金不足</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>年金不足</td><td>人間が「年金不足」を条件に、探索的に組み合わせを実行し、表示破綻と誤解しやすい結果を確認する。</td><td>結果生成が止まらず、金融的妥当性の範囲外でも表示が破綻しないこと</td><td>探索的テストメモ、スクリーンショット</td><td>なし</td><td><code>sample_app/README.md</code> 注意事項</td><td>R002, R003, R006</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-026</td><td>TD040</td><td>TV040</td><td>TA011</td><td>人間実行</td><td>Exploratory</td><td>中</td><td>極端シナリオ - 投資率極端値の組み合わせ</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>投資率極端値の組み合わせ</td><td>人間が「投資率極端値の組み合わせ」を条件に、探索的に組み合わせを実行し、表示破綻と誤解しやすい結果を確認する。</td><td>結果生成が止まらず、金融的妥当性の範囲外でも表示が破綻しないこと</td><td>探索的テストメモ、スクリーンショット</td><td>なし</td><td><code>sample_app/README.md</code> 注意事項</td><td>R002, R003, R006</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-030</td><td>TD058</td><td>TV058</td><td>TA017</td><td>人間実行</td><td>Exploratory</td><td>中</td><td>極端投資・イベント - 投資率0%/100%</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>投資率0%/100%</td><td>人間が「投資率0%/100%」を条件に、組み合わせ表から代表パターンを選び探索的に実行する。</td><td>極端条件でも計算停止や表示破綻がないこと</td><td>探索的テストメモ、スクリーンショット</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F002、5.1、5.3</td><td>R003, R005, R006</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-031</td><td>TD058</td><td>TV058</td><td>TA017</td><td>人間実行</td><td>Exploratory</td><td>中</td><td>極端投資・イベント - 利回り0%/高値</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>利回り0%/高値</td><td>人間が「利回り0%/高値」を条件に、組み合わせ表から代表パターンを選び探索的に実行する。</td><td>極端条件でも計算停止や表示破綻がないこと</td><td>探索的テストメモ、スクリーンショット</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F002、5.1、5.3</td><td>R003, R005, R006</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-032</td><td>TD058</td><td>TV058</td><td>TA017</td><td>人間実行</td><td>Exploratory</td><td>中</td><td>極端投資・イベント - イベント発生率0%/100%</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>イベント発生率0%/100%</td><td>人間が「イベント発生率0%/100%」を条件に、組み合わせ表から代表パターンを選び探索的に実行する。</td><td>極端条件でも計算停止や表示破綻がないこと</td><td>探索的テストメモ、スクリーンショット</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F002、5.1、5.3</td><td>R003, R005, R006</td><td>作成済み</td></tr>
+</tbody></table></div>
+<h3>4. 上流成果物への追記・更新</h3>
+<p>今回のテストケース再作成では、既存のテスト設計・テスト分析・テスト計画へ追加すべき新規観点、リスク、テストアプローチは見つからなかった。</p>
+<p>判断理由:</p>
+<ul>
+<li><code>TD001</code> から <code>TD063</code> まで、分割後の4ファイル合算で少なくとも1件のテストケースへ展開している。</li>
+<li><code>質問待ち</code> のテストケースは実行区分ファイルへ重複配置せず、<code>テストケース_質問待ち.md</code> に集約した。</li>
+<li>期待結果、許容範囲、実行環境が未確定の箇所は <code>要確認</code> として残し、上流成果物へ推測追記していない。</li>
+</ul>
+<h3>5. カバレッジ確認</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>対応テストケースID</th><th>実行区分</th><th>状態</th><th>出力ファイル</th><th>カバー状況</th></tr></thead>
+<tbody>
+<tr><td>TD024</td><td>TC-MAN-014</td><td>人間実行</td><td>作成済み</td><td><code>テストケース_人間実行.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD033</td><td>TC-MAN-007, TC-MAN-008</td><td>人間実行</td><td>作成済み</td><td><code>テストケース_人間実行.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD040</td><td>TC-MAN-023, TC-MAN-024, TC-MAN-025, TC-MAN-026</td><td>人間実行</td><td>作成済み</td><td><code>テストケース_人間実行.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD042</td><td>TC-MAN-015, TC-MAN-016, TC-MAN-017, TC-MAN-018</td><td>人間実行</td><td>作成済み</td><td><code>テストケース_人間実行.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD045</td><td>TC-MAN-019, TC-MAN-020</td><td>人間実行</td><td>作成済み</td><td><code>テストケース_人間実行.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD046</td><td>TC-MAN-021</td><td>人間実行</td><td>作成済み</td><td><code>テストケース_人間実行.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD055</td><td>TC-MAN-010, TC-MAN-011</td><td>人間実行</td><td>作成済み</td><td><code>テストケース_人間実行.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD058</td><td>TC-MAN-030, TC-MAN-031, TC-MAN-032</td><td>人間実行</td><td>作成済み</td><td><code>テストケース_人間実行.md</code></td><td>カバー済み</td></tr>
+</tbody></table></div>
+</body>
+</html>

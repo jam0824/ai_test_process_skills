@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テスト計画</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>老後資金シミュレーター テスト計画書</h2>
+<h3>1. テスト目的</h3>
+<p>老後資金シミュレーターが、仕様書で定義された入力条件に基づいて、現役期間、退職後から年金開始までの期間、年金受給期間における資産推移を正しく計算・表示できることを確認する。</p>
+<p>特に、手取り計算、ライフサイクルシミュレーション、投資計算、ランダムイベント、投資補填、給与変更機能は利用者の資金判断に影響するため、計算結果の妥当性、境界値での安定性、ブラウザ上での操作性、ローカル実行時のプライバシー維持を重点的に確認する。</p>
+<h3>2. ドキュメント</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>種別</th><th>参照先</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td>仕様書</td><td><code>spec/仕様書.md</code></td><td>システム概要、機能仕様、UI仕様、データ仕様、計算アルゴリズム、性能、エラーハンドリング、セキュリティ、テスト仕様の根拠</td></tr>
+<tr><td>README</td><td><code>sample_app/README.md</code></td><td>利用者向け機能説明、起動方法、設定項目、使用例、注意事項の補助確認</td></tr>
+<tr><td>テスト対象</td><td><code>sample_app/retirement_simulator.html</code></td><td>テストアイテム本体</td></tr>
+<tr><td>既存テスト</td><td><code>sample_app/test_retirement_simulator.html</code></td><td>既存の単体・統合テスト観点の補助確認。今回のテストアイテムには含めない</td></tr>
+</tbody></table></div>
+<h3>3. テストアイテム</h3>
+<ul>
+<li><code>sample_app/retirement_simulator.html</code></li>
+</ul>
+<p>対象機能:</p>
+<ul>
+<li>F001: 手取り計算機能 <code>calculateNetMonthly(salaryAnnual)</code></li>
+<li>F002: ライフサイクルシミュレーション <code>simulateRetirement(opts)</code></li>
+<li>F003: 投資計算機能</li>
+<li>F004: ランダムイベント生成</li>
+<li>F005: 投資補填機能</li>
+<li>F006: 結果表示機能</li>
+<li>F007: パラメータ設定機能</li>
+<li>F008: 給与変更機能</li>
+</ul>
+<p>対象UI:</p>
+<ul>
+<li>入力コントロール一式</li>
+<li>給与変更設定の表示/非表示、追加、削除</li>
+<li>「開始」ボタン</li>
+<li>月次シミュレーション結果表示エリア</li>
+</ul>
+<h3>4. テストスコープ</h3>
+<h4>スコープ内</h4>
+<ul>
+<li>仕様書に記載された主要機能 F001 から F008 の動作確認</li>
+<li>入力フィールドの初期値、最小値、最大値、単位、HTML5バリデーション属性の確認</li>
+<li>現役期間、退職後収入期間、年金受給期間の切り替わり確認</li>
+<li>手取り計算の税率、控除、社会保険料、住民税の計算確認</li>
+<li>投資率、年利回り、年初利息適用、投資補填時の20%税金考慮の確認</li>
+<li>ランダムイベントの発生有無、イベント費用の反映確認</li>
+<li>給与変更の追加・削除、複数設定、年齢による適用確認</li>
+<li>結果表示の形式、月次出力、金額表示、総資産表示の確認</li>
+<li>オフライン動作、外部通信・外部依存がないことの確認</li>
+<li>Chrome、Firefox、Safari、Edge 相当のモダンブラウザでの基本互換性確認</li>
+<li>800×600以上の画面解像度を前提とした表示確認</li>
+</ul>
+<h4>スコープ外</h4>
+<ul>
+<li>実際の税制、年金制度、投資税制との完全一致性の保証</li>
+<li>インフレ、デフレ、NISA、特定口座、賞与、臨時収入など仕様書で未対応とされている要素</li>
+<li>サーバーサイド、API、データベース、ログ基盤、監視基盤のテスト</li>
+<li>PDF出力、グラフ表示、設定保存など今後の拡張予定機能</li>
+<li>長期的な金融助言としての妥当性評価</li>
+</ul>
+<h3>5. テスト終了条件</h3>
+<ul>
+<li>テストアプローチ <code>TA001</code> から <code>TA018</code> までがすべて実行済みであり、各結果が記録されていること</li>
+<li>リスク度8以上のリスク <code>R001</code>、<code>R002</code>、<code>R003</code>、<code>R004</code>、<code>R005</code>、<code>R006</code>、<code>R010</code>、<code>R011</code> に対応するテストアプローチがすべて合格していること</li>
+<li>重大度が高い未解決不具合が残っていないこと</li>
+<li>中程度の不具合が残る場合は、影響範囲、回避策、対応方針が記録され、リリース判断者が承認していること</li>
+<li>回帰確認 <code>TA018</code> として、既存テスト <code>sample_app/test_retirement_simulator.html</code> が実行可能で、結果が記録されていること</li>
+<li>E2E確認 <code>TA009</code>、<code>TA010</code>、<code>TA011</code> として、対象ブラウザでアプリケーションを開き、主要ユーザーフローが実行できること</li>
+<li>セキュリティ確認 <code>TA012</code>、<code>TA013</code> として、オフライン動作、外部通信なし、外部依存なし、HTML注入・XSS観点が確認済みであること</li>
+<li>テスト結果、不具合一覧、残リスク、未決事項がテスト成果物として保存されていること</li>
+</ul>
+<h3>6. プロダクトリスク</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>ID</th><th>リスク</th><th>根拠/対象</th><th>発生確率(1-5)</th><th>影響度(1-5)</th><th>リスク度</th><th>対応方針</th></tr></thead>
+<tbody>
+<tr><td>R001</td><td>手取り計算が誤り、利用者が資金見通しを誤認する</td><td>F001、社会保険料14%、基礎控除48万円、累進課税、住民税10%</td><td>3</td><td>5</td><td>15</td><td>Unit testで年収0円、300万円、600万円、1000万円、税率境界付近を重点確認する</td></tr>
+<tr><td>R002</td><td>現役・退職後・年金受給の期間判定が誤る</td><td>F002、<code>startAge</code>、<code>retirementAge</code>、<code>pensionStartAge</code></td><td>3</td><td>5</td><td>15</td><td>Unit/Integration testで境界年齢と期間遷移を確認する</td></tr>
+<tr><td>R003</td><td>投資利回りや投資補填の計算が誤る</td><td>F003、F005、年初利息、20%税金、現金不足時の取り崩し</td><td>3</td><td>4</td><td>12</td><td>Unit testで利息適用、補填額、税金、投資残高減少を確認する</td></tr>
+<tr><td>R004</td><td>給与変更が適切な年齢・順序で適用されない</td><td>F008、複数設定、年齢降順ソート、同一年齢や未入力</td><td>3</td><td>4</td><td>12</td><td>Unit/Integration testで単一・複数・未設定・削除後の挙動を確認する</td></tr>
+<tr><td>R005</td><td>ランダムイベントにより結果が再現しにくく、不具合判定が不安定になる</td><td>F004、<code>Math.random()</code>、イベント発生率、イベント費用</td><td>4</td><td>3</td><td>12</td><td>Unit testではイベント発生率0%/100%や乱数制御を検討し、E2Eでは表示・反映観点に絞る</td></tr>
+<tr><td>R006</td><td>無効値や境界値でNaN、極端な負債、表示崩れが発生する</td><td>F007、HTML5 number input、<code>parseFloat()</code>、負値の扱い</td><td>3</td><td>3</td><td>9</td><td>Unit/E2E testで0、空欄、小数、上限付近、無効値入力を確認する</td></tr>
+<tr><td>R007</td><td>個人の財務情報が外部へ送信される、または外部依存が混入する</td><td>セキュリティ仕様、オフライン動作、外部依存なし</td><td>1</td><td>5</td><td>5</td><td>Security testでネットワーク通信、外部CDN、外部スクリプト参照がないことを確認する</td></tr>
+<tr><td>R008</td><td>結果表示が大量行になり、操作性や描画性能が低下する</td><td>F006、100歳までの月次出力、最大約840か月</td><td>2</td><td>3</td><td>6</td><td>Performance/E2E testで標準条件と長期条件の計算・描画時間を確認する</td></tr>
+<tr><td>R009</td><td>ブラウザ差異で入力制御や表示が期待通りに動かない</td><td>ブラウザ互換性、ES6、HTML5 validation</td><td>2</td><td>3</td><td>6</td><td>Compatibility testで主要ブラウザの起動、入力、実行、表示を確認する</td></tr>
+<tr><td>R010</td><td>動的HTML生成部分から意図しないHTML注入が起きる</td><td>給与変更UIの動的生成、XSS対策方針</td><td>2</td><td>4</td><td>8</td><td>Security/Code reviewでユーザー入力の出力経路と<code>textContent</code>利用箇所を確認する</td></tr>
+<tr><td>R011</td><td>利用者がシミュレーション結果を金融助言として過信する</td><td>README注意事項、税制・年金制度の将来変更未考慮、金融的妥当性はスコープ外</td><td>2</td><td>4</td><td>8</td><td>E2E/Usability testで注意事項や目安である旨の案内を確認する</td></tr>
+</tbody></table></div>
+<h3>7. テストアプローチ</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テストアプローチID</th><th>内容</th><th>仕様</th><th>リスクID</th></tr></thead>
+<tbody>
+<tr><td>TA001</td><td>Unit testで<code>calculateNetMonthly()</code>の年収別、税率境界、年収0円、極端値の手取り計算を確認する。</td><td><code>spec/仕様書.md</code> 2.1 F001、2.2 F001、9.1 単体テスト</td><td>R001</td></tr>
+<tr><td>TA002</td><td>Unit testで<code>simulateRetirement()</code>の現役期間、退職後収入期間、年金受給期間の境界判定を確認する。</td><td><code>spec/仕様書.md</code> 2.1 F002、2.2 F002、9.1 単体テスト</td><td>R002</td></tr>
+<tr><td>TA003</td><td>Unit testで投資積立、年初利息適用、小数丸めを確認する。</td><td><code>spec/仕様書.md</code> 2.1 F003、5.1 投資利回り計算、9.1 単体テスト</td><td>R003</td></tr>
+<tr><td>TA004</td><td>Unit testで現金不足時の投資補填、20%税金、投資残高不足時の挙動を確認する。</td><td><code>spec/仕様書.md</code> 2.1 F005、5.2 投資補填アルゴリズム、9.1 単体テスト</td><td>R003</td></tr>
+<tr><td>TA005</td><td>Unit testとIntegration testで給与変更の未設定、単一設定、複数設定、年齢境界、削除後の適用を確認する。</td><td><code>spec/仕様書.md</code> 2.1 F008、2.2 F008、9.1 単体テスト、9.2 統合テスト</td><td>R004</td></tr>
+<tr><td>TA006</td><td>Unit testでランダムイベントの発生率0%/100%、イベント選択、イベント費用反映を制御可能な条件で確認する。</td><td><code>spec/仕様書.md</code> 2.1 F004、4.1 ランダムイベント定義、5.3 ランダムイベント発生</td><td>R005</td></tr>
+<tr><td>TA007</td><td>Integration testでライフサイクル全体を通し、収入、生活費、投資、補填、総資産が連動することを確認する。</td><td><code>spec/仕様書.md</code> 2.2 F002、9.2 統合テスト</td><td>R002, R003</td></tr>
+<tr><td>TA008</td><td>Integration testでランダムイベント発生後に現金不足と投資補填が連続して処理されることを確認する。</td><td><code>spec/仕様書.md</code> 2.1 F004、2.1 F005、5.2、5.3、9.2 統合テスト</td><td>R003, R005</td></tr>
+<tr><td>TA009</td><td>E2E testでブラウザから初期値のまま「開始」を押し、月次結果が表示されることを確認する。</td><td><code>spec/仕様書.md</code> 3.1.1 メイン画面、3.1.3 結果表示仕様、F006、F007</td><td>R006, R008</td></tr>
+<tr><td>TA010</td><td>E2E testで入力値変更、給与変更設定の表示、追加、入力、削除、再実行の主要操作を確認する。</td><td><code>spec/仕様書.md</code> 3.1.2 入力フィールド仕様、2.1 F007、2.1 F008、2.2 F008</td><td>R004, R006</td></tr>
+<tr><td>TA011</td><td>E2E testでREADMEの使用例に近い複数シナリオを実行し、主要ユーザーフローと注意事項表示が破綻しないことを確認する。</td><td><code>sample_app/README.md</code> 使用例・注意事項、<code>spec/仕様書.md</code> 2.1 主要機能一覧、3.1 UI仕様、11.1 制約事項</td><td>R001, R002, R003, R004, R011</td></tr>
+<tr><td>TA012</td><td>Security testで外部通信、外部CDN、外部ライブラリ読み込みがなく、ローカル実行で完結することを確認する。</td><td><code>spec/仕様書.md</code> 1.3 システム種別、8.1 データ保護、10.1 デプロイメント</td><td>R007</td></tr>
+<tr><td>TA013</td><td>Security testとCode reviewで結果表示と動的UI生成におけるHTML注入・XSSリスクを確認する。</td><td><code>spec/仕様書.md</code> 8.2 入力サニタイゼーション、3.1.3 結果表示仕様、2.2 F008</td><td>R010</td></tr>
+<tr><td>TA014</td><td>Performance testで計算処理100ms以下、画面描画200ms以下を目安に、標準条件と出力量が多い条件を確認する。</td><td><code>spec/仕様書.md</code> 6.1 計算量、6.2 応答時間、F006</td><td>R008</td></tr>
+<tr><td>TA015</td><td>Compatibility testでChrome、Firefox、Safari、Edge相当のブラウザで入力、実行、結果表示が動作することを確認する。</td><td><code>spec/仕様書.md</code> 7.3 ブラウザ互換性、11.2 前提条件</td><td>R009</td></tr>
+<tr><td>TA016</td><td>Accessibility/Usability testで800×600以上の画面、キーボード操作、入力フォームと開始ボタンへの到達性を確認する。</td><td><code>spec/仕様書.md</code> 3.1 UI仕様、11.2 前提条件</td><td>R009</td></tr>
+<tr><td>TA017</td><td>Exploratory testで退職年齢と年金開始年齢の前後関係、投資率0%/100%、イベント発生率0%/100%、生活費過大ケースを探索する。</td><td><code>spec/仕様書.md</code> 7.2 例外処理、11.1 制約事項、2.2 F002</td><td>R002, R003, R005, R006</td></tr>
+<tr><td>TA018</td><td>Regression testとして既存テスト<code>sample_app/test_retirement_simulator.html</code>を実行し、主要計算と統合シナリオの既存期待値を確認する。</td><td><code>spec/仕様書.md</code> 9.1 単体テスト、9.2 統合テスト、9.3 テストフレームワーク</td><td>R001, R002, R003, R004, R006</td></tr>
+</tbody></table></div>
+<h3>8. テスト環境</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>項目</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>対象ファイル</td><td><code>sample_app/retirement_simulator.html</code></td></tr>
+<tr><td>実行方法</td><td>ブラウザでHTMLファイルを直接開く</td></tr>
+<tr><td>技術</td><td>HTML5、CSS3、JavaScript ES6+</td></tr>
+<tr><td>依存関係</td><td>なし</td></tr>
+<tr><td>通信</td><td>オフライン動作、ネットワーク通信なし</td></tr>
+<tr><td>対象ブラウザ</td><td>Chrome 60+、Firefox 55+、Safari 12+、Edge 79+</td></tr>
+<tr><td>画面解像度</td><td>800×600以上</td></tr>
+</tbody></table></div>
+<h3>9. 前提条件</h3>
+<ul>
+<li>JavaScriptが有効であること。</li>
+<li>テスト対象はスタンドアロンWebアプリケーションとして配布されること。</li>
+<li>入力値の検証は主にHTML5の<code>number</code>、<code>min</code>、<code>max</code>、<code>step</code>属性と<code>parseFloat()</code>による取得に依存する。</li>
+<li>実際の税制、年金制度、投資制度との完全一致は目的に含めない。</li>
+</ul>
+<h3>10. 成果物</h3>
+<ul>
+<li><code>テスト計画書.md</code></li>
+<li><code>テスト分析.md</code></li>
+<li><code>テスト分析_質問票.md</code></li>
+<li><code>テスト設計.md</code></li>
+<li><code>テスト設計_質問票.md</code></li>
+<li><code>テストケース_コードベース.md</code></li>
+<li><code>テストケース_E2E自動.md</code></li>
+<li><code>テストケース_人間実行.md</code></li>
+<li><code>テストケース_質問待ち.md</code></li>
+<li>テスト実行結果</li>
+<li>不具合一覧</li>
+<li>残リスク・未決事項一覧</li>
+<li>各レビュー結果</li>
+</ul>
+<h3>11. 未決事項</h3>
+<ul>
+<li>テスト実行時に使用する正式なブラウザバージョンは要確認。</li>
+<li>性能測定の具体的な測定方法と許容差は要確認。</li>
+<li>テスト終了判定者、承認者、リリース判断者は要確認。</li>
+<li>既存テスト <code>sample_app/test_retirement_simulator.html</code> を正式な回帰テスト資産として扱うかは要確認。</li>
+<li>詳細な質問項目は <code>テスト成果物/テスト分析_質問票.md</code>、<code>テスト成果物/テスト設計_質問票.md</code>、<code>テスト成果物/テストケース_質問待ち.md</code> で管理する。</li>
+</ul>
+</body>
+</html>

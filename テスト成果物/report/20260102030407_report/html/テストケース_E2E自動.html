@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テストケース（E2E自動）</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テストケース（E2E自動）</h2>
+<h3>1. 作成対象</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>項目</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>テスト対象</td><td><code>sample_app/retirement_simulator.html</code></td></tr>
+<tr><td>入力となるテスト設計</td><td><code>テスト成果物/テスト設計.md</code></td></tr>
+<tr><td>入力となるテスト設計質問票</td><td><code>テスト成果物/テスト設計_質問票.md</code></td></tr>
+<tr><td>出力方針</td><td>コードベース、E2E自動、人間実行、質問待ちを別ファイルとして出力する</td></tr>
+<tr><td>作成日</td><td>2026-05-31</td></tr>
+</tbody></table></div>
+<h3>2. 参照資料</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>種別</th><th>参照先</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td>テスト設計</td><td><code>テスト成果物/テスト設計.md</code></td><td><code>TDxxx</code>、実行方法、期待結果、状態の根拠</td></tr>
+<tr><td>テスト設計質問票</td><td><code>テスト成果物/テスト設計_質問票.md</code></td><td><code>質問待ち</code> ケースの関連質問IDの根拠</td></tr>
+<tr><td>テスト分析</td><td><code>テスト成果物/テスト分析.md</code></td><td><code>TVxxx</code> と観点の根拠</td></tr>
+<tr><td>テスト計画</td><td><code>テスト成果物/テスト計画書.md</code></td><td><code>TAxxx</code>、リスク、スコープの根拠</td></tr>
+<tr><td>仕様書</td><td><code>spec/仕様書.md</code></td><td>期待結果、制約、性能、セキュリティの根拠</td></tr>
+<tr><td>README</td><td><code>sample_app/README.md</code></td><td>使用例、デフォルト値、注意事項の根拠</td></tr>
+<tr><td>実装・既存テスト</td><td><code>sample_app/retirement_simulator.html</code>, <code>sample_app/test_retirement_simulator.html</code></td><td>実行方法と既存テスト活用の補助確認</td></tr>
+</tbody></table></div>
+<h3>3. E2E自動テストで実行するテストケース</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テストケースID</th><th>元テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>実行区分</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストケース名</th><th>前提条件</th><th>入力/データ</th><th>手順</th><th>期待結果</th><th>確認方法/証跡</th><th>関連質問ID</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TC-E2E-001</td><td>TD003</td><td>TV003</td><td>TA001</td><td>E2E自動</td><td>E2E</td><td>中</td><td>年収異常値 - 負の年収</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>salary=-3,000,000円、その他はデフォルト値</td><td>年収欄に-3,000,000を入力して開始し、コンソールエラーと結果表示を確認する。</td><td>NaN、Infinity、JavaScript例外でシミュレーションが停止せず、結果表示エリアが更新されること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 7.2、11.1</td><td>R001, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-002</td><td>TD003</td><td>TV003</td><td>TA001</td><td>E2E自動</td><td>E2E</td><td>中</td><td>年収異常値 - 空欄</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>salaryを空欄、その他はデフォルト値</td><td>年収欄を空欄にして開始し、コンソールエラーと結果表示を確認する。</td><td>salaryが0相当にフォールバックされ、NaN、Infinity、JavaScript例外でシミュレーションが停止しないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 7.2、11.1</td><td>R001, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-003</td><td>TD003</td><td>TV003</td><td>TA001</td><td>E2E自動</td><td>E2E</td><td>中</td><td>年収異常値 - 極端に大きい年収</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>salary=100,000,000円、その他はデフォルト値</td><td>年収欄に100,000,000を入力して開始し、コンソールエラーと結果表示を確認する。</td><td>JavaScript例外で停止せず、結果内の金額がNaNまたはInfinityにならないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 7.2、11.1</td><td>R001, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-008</td><td>TD007</td><td>TV007</td><td>TA002</td><td>E2E自動</td><td>E2E</td><td>中</td><td>開始年齢境界 - 開始年齢0歳</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>開始年齢0歳</td><td>ブラウザ自動テストで「開始年齢0歳」を設定し、ブラウザで実行し、出力行数、停止有無、コンソールエラーを確認する。</td><td>ループ回数と結果表示が許容範囲に収まり、操作不能にならないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F002、11.2</td><td>R002, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-009</td><td>TD007</td><td>TV007</td><td>TA002</td><td>E2E自動</td><td>E2E</td><td>中</td><td>開始年齢境界 - 100歳</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>100歳</td><td>ブラウザ自動テストで「100歳」を設定し、ブラウザで実行し、出力行数、停止有無、コンソールエラーを確認する。</td><td>ループ回数と結果表示が許容範囲に収まり、操作不能にならないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F002、11.2</td><td>R002, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-010</td><td>TD007</td><td>TV007</td><td>TA002</td><td>E2E自動</td><td>E2E</td><td>中</td><td>開始年齢境界 - 101歳</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>101歳</td><td>ブラウザ自動テストで「101歳」を設定し、ブラウザで実行し、出力行数、停止有無、コンソールエラーを確認する。</td><td>ループ回数と結果表示が許容範囲に収まり、操作不能にならないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F002、11.2</td><td>R002, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-011</td><td>TD007</td><td>TV007</td><td>TA002</td><td>E2E自動</td><td>E2E</td><td>中</td><td>開始年齢境界 - 負値</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>負値</td><td>ブラウザ自動テストで「負値」を設定し、ブラウザで実行し、出力行数、停止有無、コンソールエラーを確認する。</td><td>ループ回数と結果表示が許容範囲に収まり、操作不能にならないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F002、11.2</td><td>R002, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-012</td><td>TD010</td><td>TV010</td><td>TA003</td><td>E2E自動</td><td>E2E</td><td>高</td><td>投資率境界 - 投資率0%</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>investRate=0%、salary=3,000,000円、その他はデフォルト値</td><td>投資率欄に0を入力して開始し、現金・投資残高を確認する。</td><td>給与月の投資額が0円になり、月手取りから生活費差引後の残額が現金へ加算されること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.2、7.2</td><td>R003, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-013</td><td>TD010</td><td>TV010</td><td>TA003</td><td>E2E自動</td><td>E2E</td><td>高</td><td>投資率境界 - 100%</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>investRate=100%、salary=3,000,000円、その他はデフォルト値</td><td>投資率欄に100を入力して開始し、現金・投資残高を確認する。</td><td>給与月の投資額が月手取り全額になり、生活費差引により現金不足が起きても結果生成が継続すること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.2、7.2</td><td>R003, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-014</td><td>TD010</td><td>TV010</td><td>TA003</td><td>E2E自動</td><td>E2E</td><td>高</td><td>投資率境界 - 小数</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>investRate=33.3%、salary=3,000,000円、その他はデフォルト値</td><td>投資率欄に33.3を入力して開始し、現金・投資残高を確認する。</td><td>投資額が月手取りの33.3%として計算され、NaNやInfinityを出さずに結果表示されること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.2、7.2</td><td>R003, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-015</td><td>TD010</td><td>TV010</td><td>TA003</td><td>E2E自動</td><td>E2E</td><td>高</td><td>投資率境界 - 100%超</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>investRate=150%を直接入力、salary=3,000,000円、その他はデフォルト値</td><td>ブラウザ入力または直接入力で投資率150を設定して開始し、現金・投資残高を確認する。</td><td>投資率150%でもJavaScript例外で停止せず、投資残高と現金が数値として表示されること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.2、7.2</td><td>R003, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-016</td><td>TD017</td><td>TV017</td><td>TA005</td><td>E2E自動</td><td>E2E</td><td>高</td><td>給与変更1件 - 給与変更年齢40歳</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>baseSalary=3,000,000円、給与変更 age=40, salary=8,000,000円</td><td>給与変更UIで40歳・8,000,000円を1件追加し、40歳前後の年収表示を確認する。</td><td>39歳までは基本年収、40歳以降は年収8,000,000円が適用され、結果に年収表示が出ること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F008</td><td>R004</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-017</td><td>TD017</td><td>TV017</td><td>TA005</td><td>E2E自動</td><td>E2E</td><td>高</td><td>給与変更1件 - 変更後年収800万円</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>給与変更 age=40, salary=8,000,000円</td><td>給与変更UIで40歳・8,000,000円を1件追加し、指定年齢以降の結果を確認する。</td><td>40歳以降の給与行に変更後年収8,000,000円が反映されること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F008</td><td>R004</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-018</td><td>TD018</td><td>TV018</td><td>TA005</td><td>E2E自動</td><td>E2E</td><td>中</td><td>給与変更UI状態 - 表示</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>表示</td><td>ブラウザ自動テストで「表示」を設定し、ブラウザ操作で入力状態と結果表示を確認する。</td><td>UI操作後も入力欄、削除、開始処理が破綻しないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F008、3.1.2</td><td>R004, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-019</td><td>TD018</td><td>TV018</td><td>TA005</td><td>E2E自動</td><td>E2E</td><td>中</td><td>給与変更UI状態 - 非表示</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>非表示</td><td>ブラウザ自動テストで「非表示」を設定し、ブラウザ操作で入力状態と結果表示を確認する。</td><td>UI操作後も入力欄、削除、開始処理が破綻しないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F008、3.1.2</td><td>R004, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-020</td><td>TD018</td><td>TV018</td><td>TA005</td><td>E2E自動</td><td>E2E</td><td>中</td><td>給与変更UI状態 - 追加</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>追加</td><td>ブラウザ自動テストで「追加」を設定し、ブラウザ操作で入力状態と結果表示を確認する。</td><td>UI操作後も入力欄、削除、開始処理が破綻しないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F008、3.1.2</td><td>R004, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-021</td><td>TD018</td><td>TV018</td><td>TA005</td><td>E2E自動</td><td>E2E</td><td>中</td><td>給与変更UI状態 - 削除を複数回繰り返す</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>削除を複数回繰り返す</td><td>ブラウザ自動テストで「削除を複数回繰り返す」を設定し、ブラウザ操作で入力状態と結果表示を確認する。</td><td>UI操作後も入力欄、削除、開始処理が破綻しないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F008、3.1.2</td><td>R004, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-027</td><td>TD020</td><td>TV020</td><td>TA005</td><td>E2E自動</td><td>E2E</td><td>中</td><td>給与変更異常値 - 給与変更の年齢</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>給与変更の年齢</td><td>ブラウザ自動テストで「給与変更の年齢」を設定し、UI入力後に開始し、結果とコンソールエラーを確認する。</td><td>無効設定として採用されず、シミュレーションが停止しないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F008、7.2</td><td>R004, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-028</td><td>TD020</td><td>TV020</td><td>TA005</td><td>E2E自動</td><td>E2E</td><td>中</td><td>給与変更異常値 - 年収が空欄</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>年収が空欄</td><td>ブラウザ自動テストで「年収が空欄」を設定し、UI入力後に開始し、結果とコンソールエラーを確認する。</td><td>無効設定として採用されず、シミュレーションが停止しないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F008、7.2</td><td>R004, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-029</td><td>TD020</td><td>TV020</td><td>TA005</td><td>E2E自動</td><td>E2E</td><td>中</td><td>給与変更異常値 - 0</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>0</td><td>ブラウザ自動テストで「0」を設定し、UI入力後に開始し、結果とコンソールエラーを確認する。</td><td>無効設定として採用されず、シミュレーションが停止しないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F008、7.2</td><td>R004, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-030</td><td>TD020</td><td>TV020</td><td>TA005</td><td>E2E自動</td><td>E2E</td><td>中</td><td>給与変更異常値 - 負値</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>負値</td><td>ブラウザ自動テストで「負値」を設定し、UI入力後に開始し、結果とコンソールエラーを確認する。</td><td>無効設定として採用されず、シミュレーションが停止しないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F008、7.2</td><td>R004, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-031</td><td>TD022</td><td>TV022</td><td>TA006</td><td>E2E自動</td><td>E2E</td><td>高</td><td>イベント発生率境界 - イベント発生率0%</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>eventProb=0%、その他はデフォルト値</td><td>イベント発生率欄に0を入力して開始し、イベント表示と資産変化を確認する。</td><td>結果内にランダムイベント行が出力されないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 5.3</td><td>R005</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-032</td><td>TD022</td><td>TV022</td><td>TA006</td><td>E2E自動</td><td>E2E</td><td>高</td><td>イベント発生率境界 - 100%</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>eventProb=100%、その他はデフォルト値</td><td>イベント発生率欄に100を入力して開始し、イベント表示と資産変化を確認する。</td><td>各月でランダムイベント行が出力され、イベント費用が資産推移に反映されること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 5.3</td><td>R005</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-033</td><td>TD026</td><td>TV026</td><td>TA007</td><td>E2E自動</td><td>E2E</td><td>高</td><td>長期シミュレーション - 標準デフォルト条件</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>startAge=30, retirementAge=65, pensionStartAge=65, salary=3,000,000円, monthlyPension=145,000円, investRate=20%, interest=4%, eventProb=1%</td><td>デフォルト値のまま開始から100歳まで実行し、各期間の出力存在を確認する。</td><td>30歳1月から100歳12月までの月次結果が生成され、現役期間と年金受給期間の収入行が確認できること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 9.2</td><td>R002</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-036</td><td>TD032</td><td>TV032</td><td>TA009</td><td>E2E自動</td><td>E2E</td><td>高</td><td>デフォルト実行 - 初期値のまま開始</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>初期値のまま開始</td><td>ブラウザ自動テストで「初期値のまま開始」を設定し、ブラウザで開始し、結果表示エリアと先頭・末尾付近の行を確認する。</td><td>30歳1月から100歳までの月次結果が表示されること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.1、3.1.3</td><td>R006, R008</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-037</td><td>TD034</td><td>TV034</td><td>TA009</td><td>E2E自動</td><td>E2E</td><td>中</td><td>再実行更新 - 初回実行後に入力値を変更して再実行</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>初回実行後に入力値を変更して再実行</td><td>ブラウザ自動テストで「初回実行後に入力値を変更して再実行」を設定し、ブラウザ操作で結果表示の更新を確認する。</td><td>前回結果が残らず、現在入力に基づく結果へ更新されること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.1、F006</td><td>R006, R008</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-038</td><td>TD035</td><td>TV035</td><td>TA010</td><td>E2E自動</td><td>E2E</td><td>中</td><td>入力変更反映 - 年収</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>年収</td><td>ブラウザ自動テストで「年収」を設定し、変更前後の結果差分を確認する。</td><td>対応する収入、支出、投資、イベント、総資産が変化すること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.2、F007</td><td>R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-039</td><td>TD035</td><td>TV035</td><td>TA010</td><td>E2E自動</td><td>E2E</td><td>中</td><td>入力変更反映 - 生活費</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>生活費</td><td>ブラウザ自動テストで「生活費」を設定し、変更前後の結果差分を確認する。</td><td>対応する収入、支出、投資、イベント、総資産が変化すること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.2、F007</td><td>R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-040</td><td>TD035</td><td>TV035</td><td>TA010</td><td>E2E自動</td><td>E2E</td><td>中</td><td>入力変更反映 - 投資率</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>投資率</td><td>ブラウザ自動テストで「投資率」を設定し、変更前後の結果差分を確認する。</td><td>対応する収入、支出、投資、イベント、総資産が変化すること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.2、F007</td><td>R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-041</td><td>TD035</td><td>TV035</td><td>TA010</td><td>E2E自動</td><td>E2E</td><td>中</td><td>入力変更反映 - 利回り</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>利回り</td><td>ブラウザ自動テストで「利回り」を設定し、変更前後の結果差分を確認する。</td><td>対応する収入、支出、投資、イベント、総資産が変化すること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.2、F007</td><td>R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-042</td><td>TD035</td><td>TV035</td><td>TA010</td><td>E2E自動</td><td>E2E</td><td>中</td><td>入力変更反映 - イベント発生率を個別変更</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>イベント発生率を個別変更</td><td>ブラウザ自動テストで「イベント発生率を個別変更」を設定し、変更前後の結果差分を確認する。</td><td>対応する収入、支出、投資、イベント、総資産が変化すること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.2、F007</td><td>R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-043</td><td>TD036</td><td>TV036</td><td>TA010</td><td>E2E自動</td><td>E2E</td><td>中</td><td>空欄・不正入力 - 空欄</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>空欄</td><td>ブラウザ自動テストで「空欄」を設定し、ブラウザで開始し、表示とコンソールエラーを確認する。</td><td>入力不備が0扱いまたは仕様上の扱いとなり、操作が停止しないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 7.2</td><td>R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-044</td><td>TD036</td><td>TV036</td><td>TA010</td><td>E2E自動</td><td>E2E</td><td>中</td><td>空欄・不正入力 - 不正数値</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>不正数値</td><td>ブラウザ自動テストで「不正数値」を設定し、ブラウザで開始し、表示とコンソールエラーを確認する。</td><td>入力不備が0扱いまたは仕様上の扱いとなり、操作が停止しないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 7.2</td><td>R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-045</td><td>TD036</td><td>TV036</td><td>TA010</td><td>E2E自動</td><td>E2E</td><td>中</td><td>空欄・不正入力 - 未入力の主要入力欄</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>未入力の主要入力欄</td><td>ブラウザ自動テストで「未入力の主要入力欄」を設定し、ブラウザで開始し、表示とコンソールエラーを確認する。</td><td>入力不備が0扱いまたは仕様上の扱いとなり、操作が停止しないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 7.2</td><td>R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-046</td><td>TD038</td><td>TV038</td><td>TA010</td><td>E2E自動</td><td>E2E</td><td>中</td><td>削除済み給与変更 - 給与変更を追加</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>給与変更を追加</td><td>ブラウザ自動テストで「給与変更を追加」を設定し、ブラウザ操作で削除前後の結果を比較する。</td><td>削除済み設定が結果へ残らないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F008</td><td>R004, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-047</td><td>TD038</td><td>TV038</td><td>TA010</td><td>E2E自動</td><td>E2E</td><td>中</td><td>削除済み給与変更 - 削除</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>削除</td><td>ブラウザ自動テストで「削除」を設定し、ブラウザ操作で削除前後の結果を比較する。</td><td>削除済み設定が結果へ残らないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F008</td><td>R004, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-048</td><td>TD038</td><td>TV038</td><td>TA010</td><td>E2E自動</td><td>E2E</td><td>中</td><td>削除済み給与変更 - 再実行</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>再実行</td><td>ブラウザ自動テストで「再実行」を設定し、ブラウザ操作で削除前後の結果を比較する。</td><td>削除済み設定が結果へ残らないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F008</td><td>R004, R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-049</td><td>TD039</td><td>TV039</td><td>TA011</td><td>E2E自動</td><td>E2E</td><td>高</td><td>READMEシナリオ - 一般的なサラリーマン</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>salary=4,000,000円, retirementAge=65, investRate=20%, interest=4%, monthlyPension=150,000円</td><td>README使用例の一般的なサラリーマン条件を入力して開始する。</td><td>30歳1月の給与行、65歳1月以降の年金行、現金・投資・総資産行が表示され、コンソールエラーがないこと</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>sample_app/README.md</code> 使用例</td><td>R001, R002, R003, R004</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-050</td><td>TD039</td><td>TV039</td><td>TA011</td><td>E2E自動</td><td>E2E</td><td>高</td><td>READMEシナリオ - キャリアアップ型</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>baseSalary=4,000,000円, salaryChanges=[30歳:5,000,000円, 40歳:7,000,000円], investRate=25%, interest=4%, retirementAge=65, monthlyPension=180,000円</td><td>README使用例のキャリアアップ型条件を入力し、給与変更を2件追加して開始する。</td><td>30歳以降に年収5,000,000円、40歳以降に年収7,000,000円の表示が出て、65歳以降は年金行が表示されること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>sample_app/README.md</code> 使用例</td><td>R001, R002, R003, R004</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-051</td><td>TD039</td><td>TV039</td><td>TA011</td><td>E2E自動</td><td>E2E</td><td>高</td><td>READMEシナリオ - 早期退職</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>salary=6,000,000円, retirementAge=55, pensionStartAge=65, gapIncome=50,000円, investRate=30%, interest=5%</td><td>README使用例の早期退職プラン条件を入力して開始する。</td><td>55歳以降に退職後収入期間が表示され、65歳以降に年金受給期間へ切り替わること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>sample_app/README.md</code> 使用例</td><td>R001, R002, R003, R004</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-052</td><td>TD039</td><td>TV039</td><td>TA011</td><td>E2E自動</td><td>E2E</td><td>高</td><td>READMEシナリオ - 高収入・晩年退職</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>salary=10,000,000円, retirementAge=70, investRate=40%, interest=3%, monthlyPension=200,000円</td><td>README使用例の高収入・晩年退職条件を入力して開始する。</td><td>69歳12月まで給与行が表示され、70歳1月以降に年金行へ切り替わり、結果表示が最後まで生成されること</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>なし</td><td><code>sample_app/README.md</code> 使用例</td><td>R001, R002, R003, R004</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-053</td><td>TD043</td><td>TV043</td><td>TA012</td><td>E2E自動</td><td>Security</td><td>高</td><td>外部通信なし - 標準実行</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>標準実行</td><td>ブラウザ自動テストで「標準実行」を設定し、DevTools Networkまたはコードレビューで通信・保存処理を確認する。</td><td>入力値がサーバー送信、永続保存、外部通信されないこと</td><td>E2E実行ログ、DevTools/Network記録、スクリーンショット</td><td>なし</td><td><code>spec/仕様書.md</code> 8.1、4.2</td><td>R007</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-054</td><td>TD043</td><td>TV043</td><td>TA012</td><td>E2E自動</td><td>Security</td><td>高</td><td>外部通信なし - 入力変更</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>入力変更</td><td>ブラウザ自動テストで「入力変更」を設定し、DevTools Networkまたはコードレビューで通信・保存処理を確認する。</td><td>入力値がサーバー送信、永続保存、外部通信されないこと</td><td>E2E実行ログ、DevTools/Network記録、スクリーンショット</td><td>なし</td><td><code>spec/仕様書.md</code> 8.1、4.2</td><td>R007</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-055</td><td>TD043</td><td>TV043</td><td>TA012</td><td>E2E自動</td><td>Security</td><td>高</td><td>外部通信なし - 開始操作</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>開始操作</td><td>ブラウザ自動テストで「開始操作」を設定し、DevTools Networkまたはコードレビューで通信・保存処理を確認する。</td><td>入力値がサーバー送信、永続保存、外部通信されないこと</td><td>E2E実行ログ、DevTools/Network記録、スクリーンショット</td><td>なし</td><td><code>spec/仕様書.md</code> 8.1、4.2</td><td>R007</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-061</td><td>TD049</td><td>TV049</td><td>TA014</td><td>E2E自動</td><td>Performance</td><td>中</td><td>高負荷条件 - 開始年齢0歳</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>開始年齢0歳</td><td>ブラウザ自動テストで「開始年齢0歳」を設定し、ブラウザで実行し、応答停止、描画遅延、コンソールエラーを確認する。</td><td>出力量が多い条件でも操作不能にならないこと</td><td>E2E実行ログ、Performance計測結果</td><td>なし</td><td><code>spec/仕様書.md</code> 6.1、6.2</td><td>R008</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-062</td><td>TD049</td><td>TV049</td><td>TA014</td><td>E2E自動</td><td>Performance</td><td>中</td><td>高負荷条件 - イベント発生率100%</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>イベント発生率100%</td><td>ブラウザ自動テストで「イベント発生率100%」を設定し、ブラウザで実行し、応答停止、描画遅延、コンソールエラーを確認する。</td><td>出力量が多い条件でも操作不能にならないこと</td><td>E2E実行ログ、Performance計測結果</td><td>なし</td><td><code>spec/仕様書.md</code> 6.1、6.2</td><td>R008</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-063</td><td>TD049</td><td>TV049</td><td>TA014</td><td>E2E自動</td><td>Performance</td><td>中</td><td>高負荷条件 - 長期出力</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>長期出力</td><td>ブラウザ自動テストで「長期出力」を設定し、ブラウザで実行し、応答停止、描画遅延、コンソールエラーを確認する。</td><td>出力量が多い条件でも操作不能にならないこと</td><td>E2E実行ログ、Performance計測結果</td><td>なし</td><td><code>spec/仕様書.md</code> 6.1、6.2</td><td>R008</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-065</td><td>TD037</td><td>TV037</td><td>TA010</td><td>E2E自動</td><td>Compatibility</td><td>中</td><td>HTML属性境界 - investRate max=100</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>investRate max=100</td><td>ブラウザ自動テストで「investRate max=100」を設定し、主要ブラウザで入力制約と実行結果を比較する。</td><td>HTML属性制約と直接入力時の扱いが許容範囲であること</td><td>ブラウザ別E2E実行ログ、スクリーンショット</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.2、7.1</td><td>R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-066</td><td>TD037</td><td>TV037</td><td>TA010</td><td>E2E自動</td><td>Compatibility</td><td>中</td><td>HTML属性境界 - salaryChangeAge max=100</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>salaryChangeAge max=100</td><td>ブラウザ自動テストで「salaryChangeAge max=100」を設定し、主要ブラウザで入力制約と実行結果を比較する。</td><td>HTML属性制約と直接入力時の扱いが許容範囲であること</td><td>ブラウザ別E2E実行ログ、スクリーンショット</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.2、7.1</td><td>R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-067</td><td>TD037</td><td>TV037</td><td>TA010</td><td>E2E自動</td><td>Compatibility</td><td>中</td><td>HTML属性境界 - 直接入力</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>直接入力</td><td>ブラウザ自動テストで「直接入力」を設定し、主要ブラウザで入力制約と実行結果を比較する。</td><td>HTML属性制約と直接入力時の扱いが許容範囲であること</td><td>ブラウザ別E2E実行ログ、スクリーンショット</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.2、7.1</td><td>R006</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-068</td><td>TD044</td><td>TV044</td><td>TA012</td><td>E2E自動</td><td>Compatibility</td><td>中</td><td>ローカルHTML起動 - <code>file://</code></td><td>対象HTMLをブラウザ自動テストで開けること</td><td><code>file://</code></td><td>ブラウザ自動テストで「<code>file://</code>」を設定し、主要ブラウザでファイルを直接開いて開始操作を確認する。</td><td>ローカル起動でブラウザ制約により機能が止まらないこと</td><td>ブラウザ別E2E実行ログ、スクリーンショット</td><td>なし</td><td><code>spec/仕様書.md</code> 10.1</td><td>R007, R009</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-069</td><td>TD044</td><td>TV044</td><td>TA012</td><td>E2E自動</td><td>Compatibility</td><td>中</td><td>ローカルHTML起動 - ローカルHTML直接起動</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>ローカルHTML直接起動</td><td>ブラウザ自動テストで「ローカルHTML直接起動」を設定し、主要ブラウザでファイルを直接開いて開始操作を確認する。</td><td>ローカル起動でブラウザ制約により機能が止まらないこと</td><td>ブラウザ別E2E実行ログ、スクリーンショット</td><td>なし</td><td><code>spec/仕様書.md</code> 10.1</td><td>R007, R009</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-080</td><td>TD053</td><td>TV053</td><td>TA015</td><td>E2E自動</td><td>Compatibility</td><td>中</td><td>日本語・通貨表示 - 日本語UI</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>日本語UI</td><td>ブラウザ自動テストで「日本語UI」を設定し、主要ブラウザで結果表示を確認する。</td><td>日本語、円記号、数値区切りが読み取り可能であること</td><td>ブラウザ別E2E実行ログ、スクリーンショット</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.3、7.3</td><td>R009</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-081</td><td>TD053</td><td>TV053</td><td>TA015</td><td>E2E自動</td><td>Compatibility</td><td>中</td><td>日本語・通貨表示 - 円記号</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>円記号</td><td>ブラウザ自動テストで「円記号」を設定し、主要ブラウザで結果表示を確認する。</td><td>日本語、円記号、数値区切りが読み取り可能であること</td><td>ブラウザ別E2E実行ログ、スクリーンショット</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.3、7.3</td><td>R009</td><td>作成済み</td></tr>
+<tr><td>TC-E2E-082</td><td>TD053</td><td>TV053</td><td>TA015</td><td>E2E自動</td><td>Compatibility</td><td>中</td><td>日本語・通貨表示 - toLocaleString表示</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>toLocaleString表示</td><td>ブラウザ自動テストで「toLocaleString表示」を設定し、主要ブラウザで結果表示を確認する。</td><td>日本語、円記号、数値区切りが読み取り可能であること</td><td>ブラウザ別E2E実行ログ、スクリーンショット</td><td>なし</td><td><code>spec/仕様書.md</code> 3.1.3、7.3</td><td>R009</td><td>作成済み</td></tr>
+</tbody></table></div>
+<h3>4. 上流成果物への追記・更新</h3>
+<p>今回のテストケース再作成では、既存のテスト設計・テスト分析・テスト計画へ追加すべき新規観点、リスク、テストアプローチは見つからなかった。</p>
+<p>判断理由:</p>
+<ul>
+<li><code>TD001</code> から <code>TD063</code> まで、分割後の4ファイル合算で少なくとも1件のテストケースへ展開している。</li>
+<li><code>質問待ち</code> のテストケースは実行区分ファイルへ重複配置せず、<code>テストケース_質問待ち.md</code> に集約した。</li>
+<li>期待結果、許容範囲、実行環境が未確定の箇所は <code>要確認</code> として残し、上流成果物へ推測追記していない。</li>
+</ul>
+<h3>5. カバレッジ確認</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>対応テストケースID</th><th>実行区分</th><th>状態</th><th>出力ファイル</th><th>カバー状況</th></tr></thead>
+<tbody>
+<tr><td>TD003</td><td>TC-E2E-001, TC-E2E-002, TC-E2E-003</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD007</td><td>TC-E2E-008, TC-E2E-009, TC-E2E-010, TC-E2E-011</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD010</td><td>TC-E2E-012, TC-E2E-013, TC-E2E-014, TC-E2E-015</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD017</td><td>TC-E2E-016, TC-E2E-017</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD018</td><td>TC-E2E-018, TC-E2E-019, TC-E2E-020, TC-E2E-021</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD020</td><td>TC-E2E-027, TC-E2E-028, TC-E2E-029, TC-E2E-030</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD022</td><td>TC-E2E-031, TC-E2E-032</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD026</td><td>TC-E2E-033</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD032</td><td>TC-E2E-036</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD034</td><td>TC-E2E-037</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD035</td><td>TC-E2E-038, TC-E2E-039, TC-E2E-040, TC-E2E-041, TC-E2E-042</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD036</td><td>TC-E2E-043, TC-E2E-044, TC-E2E-045</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD037</td><td>TC-E2E-065, TC-E2E-066, TC-E2E-067</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD038</td><td>TC-E2E-046, TC-E2E-047, TC-E2E-048</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD039</td><td>TC-E2E-049, TC-E2E-050, TC-E2E-051, TC-E2E-052</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD043</td><td>TC-E2E-053, TC-E2E-054, TC-E2E-055</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD044</td><td>TC-E2E-068, TC-E2E-069</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD049</td><td>TC-E2E-061, TC-E2E-062, TC-E2E-063</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD053</td><td>TC-E2E-080, TC-E2E-081, TC-E2E-082</td><td>E2E自動</td><td>作成済み</td><td><code>テストケース_E2E自動.md</code></td><td>カバー済み</td></tr>
+</tbody></table></div>
+</body>
+</html>

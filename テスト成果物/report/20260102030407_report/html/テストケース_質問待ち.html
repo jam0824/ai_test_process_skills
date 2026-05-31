@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テストケース（質問待ち）</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テストケース（質問待ち）</h2>
+<h3>1. 作成対象</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>項目</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>テスト対象</td><td><code>sample_app/retirement_simulator.html</code></td></tr>
+<tr><td>入力となるテスト設計</td><td><code>テスト成果物/テスト設計.md</code></td></tr>
+<tr><td>入力となるテスト設計質問票</td><td><code>テスト成果物/テスト設計_質問票.md</code></td></tr>
+<tr><td>出力方針</td><td>コードベース、E2E自動、人間実行、質問待ちを別ファイルとして出力する</td></tr>
+<tr><td>作成日</td><td>2026-05-31</td></tr>
+</tbody></table></div>
+<h3>2. 参照資料</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>種別</th><th>参照先</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td>テスト設計</td><td><code>テスト成果物/テスト設計.md</code></td><td><code>TDxxx</code>、実行方法、期待結果、状態の根拠</td></tr>
+<tr><td>テスト設計質問票</td><td><code>テスト成果物/テスト設計_質問票.md</code></td><td><code>質問待ち</code> ケースの関連質問IDの根拠</td></tr>
+<tr><td>テスト分析</td><td><code>テスト成果物/テスト分析.md</code></td><td><code>TVxxx</code> と観点の根拠</td></tr>
+<tr><td>テスト計画</td><td><code>テスト成果物/テスト計画書.md</code></td><td><code>TAxxx</code>、リスク、スコープの根拠</td></tr>
+<tr><td>仕様書</td><td><code>spec/仕様書.md</code></td><td>期待結果、制約、性能、セキュリティの根拠</td></tr>
+<tr><td>README</td><td><code>sample_app/README.md</code></td><td>使用例、デフォルト値、注意事項の根拠</td></tr>
+<tr><td>実装・既存テスト</td><td><code>sample_app/retirement_simulator.html</code>, <code>sample_app/test_retirement_simulator.html</code></td><td>実行方法と既存テスト活用の補助確認</td></tr>
+</tbody></table></div>
+<h3>3. 質問待ちケース</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テストケースID</th><th>元テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>実行区分</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストケース名</th><th>前提条件</th><th>入力/データ</th><th>手順</th><th>期待結果</th><th>確認方法/証跡</th><th>関連質問ID</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TC-CB-004</td><td>TD002</td><td>TV002</td><td>TA001</td><td>コードベース</td><td>Unit</td><td>高</td><td>税率境界 - 年収0円</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>年収0円</td><td>「年収0円」を条件に、境界値ごとの期待値表を使ってUnit確認する。</td><td>要確認: 課税所得と月手取りが境界前後で不連続に破綻しないこと。期待値表は要確認</td><td>単体/統合テスト実行結果、アサーション結果</td><td>DQ001</td><td><code>spec/仕様書.md</code> 2.2 F001</td><td>R001</td><td>質問待ち</td></tr>
+<tr><td>TC-CB-005</td><td>TD002</td><td>TV002</td><td>TA001</td><td>コードベース</td><td>Unit</td><td>高</td><td>税率境界 - 基礎控除付近</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>基礎控除付近</td><td>「基礎控除付近」を条件に、境界値ごとの期待値表を使ってUnit確認する。</td><td>要確認: 課税所得と月手取りが境界前後で不連続に破綻しないこと。期待値表は要確認</td><td>単体/統合テスト実行結果、アサーション結果</td><td>DQ001</td><td><code>spec/仕様書.md</code> 2.2 F001</td><td>R001</td><td>質問待ち</td></tr>
+<tr><td>TC-CB-006</td><td>TD002</td><td>TV002</td><td>TA001</td><td>コードベース</td><td>Unit</td><td>高</td><td>税率境界 - 所得税ブラケット境界付近</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>所得税ブラケット境界付近</td><td>「所得税ブラケット境界付近」を条件に、境界値ごとの期待値表を使ってUnit確認する。</td><td>要確認: 課税所得と月手取りが境界前後で不連続に破綻しないこと。期待値表は要確認</td><td>単体/統合テスト実行結果、アサーション結果</td><td>DQ001</td><td><code>spec/仕様書.md</code> 2.2 F001</td><td>R001</td><td>質問待ち</td></tr>
+<tr><td>TC-CB-021</td><td>TD012</td><td>TV012</td><td>TA003</td><td>コードベース</td><td>Unit</td><td>高</td><td>利回り境界と丸め - 年利回り0%</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>年利回り0%</td><td>「年利回り0%」を条件に、期待値計算と表示値を比較する。</td><td>要確認: 利息計算と表示丸めが破綻しないこと。丸め許容差は要確認</td><td>単体/統合テスト実行結果、アサーション結果</td><td>DQ002</td><td><code>spec/仕様書.md</code> 3.1.2、5.1</td><td>R003, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-CB-022</td><td>TD012</td><td>TV012</td><td>TA003</td><td>コードベース</td><td>Unit</td><td>高</td><td>利回り境界と丸め - 小数</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>小数</td><td>「小数」を条件に、期待値計算と表示値を比較する。</td><td>要確認: 利息計算と表示丸めが破綻しないこと。丸め許容差は要確認</td><td>単体/統合テスト実行結果、アサーション結果</td><td>DQ002</td><td><code>spec/仕様書.md</code> 3.1.2、5.1</td><td>R003, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-CB-023</td><td>TD012</td><td>TV012</td><td>TA003</td><td>コードベース</td><td>Unit</td><td>高</td><td>利回り境界と丸め - 高値</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>高値</td><td>「高値」を条件に、期待値計算と表示値を比較する。</td><td>要確認: 利息計算と表示丸めが破綻しないこと。丸め許容差は要確認</td><td>単体/統合テスト実行結果、アサーション結果</td><td>DQ002</td><td><code>spec/仕様書.md</code> 3.1.2、5.1</td><td>R003, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-CB-028</td><td>TD025</td><td>TV025</td><td>TA006</td><td>コードベース</td><td>Unit</td><td>高</td><td>ランダム制御 - 乱数固定</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>乱数固定</td><td>「乱数固定」を条件に、テスト方針に従い乱数を固定または入力制御して確認する。</td><td>要確認: ランダム性によりテスト結果が不安定にならないこと。方針は要確認</td><td>単体/統合テスト実行結果、アサーション結果</td><td>DQ005</td><td><code>spec/仕様書.md</code> 5.3、9.2</td><td>R005</td><td>質問待ち</td></tr>
+<tr><td>TC-CB-029</td><td>TD025</td><td>TV025</td><td>TA006</td><td>コードベース</td><td>Unit</td><td>高</td><td>ランダム制御 - 発生率0%/100%制御</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>発生率0%/100%制御</td><td>「発生率0%/100%制御」を条件に、テスト方針に従い乱数を固定または入力制御して確認する。</td><td>要確認: ランダム性によりテスト結果が不安定にならないこと。方針は要確認</td><td>単体/統合テスト実行結果、アサーション結果</td><td>DQ005</td><td><code>spec/仕様書.md</code> 5.3、9.2</td><td>R005</td><td>質問待ち</td></tr>
+<tr><td>TC-CB-037</td><td>TD016</td><td>TV016</td><td>TA004</td><td>コードベース</td><td>Integration</td><td>高</td><td>補填税込み不足 - 補填額と税金の合計が投資残高を超える条件</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>補填額と税金の合計が投資残高を超える条件</td><td>「補填額と税金の合計が投資残高を超える条件」を条件に、E2EまたはIntegrationで資産推移を確認する。</td><td>要確認: 投資残高のマイナス許容範囲が要確認。例外停止はしないこと</td><td>単体/統合テスト実行結果、アサーション結果</td><td>DQ003</td><td><code>spec/仕様書.md</code> 5.2、11.1</td><td>R003, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-004</td><td>TD006</td><td>TV006</td><td>TA002</td><td>E2E自動</td><td>E2E</td><td>高</td><td>年齢前後関係逆転 - 開始年齢</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>開始年齢</td><td>ブラウザ自動テストで「開始年齢」を設定し、ブラウザE2Eで複数条件を実行し、結果の収入種別と停止有無を確認する。</td><td>要確認: 期待仕様が未確定のため、現仕様で許容する収入判定順を要確認</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>DQ013</td><td><code>spec/仕様書.md</code> 2.2 F002、7.2</td><td>R002, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-005</td><td>TD006</td><td>TV006</td><td>TA002</td><td>E2E自動</td><td>E2E</td><td>高</td><td>年齢前後関係逆転 - 退職年齢</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>退職年齢</td><td>ブラウザ自動テストで「退職年齢」を設定し、ブラウザE2Eで複数条件を実行し、結果の収入種別と停止有無を確認する。</td><td>要確認: 期待仕様が未確定のため、現仕様で許容する収入判定順を要確認</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>DQ013</td><td><code>spec/仕様書.md</code> 2.2 F002、7.2</td><td>R002, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-006</td><td>TD006</td><td>TV006</td><td>TA002</td><td>E2E自動</td><td>E2E</td><td>高</td><td>年齢前後関係逆転 - 年金開始年齢が同じ</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>年金開始年齢が同じ</td><td>ブラウザ自動テストで「年金開始年齢が同じ」を設定し、ブラウザE2Eで複数条件を実行し、結果の収入種別と停止有無を確認する。</td><td>要確認: 期待仕様が未確定のため、現仕様で許容する収入判定順を要確認</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>DQ013</td><td><code>spec/仕様書.md</code> 2.2 F002、7.2</td><td>R002, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-007</td><td>TD006</td><td>TV006</td><td>TA002</td><td>E2E自動</td><td>E2E</td><td>高</td><td>年齢前後関係逆転 - 逆転する組み合わせ</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>逆転する組み合わせ</td><td>ブラウザ自動テストで「逆転する組み合わせ」を設定し、ブラウザE2Eで複数条件を実行し、結果の収入種別と停止有無を確認する。</td><td>要確認: 期待仕様が未確定のため、現仕様で許容する収入判定順を要確認</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>DQ013</td><td><code>spec/仕様書.md</code> 2.2 F002、7.2</td><td>R002, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-022</td><td>TD019</td><td>TV019</td><td>TA005</td><td>E2E自動</td><td>E2E</td><td>高</td><td>給与変更年齢境界 - 年齢0</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>年齢0</td><td>ブラウザ自動テストで「年齢0」を設定し、条件別に給与変更を追加して月次結果の年収を確認する。</td><td>要確認: 各境界条件の期待仕様が要確認</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>DQ004</td><td><code>spec/仕様書.md</code> 2.2 F008、3.1.2</td><td>R004</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-023</td><td>TD019</td><td>TV019</td><td>TA005</td><td>E2E自動</td><td>E2E</td><td>高</td><td>給与変更年齢境界 - 100</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>100</td><td>ブラウザ自動テストで「100」を設定し、条件別に給与変更を追加して月次結果の年収を確認する。</td><td>要確認: 各境界条件の期待仕様が要確認</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>DQ004</td><td><code>spec/仕様書.md</code> 2.2 F008、3.1.2</td><td>R004</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-024</td><td>TD019</td><td>TV019</td><td>TA005</td><td>E2E自動</td><td>E2E</td><td>高</td><td>給与変更年齢境界 - 開始年齢未満</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>開始年齢未満</td><td>ブラウザ自動テストで「開始年齢未満」を設定し、条件別に給与変更を追加して月次結果の年収を確認する。</td><td>要確認: 各境界条件の期待仕様が要確認</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>DQ004</td><td><code>spec/仕様書.md</code> 2.2 F008、3.1.2</td><td>R004</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-025</td><td>TD019</td><td>TV019</td><td>TA005</td><td>E2E自動</td><td>E2E</td><td>高</td><td>給与変更年齢境界 - 開始年齢同値</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>開始年齢同値</td><td>ブラウザ自動テストで「開始年齢同値」を設定し、条件別に給与変更を追加して月次結果の年収を確認する。</td><td>要確認: 各境界条件の期待仕様が要確認</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>DQ004</td><td><code>spec/仕様書.md</code> 2.2 F008、3.1.2</td><td>R004</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-026</td><td>TD019</td><td>TV019</td><td>TA005</td><td>E2E自動</td><td>E2E</td><td>高</td><td>給与変更年齢境界 - 退職年齢以降</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>退職年齢以降</td><td>ブラウザ自動テストで「退職年齢以降」を設定し、条件別に給与変更を追加して月次結果の年収を確認する。</td><td>要確認: 各境界条件の期待仕様が要確認</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>DQ004</td><td><code>spec/仕様書.md</code> 2.2 F008、3.1.2</td><td>R004</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-034</td><td>TD030</td><td>TV030</td><td>TA008</td><td>E2E自動</td><td>E2E</td><td>高</td><td>イベント費用超過 - イベント費用が現金と投資残高の合計を超える条件</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>イベント費用が現金と投資残高の合計を超える条件</td><td>ブラウザ自動テストで「イベント費用が現金と投資残高の合計を超える条件」を設定し、ブラウザE2Eで結果生成、資産表示、エラー有無を確認する。</td><td>要確認: 出力は例外なく生成されること。マイナス表示の許容範囲は要確認</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>DQ006</td><td><code>spec/仕様書.md</code> 5.2、7.2</td><td>R003, R005, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-035</td><td>TD031</td><td>TV031</td><td>TA009</td><td>E2E自動</td><td>E2E</td><td>高</td><td>初期値確認 - 初期表示直後の全入力欄</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>初期表示直後の全入力欄</td><td>ブラウザ自動テストで「初期表示直後の全入力欄」を設定し、ブラウザを開き、入力欄の値を仕様書・READMEと照合する。</td><td>要確認: デフォルト値を必須条件にするか要確認。差異がある場合の扱いも確認する</td><td>E2E実行ログ、スクリーンショット、コンソールログ</td><td>DQ007</td><td><code>spec/仕様書.md</code> 3.1.2、<code>sample_app/README.md</code> 設定項目</td><td>R006</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-056</td><td>TD047</td><td>TV047</td><td>TA013</td><td>E2E自動</td><td>Security</td><td>中</td><td>特殊貼り付け入力 - 数値欄への指数表記</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>数値欄への指数表記</td><td>ブラウザ自動テストで「数値欄への指数表記」を設定し、ブラウザ差を考慮して入力し、表示崩れやHTML注入を確認する。</td><td>要確認: 確認対象と許容入力は要確認。少なくともHTML注入や表示崩れにつながらないこと</td><td>E2E実行ログ、DevTools/Network記録、スクリーンショット</td><td>DQ017</td><td><code>spec/仕様書.md</code> 7.1、8.2</td><td>R010, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-057</td><td>TD047</td><td>TV047</td><td>TA013</td><td>E2E自動</td><td>Security</td><td>中</td><td>特殊貼り付け入力 - 特殊文字</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>特殊文字</td><td>ブラウザ自動テストで「特殊文字」を設定し、ブラウザ差を考慮して入力し、表示崩れやHTML注入を確認する。</td><td>要確認: 確認対象と許容入力は要確認。少なくともHTML注入や表示崩れにつながらないこと</td><td>E2E実行ログ、DevTools/Network記録、スクリーンショット</td><td>DQ017</td><td><code>spec/仕様書.md</code> 7.1、8.2</td><td>R010, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-058</td><td>TD047</td><td>TV047</td><td>TA013</td><td>E2E自動</td><td>Security</td><td>中</td><td>特殊貼り付け入力 - 貼り付け入力</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>貼り付け入力</td><td>ブラウザ自動テストで「貼り付け入力」を設定し、ブラウザ差を考慮して入力し、表示崩れやHTML注入を確認する。</td><td>要確認: 確認対象と許容入力は要確認。少なくともHTML注入や表示崩れにつながらないこと</td><td>E2E実行ログ、DevTools/Network記録、スクリーンショット</td><td>DQ017</td><td><code>spec/仕様書.md</code> 7.1、8.2</td><td>R010, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-059</td><td>TD048</td><td>TV048</td><td>TA014</td><td>E2E自動</td><td>Performance</td><td>高</td><td>標準性能 - デフォルト条件</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>デフォルト条件</td><td>ブラウザ自動テストで「デフォルト条件」を設定し、Performance APIまたはブラウザ計測で計算時間と描画時間を測る。</td><td>要確認: 計算100ms以下、描画200ms以下の判定環境と測定方法が要確認</td><td>E2E実行ログ、Performance計測結果</td><td>DQ002, DQ009</td><td><code>spec/仕様書.md</code> 6.2</td><td>R008</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-060</td><td>TD048</td><td>TV048</td><td>TA014</td><td>E2E自動</td><td>Performance</td><td>高</td><td>標準性能 - 対象ブラウザ・端末は要確認</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>対象ブラウザ・端末は要確認</td><td>ブラウザ自動テストで「対象ブラウザ・端末は要確認」を設定し、Performance APIまたはブラウザ計測で計算時間と描画時間を測る。</td><td>要確認: 計算100ms以下、描画200ms以下の判定環境と測定方法が要確認</td><td>E2E実行ログ、Performance計測結果</td><td>DQ002, DQ009</td><td><code>spec/仕様書.md</code> 6.2</td><td>R008</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-064</td><td>TD050</td><td>TV050</td><td>TA014</td><td>E2E自動</td><td>Performance</td><td>中</td><td>連続実行 - 入力変更を伴う複数回実行</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>入力変更を伴う複数回実行</td><td>ブラウザ自動テストで「入力変更を伴う複数回実行」を設定し、繰り返し実行回数を決め、表示遅延と古い結果混入を確認する。</td><td>要確認: 連続実行回数と許容性能劣化は要確認</td><td>E2E実行ログ、Performance計測結果</td><td>DQ016</td><td><code>spec/仕様書.md</code> F006、6.1</td><td>R008, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-070</td><td>TD051</td><td>TV051</td><td>TA015</td><td>E2E自動</td><td>Compatibility</td><td>高</td><td>対象ブラウザ - Chrome</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>Chrome</td><td>ブラウザ自動テストで「Chrome」を設定し、対象バージョンで入力、ボタン、結果表示、スクロールを確認する。</td><td>要確認: 正式対象バージョンは要確認。主要操作が各ブラウザで動作すること</td><td>ブラウザ別E2E実行ログ、スクリーンショット</td><td>DQ010</td><td><code>spec/仕様書.md</code> 7.3、11.2</td><td>R009</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-071</td><td>TD051</td><td>TV051</td><td>TA015</td><td>E2E自動</td><td>Compatibility</td><td>高</td><td>対象ブラウザ - Firefox</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>Firefox</td><td>ブラウザ自動テストで「Firefox」を設定し、対象バージョンで入力、ボタン、結果表示、スクロールを確認する。</td><td>要確認: 正式対象バージョンは要確認。主要操作が各ブラウザで動作すること</td><td>ブラウザ別E2E実行ログ、スクリーンショット</td><td>DQ010</td><td><code>spec/仕様書.md</code> 7.3、11.2</td><td>R009</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-072</td><td>TD051</td><td>TV051</td><td>TA015</td><td>E2E自動</td><td>Compatibility</td><td>高</td><td>対象ブラウザ - Safari</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>Safari</td><td>ブラウザ自動テストで「Safari」を設定し、対象バージョンで入力、ボタン、結果表示、スクロールを確認する。</td><td>要確認: 正式対象バージョンは要確認。主要操作が各ブラウザで動作すること</td><td>ブラウザ別E2E実行ログ、スクリーンショット</td><td>DQ010</td><td><code>spec/仕様書.md</code> 7.3、11.2</td><td>R009</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-073</td><td>TD051</td><td>TV051</td><td>TA015</td><td>E2E自動</td><td>Compatibility</td><td>高</td><td>対象ブラウザ - Edge相当</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>Edge相当</td><td>ブラウザ自動テストで「Edge相当」を設定し、対象バージョンで入力、ボタン、結果表示、スクロールを確認する。</td><td>要確認: 正式対象バージョンは要確認。主要操作が各ブラウザで動作すること</td><td>ブラウザ別E2E実行ログ、スクリーンショット</td><td>DQ010</td><td><code>spec/仕様書.md</code> 7.3、11.2</td><td>R009</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-074</td><td>TD052</td><td>TV052</td><td>TA015</td><td>E2E自動</td><td>Compatibility</td><td>中</td><td>number input差異 - min</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>min</td><td>ブラウザ自動テストで「min」を設定し、主要ブラウザで入力制約と結果を比較する。</td><td>要確認: ブラウザ差異の許容範囲は要確認</td><td>ブラウザ別E2E実行ログ、スクリーンショット</td><td>DQ011</td><td><code>spec/仕様書.md</code> 7.1、7.3</td><td>R009, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-075</td><td>TD052</td><td>TV052</td><td>TA015</td><td>E2E自動</td><td>Compatibility</td><td>中</td><td>number input差異 - max</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>max</td><td>ブラウザ自動テストで「max」を設定し、主要ブラウザで入力制約と結果を比較する。</td><td>要確認: ブラウザ差異の許容範囲は要確認</td><td>ブラウザ別E2E実行ログ、スクリーンショット</td><td>DQ011</td><td><code>spec/仕様書.md</code> 7.1、7.3</td><td>R009, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-076</td><td>TD052</td><td>TV052</td><td>TA015</td><td>E2E自動</td><td>Compatibility</td><td>中</td><td>number input差異 - step</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>step</td><td>ブラウザ自動テストで「step」を設定し、主要ブラウザで入力制約と結果を比較する。</td><td>要確認: ブラウザ差異の許容範囲は要確認</td><td>ブラウザ別E2E実行ログ、スクリーンショット</td><td>DQ011</td><td><code>spec/仕様書.md</code> 7.1、7.3</td><td>R009, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-077</td><td>TD052</td><td>TV052</td><td>TA015</td><td>E2E自動</td><td>Compatibility</td><td>中</td><td>number input差異 - 空欄</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>空欄</td><td>ブラウザ自動テストで「空欄」を設定し、主要ブラウザで入力制約と結果を比較する。</td><td>要確認: ブラウザ差異の許容範囲は要確認</td><td>ブラウザ別E2E実行ログ、スクリーンショット</td><td>DQ011</td><td><code>spec/仕様書.md</code> 7.1、7.3</td><td>R009, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-078</td><td>TD052</td><td>TV052</td><td>TA015</td><td>E2E自動</td><td>Compatibility</td><td>中</td><td>number input差異 - 直接入力</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>直接入力</td><td>ブラウザ自動テストで「直接入力」を設定し、主要ブラウザで入力制約と結果を比較する。</td><td>要確認: ブラウザ差異の許容範囲は要確認</td><td>ブラウザ別E2E実行ログ、スクリーンショット</td><td>DQ011</td><td><code>spec/仕様書.md</code> 7.1、7.3</td><td>R009, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-E2E-079</td><td>TD052</td><td>TV052</td><td>TA015</td><td>E2E自動</td><td>Compatibility</td><td>中</td><td>number input差異 - 貼り付け</td><td>対象HTMLをブラウザ自動テストで開けること</td><td>貼り付け</td><td>ブラウザ自動テストで「貼り付け」を設定し、主要ブラウザで入力制約と結果を比較する。</td><td>要確認: ブラウザ差異の許容範囲は要確認</td><td>ブラウザ別E2E実行ログ、スクリーンショット</td><td>DQ011</td><td><code>spec/仕様書.md</code> 7.1、7.3</td><td>R009, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-MAN-001</td><td>TD054</td><td>TV054</td><td>TA016</td><td>人間実行</td><td>Accessibility</td><td>中</td><td>キーボード操作 - Tab</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>Tab</td><td>人間が「Tab」を条件に、キーボードのみで入力欄、給与変更、追加、開始に到達できるか確認する。</td><td>要確認: 必要な操作がキーボードで可能であること。基準範囲は要確認</td><td>手動確認記録、アクセシビリティ確認メモ</td><td>DQ012</td><td><code>spec/仕様書.md</code> 3.1 UI仕様、11.2</td><td>R009</td><td>質問待ち</td></tr>
+<tr><td>TC-MAN-002</td><td>TD054</td><td>TV054</td><td>TA016</td><td>人間実行</td><td>Accessibility</td><td>中</td><td>キーボード操作 - Enter</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>Enter</td><td>人間が「Enter」を条件に、キーボードのみで入力欄、給与変更、追加、開始に到達できるか確認する。</td><td>要確認: 必要な操作がキーボードで可能であること。基準範囲は要確認</td><td>手動確認記録、アクセシビリティ確認メモ</td><td>DQ012</td><td><code>spec/仕様書.md</code> 3.1 UI仕様、11.2</td><td>R009</td><td>質問待ち</td></tr>
+<tr><td>TC-MAN-003</td><td>TD054</td><td>TV054</td><td>TA016</td><td>人間実行</td><td>Accessibility</td><td>中</td><td>キーボード操作 - Spaceによる主要操作</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>Spaceによる主要操作</td><td>人間が「Spaceによる主要操作」を条件に、キーボードのみで入力欄、給与変更、追加、開始に到達できるか確認する。</td><td>要確認: 必要な操作がキーボードで可能であること。基準範囲は要確認</td><td>手動確認記録、アクセシビリティ確認メモ</td><td>DQ012</td><td><code>spec/仕様書.md</code> 3.1 UI仕様、11.2</td><td>R009</td><td>質問待ち</td></tr>
+<tr><td>TC-MAN-004</td><td>TD056</td><td>TV056</td><td>TA016</td><td>人間実行</td><td>Accessibility</td><td>中</td><td>ラベルと読み上げ推測 - 入力ラベル</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>入力ラベル</td><td>人間が「入力ラベル」を条件に、画面確認と必要に応じてアクセシビリティツリーを確認する。</td><td>要確認: 採用基準は要確認。文言から意味を推測しやすいこと</td><td>手動確認記録、アクセシビリティ確認メモ</td><td>DQ012</td><td><code>spec/仕様書.md</code> 3.1</td><td>R009</td><td>質問待ち</td></tr>
+<tr><td>TC-MAN-005</td><td>TD056</td><td>TV056</td><td>TA016</td><td>人間実行</td><td>Accessibility</td><td>中</td><td>ラベルと読み上げ推測 - ボタン文言</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>ボタン文言</td><td>人間が「ボタン文言」を条件に、画面確認と必要に応じてアクセシビリティツリーを確認する。</td><td>要確認: 採用基準は要確認。文言から意味を推測しやすいこと</td><td>手動確認記録、アクセシビリティ確認メモ</td><td>DQ012</td><td><code>spec/仕様書.md</code> 3.1</td><td>R009</td><td>質問待ち</td></tr>
+<tr><td>TC-MAN-006</td><td>TD056</td><td>TV056</td><td>TA016</td><td>人間実行</td><td>Accessibility</td><td>中</td><td>ラベルと読み上げ推測 - 結果表示</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>結果表示</td><td>人間が「結果表示」を条件に、画面確認と必要に応じてアクセシビリティツリーを確認する。</td><td>要確認: 採用基準は要確認。文言から意味を推測しやすいこと</td><td>手動確認記録、アクセシビリティ確認メモ</td><td>DQ012</td><td><code>spec/仕様書.md</code> 3.1</td><td>R009</td><td>質問待ち</td></tr>
+<tr><td>TC-MAN-009</td><td>TD041</td><td>TV041</td><td>TA011</td><td>人間実行</td><td>Manual</td><td>中</td><td>注意事項表示 - アプリ画面とREADMEの注意事項、プライバシー説明</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>アプリ画面とREADMEの注意事項、プライバシー説明</td><td>人間が「アプリ画面とREADMEの注意事項、プライバシー説明」を条件に、画面表示とREADMEを確認する。</td><td>要確認: 画面上の注意表示を必須にするか要確認。少なくともREADME上の注意事項は確認できること</td><td>手動確認記録、スクリーンショット</td><td>DQ008</td><td><code>sample_app/README.md</code> 注意事項、<code>spec/仕様書.md</code> 11.1</td><td>R011</td><td>質問待ち</td></tr>
+<tr><td>TC-MAN-012</td><td>TD063</td><td>TV063</td><td>TA018</td><td>人間実行</td><td>Manual</td><td>高</td><td>テスト証跡 - 既存テスト実行結果</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>既存テスト実行結果</td><td>人間が「既存テスト実行結果」を条件に、実行結果の保存方法と失敗時の扱いを確認する。</td><td>要確認: 正式採用有無と証跡形式が要確認</td><td>手動確認記録、スクリーンショット</td><td>DQ014, DQ015</td><td><code>テスト成果物/テスト計画書.md</code> 11</td><td>R001, R002, R003, R004, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-MAN-013</td><td>TD063</td><td>TV063</td><td>TA018</td><td>人間実行</td><td>Manual</td><td>高</td><td>テスト証跡 - 保存形式</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>保存形式</td><td>人間が「保存形式」を条件に、実行結果の保存方法と失敗時の扱いを確認する。</td><td>要確認: 正式採用有無と証跡形式が要確認</td><td>手動確認記録、スクリーンショット</td><td>DQ014, DQ015</td><td><code>テスト成果物/テスト計画書.md</code> 11</td><td>R001, R002, R003, R004, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-MAN-022</td><td>TD062</td><td>TV062</td><td>TA018</td><td>人間実行</td><td>Code review</td><td>高</td><td>回帰資産独立性 - 既存テストと本体実装のロジック重複</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>既存テストと本体実装のロジック重複</td><td>人間が「既存テストと本体実装のロジック重複」を条件に、テストコードをレビューし、期待値や検証ロジックの独立性を確認する。</td><td>要確認: 正式な回帰資産として扱うか要確認。実装コピーではなく欠陥検出できること</td><td>コードレビュー記録、確認箇所メモ</td><td>DQ014</td><td><code>spec/仕様書.md</code> 9.3</td><td>R001, R002, R003, R004</td><td>質問待ち</td></tr>
+<tr><td>TC-MAN-027</td><td>TD057</td><td>TV057</td><td>TA017</td><td>人間実行</td><td>Exploratory</td><td>高</td><td>年齢条件探索 - 退職年齢が年金開始年齢より前</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>退職年齢が年金開始年齢より前</td><td>人間が「退職年齢が年金開始年齢より前」を条件に、条件を変えて実行し、収入種別とユーザー誤解の有無を確認する。</td><td>要確認: 退職年齢が年金開始年齢より後の判定順は要確認</td><td>探索的テストメモ、スクリーンショット</td><td>DQ013</td><td><code>spec/仕様書.md</code> 2.2 F002、7.2</td><td>R002, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-MAN-028</td><td>TD057</td><td>TV057</td><td>TA017</td><td>人間実行</td><td>Exploratory</td><td>高</td><td>年齢条件探索 - 同じ</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>同じ</td><td>人間が「同じ」を条件に、条件を変えて実行し、収入種別とユーザー誤解の有無を確認する。</td><td>要確認: 退職年齢が年金開始年齢より後の判定順は要確認</td><td>探索的テストメモ、スクリーンショット</td><td>DQ013</td><td><code>spec/仕様書.md</code> 2.2 F002、7.2</td><td>R002, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-MAN-029</td><td>TD057</td><td>TV057</td><td>TA017</td><td>人間実行</td><td>Exploratory</td><td>高</td><td>年齢条件探索 - 後</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>後</td><td>人間が「後」を条件に、条件を変えて実行し、収入種別とユーザー誤解の有無を確認する。</td><td>要確認: 退職年齢が年金開始年齢より後の判定順は要確認</td><td>探索的テストメモ、スクリーンショット</td><td>DQ013</td><td><code>spec/仕様書.md</code> 2.2 F002、7.2</td><td>R002, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-MAN-033</td><td>TD059</td><td>TV059</td><td>TA017</td><td>人間実行</td><td>Exploratory</td><td>高</td><td>資産枯渇 - 生活費が収入を大きく上回り</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>生活費が収入を大きく上回り</td><td>人間が「生活費が収入を大きく上回り」を条件に、E2Eで現金、投資、総資産表示を確認する。</td><td>要確認: 資産枯渇後のマイナス表示許容範囲は要確認。表示は理解可能であること</td><td>探索的テストメモ、スクリーンショット</td><td>DQ006</td><td><code>spec/仕様書.md</code> 5.2、7.2</td><td>R002, R003, R006</td><td>質問待ち</td></tr>
+<tr><td>TC-MAN-034</td><td>TD059</td><td>TV059</td><td>TA017</td><td>人間実行</td><td>Exploratory</td><td>高</td><td>資産枯渇 - 資産枯渇が起きる条件</td><td>対象HTML、仕様書、README、必要な確認環境を参照できること</td><td>資産枯渇が起きる条件</td><td>人間が「資産枯渇が起きる条件」を条件に、E2Eで現金、投資、総資産表示を確認する。</td><td>要確認: 資産枯渇後のマイナス表示許容範囲は要確認。表示は理解可能であること</td><td>探索的テストメモ、スクリーンショット</td><td>DQ006</td><td><code>spec/仕様書.md</code> 5.2、7.2</td><td>R002, R003, R006</td><td>質問待ち</td></tr>
+</tbody></table></div>
+<h3>4. 質問一覧</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>質問ID</th><th>関連テストケースID</th><th>関連テスト設計ID</th><th>質問概要</th><th>優先度</th></tr></thead>
+<tbody>
+<tr><td>DQ001</td><td>TC-CB-004, TC-CB-005, TC-CB-006</td><td>TD002</td><td>所得税率ブラケット境界付近の期待値は、仕様書の簡易計算ロジックだけを正としますか、それとも別途期待値表を作成しますか。</td><td>高</td></tr>
+<tr><td>DQ002</td><td>TC-CB-021, TC-CB-022, TC-CB-023, TC-E2E-059, TC-E2E-060</td><td>TD012, TD048</td><td>金額計算や表示の丸め誤差について、許容差はいくらにしますか。</td><td>高</td></tr>
+<tr><td>DQ003</td><td>TC-CB-037</td><td>TD016</td><td>投資補填時に「補填額 + 税金」が投資残高を超える場合、投資残高がマイナスになる挙動を許容しますか。</td><td>高</td></tr>
+<tr><td>DQ004</td><td>TC-E2E-022, TC-E2E-023, TC-E2E-024, TC-E2E-025, TC-E2E-026</td><td>TD019</td><td>給与変更年齢が開始年齢未満、開始年齢と同じ、退職年齢以降の場合、それぞれどのように扱うべきですか。</td><td>高</td></tr>
+<tr><td>DQ005</td><td>TC-CB-028, TC-CB-029</td><td>TD025</td><td>ランダムイベントのテストでは、乱数を固定する方針にしますか、それとも発生率0%/100%など入力制御で確認しますか。</td><td>高</td></tr>
+<tr><td>DQ006</td><td>TC-E2E-034, TC-MAN-033, TC-MAN-034</td><td>TD030, TD059</td><td>イベント費用や生活費により現金と投資残高の合計を超える不足が出た場合、現金・投資・総資産のマイナス表示をどこまで許容しますか。</td><td>中</td></tr>
+<tr><td>DQ007</td><td>TC-E2E-035</td><td>TD031</td><td>READMEと仕様書にあるデフォルト値を正とし、実装の初期値がこれと一致することを必須条件にしますか。</td><td>高</td></tr>
+<tr><td>DQ008</td><td>TC-MAN-009</td><td>TD041</td><td>アプリ画面上にも「このシミュレーターは目安である」旨の注意表示を必須確認対象にしますか。</td><td>中</td></tr>
+<tr><td>DQ009</td><td>TC-E2E-059, TC-E2E-060</td><td>TD048</td><td>性能目標の計算処理100ms以下、画面描画200ms以下は、どの端末・ブラウザ・測定方法で判定しますか。</td><td>高</td></tr>
+<tr><td>DQ010</td><td>TC-E2E-070, TC-E2E-071, TC-E2E-072, TC-E2E-073</td><td>TD051</td><td>対象ブラウザの正式バージョンは、仕様書記載のChrome 60+、Firefox 55+、Safari 12+、Edge 79+のままでよいですか。</td><td>高</td></tr>
+<tr><td>DQ011</td><td>TC-E2E-074, TC-E2E-075, TC-E2E-076, TC-E2E-077, TC-E2E-078, TC-E2E-079</td><td>TD052</td><td>number inputのブラウザ差異により、min/max/stepの扱いが異なる場合の許容範囲はありますか。</td><td>中</td></tr>
+<tr><td>DQ012</td><td>TC-MAN-001, TC-MAN-002, TC-MAN-003, TC-MAN-004, TC-MAN-005, TC-MAN-006</td><td>TD054, TD056</td><td>アクセシビリティ確認は、キーボード操作のみでよいですか、それともWCAGなどの基準を採用しますか。</td><td>中</td></tr>
+<tr><td>DQ013</td><td>TC-E2E-004, TC-E2E-005, TC-E2E-006, TC-E2E-007, TC-MAN-027, TC-MAN-028, TC-MAN-029</td><td>TD006, TD057</td><td>退職年齢が年金開始年齢より後の場合、給与期間を優先する現在の判定順でよいですか。</td><td>高</td></tr>
+<tr><td>DQ014</td><td>TC-MAN-012, TC-MAN-013, TC-MAN-022</td><td>TD062, TD063</td><td><code>sample_app/test_retirement_simulator.html</code> は正式な回帰テスト資産として扱いますか。</td><td>高</td></tr>
+<tr><td>DQ015</td><td>TC-MAN-012, TC-MAN-013</td><td>TD063</td><td>既存テストの結果は、スクリーンショット、HTML保存、手動記録、別フォーマットのどれで保存しますか。</td><td>中</td></tr>
+<tr><td>DQ016</td><td>TC-E2E-064</td><td>TD050</td><td>連続実行時の性能劣化や表示更新について、何回程度の繰り返しを確認対象にしますか。</td><td>低</td></tr>
+<tr><td>DQ017</td><td>TC-E2E-056, TC-E2E-057, TC-E2E-058</td><td>TD047</td><td>数値入力欄に特殊な貼り付け入力や指数表記が入った場合の扱いを確認対象にしますか。</td><td>低</td></tr>
+</tbody></table></div>
+<h3>5. 回答後の反映方針</h3>
+<p>質問票の回答が得られたら、関連する <code>TC-*</code> の <code>期待結果</code>、<code>入力/データ</code>、<code>確認方法/証跡</code> を回答内容に合わせて更新する。更新後は <code>状態</code> を <code>質問待ち</code> から <code>作成済み</code> に変更し、<code>実行区分</code> に従って <code>テストケース_コードベース.md</code>、<code>テストケース_E2E自動.md</code>、または <code>テストケース_人間実行.md</code> へ移動する。</p>
+<h3>6. 上流成果物への追記・更新</h3>
+<p>今回のテストケース再作成では、既存のテスト設計・テスト分析・テスト計画へ追加すべき新規観点、リスク、テストアプローチは見つからなかった。</p>
+<p>判断理由:</p>
+<ul>
+<li><code>TD001</code> から <code>TD063</code> まで、分割後の4ファイル合算で少なくとも1件のテストケースへ展開している。</li>
+<li><code>質問待ち</code> のテストケースは実行区分ファイルへ重複配置せず、<code>テストケース_質問待ち.md</code> に集約した。</li>
+<li>期待結果、許容範囲、実行環境が未確定の箇所は <code>要確認</code> として残し、上流成果物へ推測追記していない。</li>
+</ul>
+<h3>7. カバレッジ確認</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>対応テストケースID</th><th>実行区分</th><th>状態</th><th>出力ファイル</th><th>カバー状況</th></tr></thead>
+<tbody>
+<tr><td>TD002</td><td>TC-CB-004, TC-CB-005, TC-CB-006</td><td>コードベース</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD006</td><td>TC-E2E-004, TC-E2E-005, TC-E2E-006, TC-E2E-007</td><td>E2E自動</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD012</td><td>TC-CB-021, TC-CB-022, TC-CB-023</td><td>コードベース</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD016</td><td>TC-CB-037</td><td>コードベース</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD019</td><td>TC-E2E-022, TC-E2E-023, TC-E2E-024, TC-E2E-025, TC-E2E-026</td><td>E2E自動</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD025</td><td>TC-CB-028, TC-CB-029</td><td>コードベース</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD030</td><td>TC-E2E-034</td><td>E2E自動</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD031</td><td>TC-E2E-035</td><td>E2E自動</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD041</td><td>TC-MAN-009</td><td>人間実行</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD047</td><td>TC-E2E-056, TC-E2E-057, TC-E2E-058</td><td>E2E自動</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD048</td><td>TC-E2E-059, TC-E2E-060</td><td>E2E自動</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD050</td><td>TC-E2E-064</td><td>E2E自動</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD051</td><td>TC-E2E-070, TC-E2E-071, TC-E2E-072, TC-E2E-073</td><td>E2E自動</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD052</td><td>TC-E2E-074, TC-E2E-075, TC-E2E-076, TC-E2E-077, TC-E2E-078, TC-E2E-079</td><td>E2E自動</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD054</td><td>TC-MAN-001, TC-MAN-002, TC-MAN-003</td><td>人間実行</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD056</td><td>TC-MAN-004, TC-MAN-005, TC-MAN-006</td><td>人間実行</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD057</td><td>TC-MAN-027, TC-MAN-028, TC-MAN-029</td><td>人間実行</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD059</td><td>TC-MAN-033, TC-MAN-034</td><td>人間実行</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD062</td><td>TC-MAN-022</td><td>人間実行</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD063</td><td>TC-MAN-012, TC-MAN-013</td><td>人間実行</td><td>質問待ち</td><td><code>テストケース_質問待ち.md</code></td><td>カバー済み</td></tr>
+</tbody></table></div>
+</body>
+</html>
