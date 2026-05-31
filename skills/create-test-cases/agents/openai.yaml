@@ -1,4 +1,4 @@
 interface:
   display_name: "テストケース作成"
-  short_description: "テスト設計から実行区分別に4ファイルのMarkdownテストケースを作成する支援"
-  default_prompt: "Use $create-test-cases to create separate traceable Markdown test case files for code-based, E2E automated, human-executed, and question-wait cases."
+  short_description: "テスト設計から実行可能粒度のMarkdownテストケースを実行区分別に作成する支援"
+  default_prompt: "Use $create-test-cases to create execution-ready, independently reportable Markdown test case files for code-based, E2E automated, human-executed, and question-wait cases."
