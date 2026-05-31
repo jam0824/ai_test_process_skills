@@ -158,7 +158,7 @@ def ensure_issue_file(issue_file: Path) -> None:
     if issue_file.exists() and ISSUE_HEADER[0] in issue_file.read_text(encoding="utf-8", errors="replace"):
         return
     issue_file.parent.mkdir(parents=True, exist_ok=True)
-    content = "# 発見issue一覧\n\n" + make_row(ISSUE_HEADER) + "\n" + make_row(["---"] * len(ISSUE_HEADER)) + "\n"
+    content = "# コードベース_発見issue一覧\n\n" + make_row(ISSUE_HEADER) + "\n" + make_row(["---"] * len(ISSUE_HEADER)) + "\n"
     issue_file.write_text(content, encoding="utf-8")
 
 
@@ -297,7 +297,7 @@ def main(argv: list[str]) -> int:
     report_root = Path(args.output_dir)
     report_dir = report_root / f"{timestamp}_コードベーステスト"
     report_dir.mkdir(parents=True, exist_ok=True)
-    issue_file = Path(args.issue_file) if args.issue_file else report_dir / "発見issue一覧.md"
+    issue_file = Path(args.issue_file) if args.issue_file else report_dir / "コードベース_発見issue一覧.md"
     executed_md = report_dir / f"{timestamp}_テストケース_コードベース_実行済み.md"
     executed_csv = report_dir / f"{timestamp}_テストケース_コードベース_実行済み.csv"
     raw_log = report_dir / f"{timestamp}_コードベーステスト実行ログ.txt"

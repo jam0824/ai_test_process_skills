@@ -1,3 +1,7 @@
+Command: validation-log: codebase issue filename
+ExitCode: 0
+Timestamp: 20260102030408
+
 Command: validation-log: codebase
 ExitCode: 0
 Timestamp: 20260102030405

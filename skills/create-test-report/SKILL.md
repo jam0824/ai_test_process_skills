@@ -19,6 +19,8 @@ Create a human-readable HTML test execution report and freeze the current test a
    - `テスト成果物/テストケース_コードベース.md`, `テストケース_E2E自動.md`, `テストケース_人間実行.md`, `テストケース_質問待ち.md`.
    - `テスト成果物/未実装テストケース_コードベース.md`, `未実装テストケース_E2E自動.md`.
    - Latest `テスト成果物/report/*_コードベーステスト` and `テスト成果物/report/*_e2e自動テスト`, unless the user specifies folders.
+   - Codebase bug list `コードベース_発見issue一覧.md`; fall back to legacy `発見issue一覧.md` only when the new file is absent.
+   - E2E bug list `e2e_発見issue一覧.md`.
 2. Run the bundled report generator. Default command:
 
 ```powershell
@@ -103,6 +105,7 @@ e2e_run_dir=...
 - Copy CSV, JSON, and log evidence to `raw/`.
 - HTML conversion must strip ANSI color codes from Playwright output.
 - Links in `index.html` should point to files inside the generated report folder.
+- For codebase bugs, prefer `コードベース_発見issue一覧.md`; keep compatibility with old `発見issue一覧.md` execution folders.
 - Do not edit source artifacts, test code, product code, specifications, or execution-result folders.
 
 ## Before Finishing

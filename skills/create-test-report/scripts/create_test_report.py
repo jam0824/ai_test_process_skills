@@ -30,6 +30,9 @@ CORE_MD_FILES = [
 ]
 
 STATUS_RANK = {"N/A": 1, "Pass": 2, "Fail": 3}
+CODEBASE_ISSUE_FILE = "コードベース_発見issue一覧.md"
+LEGACY_CODEBASE_ISSUE_FILE = "発見issue一覧.md"
+E2E_ISSUE_FILE = "e2e_発見issue一覧.md"
 
 
 @dataclass
@@ -494,6 +497,19 @@ def collect_issues(issue_files: list[Path]) -> tuple[list[dict[str, str]], dict[
     return issues, priority_by_bug, priority_by_tc
 
 
+def select_issue_file(run_dir: Path | None, preferred: str, legacy: str | None = None) -> Path | None:
+    if not run_dir:
+        return None
+    preferred_path = run_dir / preferred
+    if preferred_path.exists():
+        return preferred_path
+    if legacy:
+        legacy_path = run_dir / legacy
+        if legacy_path.exists():
+            return legacy_path
+    return None
+
+
 def copy_artifacts(
     artifacts_dir: Path,
     report_dir: Path,
@@ -678,6 +694,7 @@ def build_index_html(
     all_cases: dict[str, dict[str, str]],
     executed: dict[str, dict[str, str]],
     issues: list[dict[str, str]],
+    selected_issue_file_names: set[str],
     summary: dict[str, object],
 ) -> str:
     html_files_by_name = {copied.md_path.name: copied.html_path for copied in copied_md if copied.md_path and copied.html_path}
@@ -696,7 +713,7 @@ def build_index_html(
     bug_list_files = [
         copied
         for copied in copied_md
-        if copied.md_path and copied.md_path.name in {"発見issue一覧.md", "e2e_発見issue一覧.md"}
+        if copied.md_path and copied.md_path.name in selected_issue_file_names
     ]
     for copied in bug_list_files:
         source_name = copied.md_path.name
@@ -835,13 +852,14 @@ def main(argv: list[str] | None = None) -> int:
     executed.update(collect_executed(codebase_run_dir))
     executed.update(collect_executed(e2e_run_dir))
     issue_files = []
-    for run_dir, issue_name in [(codebase_run_dir, "発見issue一覧.md"), (e2e_run_dir, "e2e_発見issue一覧.md")]:
-        if run_dir:
-            issue_path = run_dir / issue_name
-            if issue_path.exists():
-                issue_files.append(issue_path)
+    codebase_issue_file = select_issue_file(codebase_run_dir, CODEBASE_ISSUE_FILE, LEGACY_CODEBASE_ISSUE_FILE)
+    e2e_issue_file = select_issue_file(e2e_run_dir, E2E_ISSUE_FILE)
+    for issue_path in [codebase_issue_file, e2e_issue_file]:
+        if issue_path:
+            issue_files.append(issue_path)
     issues, priority_by_bug, priority_by_tc = collect_issues(issue_files)
     summary = summarize(all_cases, executed, issues, priority_by_bug, priority_by_tc)
+    selected_issue_file_names = {path.name for path in issue_files}
 
     report_html = report_dir / "index.html"
     report_html.write_text(
@@ -856,6 +874,7 @@ def main(argv: list[str] | None = None) -> int:
             all_cases=all_cases,
             executed=executed,
             issues=issues,
+            selected_issue_file_names=selected_issue_file_names,
             summary=summary,
         ),
         encoding="utf-8",

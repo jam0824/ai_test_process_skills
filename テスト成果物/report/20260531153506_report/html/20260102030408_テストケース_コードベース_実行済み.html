@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>コードベース実行結果: 20260102030408_テストケース_コードベース_実行済み.md</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テストケース（コードベース）</h2>
+<h3>1. 作成対象</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>項目</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>テスト対象</td><td><code>sample_app/retirement_simulator.html</code></td></tr>
+<tr><td>入力となるテスト設計</td><td><code>テスト成果物/テスト設計.md</code></td></tr>
+<tr><td>入力となるテスト設計質問票</td><td><code>テスト成果物/テスト設計_質問票.md</code></td></tr>
+<tr><td>出力方針</td><td>コードベース、E2E自動、人間実行、質問待ちを別ファイルとして出力する</td></tr>
+<tr><td>作成日</td><td>2026-05-31</td></tr>
+</tbody></table></div>
+<h3>2. 参照資料</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>種別</th><th>参照先</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td>テスト設計</td><td><code>テスト成果物/テスト設計.md</code></td><td><code>TDxxx</code>、実行方法、期待結果、状態の根拠</td></tr>
+<tr><td>テスト設計質問票</td><td><code>テスト成果物/テスト設計_質問票.md</code></td><td><code>質問待ち</code> ケースの関連質問IDの根拠</td></tr>
+<tr><td>テスト分析</td><td><code>テスト成果物/テスト分析.md</code></td><td><code>TVxxx</code> と観点の根拠</td></tr>
+<tr><td>テスト計画</td><td><code>テスト成果物/テスト計画書.md</code></td><td><code>TAxxx</code>、リスク、スコープの根拠</td></tr>
+<tr><td>仕様書</td><td><code>spec/仕様書.md</code></td><td>期待結果、制約、性能、セキュリティの根拠</td></tr>
+<tr><td>README</td><td><code>sample_app/README.md</code></td><td>使用例、デフォルト値、注意事項の根拠</td></tr>
+<tr><td>実装・既存テスト</td><td><code>sample_app/retirement_simulator.html</code>, <code>sample_app/test_retirement_simulator.html</code></td><td>実行方法と既存テスト活用の補助確認</td></tr>
+</tbody></table></div>
+<h3>3. コードベースで実行するテストケース</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テストケースID</th><th>元テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>実行区分</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストケース名</th><th>前提条件</th><th>入力/データ</th><th>手順</th><th>期待結果</th><th>確認方法/証跡</th><th>関連質問ID</th><th>仕様</th><th>リスクID</th><th>状態</th><th>実行結果</th><th>実行日時</th><th>実行コマンド</th><th>Bug ID</th><th>実行メモ</th></tr></thead>
+<tbody>
+<tr><td>TC-CB-001</td><td>TD001</td><td>TV001</td><td>TA001</td><td>コードベース</td><td>Unit</td><td>高</td><td>代表年収 - 年収300万円</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>年収3,000,000円</td><td><code>calculateNetMonthly(3000000)</code> 相当を実行し、社会保険料14%、基礎控除480,000円、所得税、住民税10%を含む期待値と比較する。</td><td>月手取りが188,125円であること</td><td>単体/統合テスト実行結果、差分ログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F001、9.1</td><td>R001</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-002</td><td>TD001</td><td>TV001</td><td>TA001</td><td>コードベース</td><td>Unit</td><td>高</td><td>代表年収 - 600万円</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>年収6,000,000円</td><td><code>calculateNetMonthly(6000000)</code> 相当を実行し、社会保険料14%、基礎控除480,000円、所得税、住民税10%を含む期待値と比較する。</td><td>月手取りが348,625円であること</td><td>単体/統合テスト実行結果、差分ログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F001、9.1</td><td>R001</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-003</td><td>TD001</td><td>TV001</td><td>TA001</td><td>コードベース</td><td>Unit</td><td>高</td><td>代表年収 - 1000万円</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>年収10,000,000円</td><td><code>calculateNetMonthly(10000000)</code> 相当を実行し、社会保険料14%、基礎控除480,000円、所得税、住民税10%を含む期待値と比較する。</td><td>月手取りが約546,367円であること</td><td>単体/統合テスト実行結果、差分ログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F001、9.1</td><td>R001</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-007</td><td>TD004</td><td>TV004</td><td>TA001</td><td>コードベース</td><td>Unit</td><td>高</td><td>控除・税率適用順 - 年収600万円を中心に社会保険料14%</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>年収6,000,000円</td><td>年収6,000,000円の手取り計算過程を分解し、社会保険料、課税所得、所得税、住民税、月手取りを確認する。</td><td>社会保険料840,000円、課税所得4,680,000円、所得税508,500円、住民税468,000円、月手取り348,625円であること</td><td>単体/統合テスト実行結果、差分ログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F001</td><td>R001</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-008</td><td>TD004</td><td>TV004</td><td>TA001</td><td>コードベース</td><td>Unit</td><td>高</td><td>控除・税率適用順 - 基礎控除480,000円</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>年収6,000,000円、基礎控除480,000円</td><td>課税所得計算が年収から社会保険料14%と基礎控除480,000円を差し引く順序になっているか確認する。</td><td>課税所得が6,000,000 - 840,000 - 480,000 = 4,680,000円であること</td><td>単体/統合テスト実行結果、差分ログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F001</td><td>R001</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-009</td><td>TD004</td><td>TV004</td><td>TA001</td><td>コードベース</td><td>Unit</td><td>高</td><td>控除・税率適用順 - 住民税10%を確認</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>年収6,000,000円、課税所得4,680,000円</td><td>課税所得に対する住民税計算を分解して確認する。</td><td>住民税が4,680,000円 × 10% = 468,000円として手取り計算へ反映されること</td><td>単体/統合テスト実行結果、差分ログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F001</td><td>R001</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-010</td><td>TD005</td><td>TV005</td><td>TA002</td><td>コードベース</td><td>Unit</td><td>高</td><td>収入期間境界 - 開始年齢</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>startAge=30, retirementAge=65, pensionStartAge=67, salary=3,000,000円, gapIncome=50,000円, monthlyPension=150,000円, eventProb=0 の30歳1月</td><td>年齢別の月次シミュレーション結果から30歳1月の収入行を抽出する。</td><td>30歳1月の収入種別が給与であり、退職後収入または年金にならないこと</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F002</td><td>R002</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-011</td><td>TD005</td><td>TV005</td><td>TA002</td><td>コードベース</td><td>Unit</td><td>高</td><td>収入期間境界 - 退職年齢直前</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>startAge=30, retirementAge=65, pensionStartAge=67, salary=3,000,000円, gapIncome=50,000円, monthlyPension=150,000円, eventProb=0 の64歳12月</td><td>年齢別の月次シミュレーション結果から64歳12月の収入行を抽出する。</td><td>64歳12月の収入種別が給与であり、退職後収入または年金にならないこと</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F002</td><td>R002</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-012</td><td>TD005</td><td>TV005</td><td>TA002</td><td>コードベース</td><td>Unit</td><td>高</td><td>収入期間境界 - 退職年齢</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>startAge=30, retirementAge=65, pensionStartAge=67, salary=3,000,000円, gapIncome=50,000円, monthlyPension=150,000円, eventProb=0 の65歳1月</td><td>年齢別の月次シミュレーション結果から65歳1月の収入行を抽出する。</td><td>65歳1月の収入種別が退職後収入であり、金額が50,000円であること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F002</td><td>R002</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-013</td><td>TD005</td><td>TV005</td><td>TA002</td><td>コードベース</td><td>Unit</td><td>高</td><td>収入期間境界 - 年金開始年齢直前</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>startAge=30, retirementAge=65, pensionStartAge=67, salary=3,000,000円, gapIncome=50,000円, monthlyPension=150,000円, eventProb=0 の66歳12月</td><td>年齢別の月次シミュレーション結果から66歳12月の収入行を抽出する。</td><td>66歳12月の収入種別が退職後収入であり、金額が50,000円であること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F002</td><td>R002</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-014</td><td>TD005</td><td>TV005</td><td>TA002</td><td>コードベース</td><td>Unit</td><td>高</td><td>収入期間境界 - 年金開始年齢</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>startAge=30, retirementAge=65, pensionStartAge=67, salary=3,000,000円, gapIncome=50,000円, monthlyPension=150,000円, eventProb=0 の67歳1月</td><td>年齢別の月次シミュレーション結果から67歳1月の収入行を抽出する。</td><td>67歳1月の収入種別が年金であり、金額が150,000円であること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F002</td><td>R002</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-015</td><td>TD009</td><td>TV009</td><td>TA003</td><td>コードベース</td><td>Unit</td><td>高</td><td>投資率代表値 - 投資率20%</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>投資率20%</td><td>「投資率20%」を条件に、月手取りから投資額と現金加算額を算出してUnit確認する。</td><td>投資率分が投資残高へ、残額が現金へ加算されること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 2.1 F003、2.2 F002</td><td>R003</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-016</td><td>TD009</td><td>TV009</td><td>TA003</td><td>コードベース</td><td>Unit</td><td>高</td><td>投資率代表値 - 年収600万円</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>年収600万円</td><td>「年収600万円」を条件に、月手取りから投資額と現金加算額を算出してUnit確認する。</td><td>投資率分が投資残高へ、残額が現金へ加算されること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 2.1 F003、2.2 F002</td><td>R003</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-017</td><td>TD009</td><td>TV009</td><td>TA003</td><td>コードベース</td><td>Unit</td><td>高</td><td>投資率代表値 - 標準生活費</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>salary=3,000,000円, investRate=20%, expenseCurrent=155,600円, eventProb=0</td><td>月手取り188,125円から投資額と現金加算額を算出してUnit確認する。</td><td>投資額が37,625円、投資前生活費差引前の現金加算額が150,500円であること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 2.1 F003、2.2 F002</td><td>R003</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-018</td><td>TD011</td><td>TV011</td><td>TA003</td><td>コードベース</td><td>Unit</td><td>高</td><td>年初利息 - 開始年齢30歳</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>startAge=30, retirementAge=31, pensionStartAge=31, initialInv=1,000,000円, annualInterest=10%, eventProb=0 の30歳1月</td><td>年ごとの1月結果を抽出し、開始年齢の1月に利息行が出ないことを確認する。</td><td>30歳1月には投資利息行がなく、通常の月次結果のみ生成されること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 5.1</td><td>R003</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-019</td><td>TD011</td><td>TV011</td><td>TA003</td><td>コードベース</td><td>Unit</td><td>高</td><td>年初利息 - 複数年</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>startAge=30, retirementAge=31, pensionStartAge=31, initialInv=1,000,000円, annualInterest=10%, eventProb=0 の31歳1月</td><td>年ごとの1月結果を抽出し、開始翌年の1月に利息が適用されることを確認する。</td><td>31歳1月の投資利息行で投資残高が1,000,000円から1,100,000円へ更新されること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 5.1</td><td>R003</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-020</td><td>TD011</td><td>TV011</td><td>TA003</td><td>コードベース</td><td>Unit</td><td>高</td><td>年初利息 - 利回り5%</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>startAge=30, retirementAge=31, pensionStartAge=31, initialInv=1,000,000円, annualInterest=5%, eventProb=0 の31歳1月</td><td>年ごとの1月結果を抽出し、利回り5%の利息適用額を確認する。</td><td>31歳1月の投資利息行で投資残高が1,000,000円から1,050,000円へ更新されること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 5.1</td><td>R003</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-024</td><td>TD014</td><td>TV014</td><td>TA004</td><td>コードベース</td><td>Unit</td><td>高</td><td>投資補填税 - 投資補填額が明確に発生する条件</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>startAge=30, retirementAge=30, pensionStartAge=30, initialCash=50,000円, initialInv=100,000円, monthlyPension=0円, expenseRetired=80,000円, annualInterest=0, eventProb=0</td><td>補填が発生する月を実行し、補填額と税金20%分の投資減算を計算で確認する。</td><td>不足30,000円に対して投資から30,000円を補填し、税金6,000円を含めて投資残高が64,000円になること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 5.2</td><td>R003</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-025</td><td>TD021</td><td>TV021</td><td>TA005</td><td>コードベース</td><td>Unit</td><td>高</td><td>複数給与変更 - 年齢35歳</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>baseSalary=3,000,000円, salaryChanges=[35歳:4,000,000円, 45歳:6,000,000円, 55歳:8,000,000円] の35歳1月</td><td>年齢ごとの適用年収をUnitまたは既存テスト拡張で確認する。</td><td>35歳1月の給与計算で4,000,000円が採用され、結果に年収4,000,000円が表示されること</td><td>単体/統合テスト実行結果、差分ログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F008</td><td>R004</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-026</td><td>TD021</td><td>TV021</td><td>TA005</td><td>コードベース</td><td>Unit</td><td>高</td><td>複数給与変更 - 45歳</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>baseSalary=3,000,000円, salaryChanges=[35歳:4,000,000円, 45歳:6,000,000円, 55歳:8,000,000円] の45歳1月</td><td>年齢ごとの適用年収をUnitまたは既存テスト拡張で確認する。</td><td>45歳1月の給与計算で6,000,000円が採用され、35歳設定ではなく45歳設定が優先されること</td><td>単体/統合テスト実行結果、差分ログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F008</td><td>R004</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-027</td><td>TD021</td><td>TV021</td><td>TA005</td><td>コードベース</td><td>Unit</td><td>高</td><td>複数給与変更 - 55歳など複数変更</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>baseSalary=3,000,000円, salaryChanges=[35歳:4,000,000円, 45歳:6,000,000円, 55歳:8,000,000円] の55歳1月</td><td>年齢ごとの適用年収をUnitまたは既存テスト拡張で確認する。</td><td>55歳1月の給与計算で8,000,000円が採用され、年齢降順ソートにより最新の該当設定が選ばれること</td><td>単体/統合テスト実行結果、差分ログ</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F008</td><td>R004</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-030</td><td>TD028</td><td>TV028</td><td>TA007</td><td>コードベース</td><td>Unit</td><td>高</td><td>年またぎ順序 - 複数年</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>startAge=30, retirementAge=33, pensionStartAge=33, initialInv=1,000,000円, annualInterest=5%, eventProb=0 の30歳12月から31歳1月</td><td>30歳12月の月次結果と31歳1月の投資利息行・月次結果の順序を確認する。</td><td>31歳1月では投資利息行が月次収入・生活費処理より前に出力されること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F002、5.1</td><td>R002, R003</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-031</td><td>TD028</td><td>TV028</td><td>TA007</td><td>コードベース</td><td>Unit</td><td>高</td><td>年またぎ順序 - 利回りあり</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>startAge=30, retirementAge=33, pensionStartAge=33, initialInv=1,000,000円, annualInterest=5%, eventProb=0 の31歳1月</td><td>31歳1月の投資利息行と同月の月次結果を抽出して処理順序を確認する。</td><td>投資残高が1,050,000円へ更新された後に31歳1月の月次処理が続くこと</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F002、5.1</td><td>R002, R003</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-032</td><td>TD028</td><td>TV028</td><td>TA007</td><td>コードベース</td><td>Unit</td><td>高</td><td>年またぎ順序 - イベントなし</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>startAge=30, retirementAge=33, pensionStartAge=33, initialInv=1,000,000円, annualInterest=5%, eventProb=0</td><td>イベントを発生させない条件で12月から翌1月の処理順序を確認する。</td><td>イベント行が出力されず、年初利息と月次処理だけで資産推移を追跡できること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F002、5.1</td><td>R002, R003</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-033</td><td>TD008</td><td>TV008</td><td>TA002</td><td>コードベース</td><td>Integration</td><td>高</td><td>資産引継ぎ - 現役、退職後収入、年金受給をまたぐ標準条件</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>startAge=64, retirementAge=65, pensionStartAge=67, salary=3,000,000円, gapIncome=50,000円, monthlyPension=150,000円, initialCash=1,000,000円, initialInv=100,000円, eventProb=0</td><td>64歳12月、65歳1月、66歳12月、67歳1月の現金、投資、総資産を連続確認する。</td><td>期間をまたいでも現金・投資残高が初期値へ戻らず、前月末の資産状態を引き継ぐこと</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F002</td><td>R002</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-034</td><td>TD013</td><td>TV013</td><td>TA004</td><td>コードベース</td><td>Integration</td><td>高</td><td>投資補填正常 - 現金不足が発生し</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>startAge=30, retirementAge=30, pensionStartAge=30, initialCash=50,000円, initialInv=100,000円, monthlyPension=0円, expenseRetired=80,000円, eventProb=0</td><td>月次処理後の現金不足に対して投資補填が実行されることを確認する。</td><td>不足30,000円が投資から補填され、補填後の現金が0円になること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 5.2</td><td>R003</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-035</td><td>TD013</td><td>TV013</td><td>TA004</td><td>コードベース</td><td>Integration</td><td>高</td><td>投資補填正常 - 投資残高が十分ある条件</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>initialCash=50,000円, initialInv=100,000円, monthlyPension=0円, expenseRetired=80,000円</td><td>月次処理後の現金、投資、総資産を確認する。</td><td>補填額30,000円と税金6,000円を差し引いた後も投資残高が64,000円残り、結果生成が継続すること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 5.2</td><td>R003</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-036</td><td>TD015</td><td>TV015</td><td>TA004</td><td>コードベース</td><td>Integration</td><td>高</td><td>投資残高不足 - 不足額に対して投資残高が少ない条件</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>startAge=30, retirementAge=30, pensionStartAge=30, initialCash=0円, initialInv=20,000円, monthlyPension=0円, expenseRetired=80,000円, eventProb=0</td><td>月次結果の現金、投資、総資産の整合性を確認する。</td><td>投資残高20,000円を補填に使い、税金4,000円を差し引いた後も例外停止せず、現金・投資・総資産が同じ月次行で一貫して表示されること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 5.2</td><td>R003</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-038</td><td>TD023</td><td>TV023</td><td>TA006</td><td>コードベース</td><td>Integration</td><td>高</td><td>イベント費用連携 - イベント発生率100%、生活費と投資残高を調整</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>eventProb=100%, eventTypes=[入院:200,000円], initialCash=50,000円, initialInv=300,000円, monthlyPension=0円, expenseRetired=0円</td><td>イベント費用差引後の現金不足と投資補填を確認する。</td><td>入院200,000円が現金から差し引かれ、不足150,000円が投資補填へ連携し、補填税30,000円が投資残高から差し引かれること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 4.1、5.3</td><td>R005, R003</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-039</td><td>TD027</td><td>TV027</td><td>TA007</td><td>コードベース</td><td>Integration</td><td>高</td><td>月次整合 - 標準条件と資産変動が大きい条件</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>標準条件: startAge=30, salary=3,000,000円, investRate=20%, eventProb=0。資産変動大: eventProb=100%, eventTypes=[入院:200,000円], initialInv=300,000円</td><td>同一月の給与、生活費、投資、イベント、補填、総資産を横断確認する。</td><td>各月の総資産が同月末の現金+投資残高と一致し、イベントや補填がある月でも収入・生活費・資産表示が同じ条件で説明できること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 2.2 F002</td><td>R002, R003</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-040</td><td>TD029</td><td>TV029</td><td>TA008</td><td>コードベース</td><td>Integration</td><td>高</td><td>イベント不足同月処理 - イベント発生率100%</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>eventProb=100%, eventTypes=[入院:200,000円], initialCash=50,000円, initialInv=300,000円, expenseRetired=0円</td><td>イベント発生月の現金、投資、補填税を確認する。</td><td>イベント費用差引で同月内に現金不足が発生し、同じ月の出力に投資補填行が表示されること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 5.2、5.3</td><td>R003, R005</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-041</td><td>TD029</td><td>TV029</td><td>TA008</td><td>コードベース</td><td>Integration</td><td>高</td><td>イベント不足同月処理 - 現金不足が発生する条件</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>initialCash=10,000円, initialInv=300,000円, eventProb=100%, eventTypes=[車検:80,000円], monthlyPension=0円, expenseRetired=0円</td><td>イベント発生月の現金、投資、補填税を確認する。</td><td>車検80,000円により不足70,000円が発生し、同月内で投資補填70,000円と税金14,000円が処理されること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> 5.2、5.3</td><td>R003, R005</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-042</td><td>TD060</td><td>TV060</td><td>TA017</td><td>コードベース</td><td>Integration</td><td>高</td><td>複合条件 - 給与変更、ランダムイベント、投資補填が同時に影響する条件</td><td>テスト対象ロジックを実行できるテスト環境があること</td><td>startAge=35, retirementAge=36, pensionStartAge=36, salary=3,000,000円, salaryChanges=[35歳:4,000,000円], initialCash=10,000円, initialInv=300,000円, expenseCurrent=200,000円, investRate=20%, eventProb=100%, eventTypes=[車検:80,000円]</td><td>複合条件で月次結果の収入、イベント、補填、資産を横断確認する。</td><td>35歳1月に変更後年収4,000,000円の給与が使われ、車検イベントと必要な投資補填が同じ月の資産表示へ一貫して反映されること</td><td>単体/統合テスト実行結果、アサーション結果</td><td>なし</td><td><code>spec/仕様書.md</code> F002、F004、F005、F008</td><td>R002, R003, R004, R005</td><td>作成済み</td><td>Pass</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログでテストケースIDの成功を確認</td></tr>
+<tr><td>TC-CB-043</td><td>TD061</td><td>TV061</td><td>TA018</td><td>コードベース</td><td>Regression</td><td>高</td><td>既存テスト実行 - <code>sample_app/test_retirement_simulator.html</code></td><td>テスト対象ロジックを実行できるテスト環境があること</td><td><code>sample_app/test_retirement_simulator.html</code></td><td>「<code>sample_app/test_retirement_simulator.html</code>」を条件に、既存テストをブラウザで実行し、全テストの合否を確認する。</td><td>手取り計算、シミュレーション、投資、給与変更、統合テストが実行されること</td><td>既存テスト実行結果、失敗時ログ</td><td>なし</td><td><code>spec/仕様書.md</code> 9.1、9.2、9.3</td><td>R001, R002, R003, R004, R006</td><td>作成済み</td><td>N/A</td><td>20260102030408</td><td>validation-log: codebase issue filename</td><td></td><td>実行ログにテストケースIDが出力されなかったため結果を紐づけ不可</td></tr>
+</tbody></table></div>
+<h3>4. 上流成果物への追記・更新</h3>
+<p>今回のテストケース再作成では、既存のテスト設計・テスト分析・テスト計画へ追加すべき新規観点、リスク、テストアプローチは見つからなかった。</p>
+<p>判断理由:</p>
+<ul>
+<li><code>TD001</code> から <code>TD063</code> まで、分割後の4ファイル合算で少なくとも1件のテストケースへ展開している。</li>
+<li><code>質問待ち</code> のテストケースは実行区分ファイルへ重複配置せず、<code>テストケース_質問待ち.md</code> に集約した。</li>
+<li>期待結果、許容範囲、実行環境が未確定の箇所は <code>要確認</code> として残し、上流成果物へ推測追記していない。</li>
+</ul>
+<h3>5. カバレッジ確認</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>対応テストケースID</th><th>実行区分</th><th>状態</th><th>出力ファイル</th><th>カバー状況</th></tr></thead>
+<tbody>
+<tr><td>TD001</td><td>TC-CB-001, TC-CB-002, TC-CB-003</td><td>コードベース</td><td>作成済み</td><td><code>テストケース_コードベース.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD004</td><td>TC-CB-007, TC-CB-008, TC-CB-009</td><td>コードベース</td><td>作成済み</td><td><code>テストケース_コードベース.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD005</td><td>TC-CB-010, TC-CB-011, TC-CB-012, TC-CB-013, TC-CB-014</td><td>コードベース</td><td>作成済み</td><td><code>テストケース_コードベース.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD008</td><td>TC-CB-033</td><td>コードベース</td><td>作成済み</td><td><code>テストケース_コードベース.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD009</td><td>TC-CB-015, TC-CB-016, TC-CB-017</td><td>コードベース</td><td>作成済み</td><td><code>テストケース_コードベース.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD011</td><td>TC-CB-018, TC-CB-019, TC-CB-020</td><td>コードベース</td><td>作成済み</td><td><code>テストケース_コードベース.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD013</td><td>TC-CB-034, TC-CB-035</td><td>コードベース</td><td>作成済み</td><td><code>テストケース_コードベース.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD014</td><td>TC-CB-024</td><td>コードベース</td><td>作成済み</td><td><code>テストケース_コードベース.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD015</td><td>TC-CB-036</td><td>コードベース</td><td>作成済み</td><td><code>テストケース_コードベース.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD021</td><td>TC-CB-025, TC-CB-026, TC-CB-027</td><td>コードベース</td><td>作成済み</td><td><code>テストケース_コードベース.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD023</td><td>TC-CB-038</td><td>コードベース</td><td>作成済み</td><td><code>テストケース_コードベース.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD027</td><td>TC-CB-039</td><td>コードベース</td><td>作成済み</td><td><code>テストケース_コードベース.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD028</td><td>TC-CB-030, TC-CB-031, TC-CB-032</td><td>コードベース</td><td>作成済み</td><td><code>テストケース_コードベース.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD029</td><td>TC-CB-040, TC-CB-041</td><td>コードベース</td><td>作成済み</td><td><code>テストケース_コードベース.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD060</td><td>TC-CB-042</td><td>コードベース</td><td>作成済み</td><td><code>テストケース_コードベース.md</code></td><td>カバー済み</td></tr>
+<tr><td>TD061</td><td>TC-CB-043</td><td>コードベース</td><td>作成済み</td><td><code>テストケース_コードベース.md</code></td><td>カバー済み</td></tr>
+</tbody></table></div>
+</body>
+</html>

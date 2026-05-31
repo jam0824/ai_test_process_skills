@@ -1,6 +1,6 @@
 ---
 name: execute-codebase-tests
-description: Execute code-based automated tests and record traceable run results. Use when Codex needs to run tests derived from `テストケース_コードベース.md`, create a timestamped report folder under `テスト成果物/report`, save executed Markdown/CSV/raw log with Pass/Fail/N/A per `TC-CB-*`, and write discovered bugs to that run's `発見issue一覧.md` with `BUG-001` style IDs.
+description: Execute code-based automated tests and record traceable run results. Use when Codex needs to run tests derived from `テストケース_コードベース.md`, create a timestamped report folder under `テスト成果物/report`, save executed Markdown/CSV/raw log with Pass/Fail/N/A per `TC-CB-*`, and write discovered bugs to that run's `コードベース_発見issue一覧.md` with `BUG-001` style IDs.
 ---
 
 # Execute Codebase Tests
@@ -34,7 +34,7 @@ python skills\execute-codebase-tests\scripts\record_codebase_test_run.py --comma
    - Timestamped executed Markdown.
    - Timestamped executed CSV.
    - Timestamped raw log.
-   - `発見issue一覧.md` in the same report directory.
+   - `コードベース_発見issue一覧.md` in the same report directory.
 5. Report the report directory, output paths, command, summary counts, and any newly created `BUG-*`.
 
 ## Result Mapping Rules
@@ -56,7 +56,7 @@ Default inputs and outputs:
 | Input test cases | `テスト成果物/テストケース_コードベース.md` |
 | Report root | `テスト成果物/report` |
 | Report directory | `テスト成果物/report/yyyyMMddHHmmss_コードベーステスト` |
-| Issue file | `テスト成果物/report/yyyyMMddHHmmss_コードベーステスト/発見issue一覧.md` |
+| Issue file | `テスト成果物/report/yyyyMMddHHmmss_コードベーステスト/コードベース_発見issue一覧.md` |
 | Executed Markdown | `テスト成果物/report/yyyyMMddHHmmss_コードベーステスト/yyyyMMddHHmmss_テストケース_コードベース_実行済み.md` |
 | Executed CSV | `テスト成果物/report/yyyyMMddHHmmss_コードベーステスト/yyyyMMddHHmmss_テストケース_コードベース_実行済み.csv` |
 | Raw log | `テスト成果物/report/yyyyMMddHHmmss_コードベーステスト/yyyyMMddHHmmss_コードベーステスト実行ログ.txt` |
@@ -90,7 +90,7 @@ The executed Markdown and CSV copy the source test case table and append these c
 
 ## Issue Rules
 
-When a row is `Fail`, append a row to `発見issue一覧.md` using this table:
+When a row is `Fail`, append a row to `コードベース_発見issue一覧.md` using this table:
 
 ```markdown
 | Bug ID | 要約 | 優先度 | 何がどうなったか | 期待結果 | トレーサビリティ | 発見日時 | 関連実行済みテストケース |
