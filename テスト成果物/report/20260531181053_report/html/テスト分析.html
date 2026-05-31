@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テスト分析</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テスト分析</h2>
+<h3>1. 分析対象</h3>
+<ul>
+<li>テスト計画: <code>テスト成果物/テスト計画書.md</code></li>
+<li>テスト対象: <code>sample_app/retirement_simulator.html</code></li>
+<li>コードベース自動テスト対象: <code>calculateNetMonthly()</code>、<code>simulateRetirement()</code>、HTML内のDOM連携ロジック</li>
+<li>E2E自動テスト対象: スタンドアロンHTMLをブラウザで開いた操作フロー</li>
+<li>人間実行確認対象: 注意表示、アクセシビリティ基本操作、実機差異、ベストエフォート幅</li>
+</ul>
+<h3>2. 参照資料</h3>
+<ul>
+<li><code>spec/仕様書.md</code></li>
+<li><code>sample_app/README.md</code></li>
+<li><code>sample_app/retirement_simulator.html</code></li>
+<li><code>テスト成果物/テスト計画書.md</code></li>
+<li><code>package.json</code></li>
+<li><code>playwright.config.js</code></li>
+</ul>
+<h3>3. テスト観点</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト観点ID</th><th>テストアプローチID</th><th>観点カテゴリ</th><th>テスト観点</th><th>仕様</th><th>リスクID</th><th>備考</th></tr></thead>
+<tbody>
+<tr><td>TV001</td><td>TA001</td><td>正常系</td><td>一般的な年収で、社会保険料、課税所得、所得税、住民税、月手取りが仕様式と一致する</td><td>F001</td><td>R001</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV002</td><td>TA001</td><td>境界値</td><td>年収0、課税所得0付近、所得税ブラケット境界直前/境界/直後で月手取りが許容差内に収まる</td><td>F001</td><td>R001</td><td>由来: 仕様準拠、ケース分解候補: 0/控除境界/各税率境界</td></tr>
+<tr><td>TV003</td><td>TA001</td><td>異常系</td><td>負値、NaN相当、Infinity相当がアプリ経由で0フォールバックまたは仕様上許容される形で処理される</td><td>7.2</td><td>R001</td><td>由来: 汎用QA、ケース分解候補: 空欄/非有限/負値</td></tr>
+<tr><td>TV004</td><td>TA001</td><td>表示</td><td>内部値の比較は±0.01円、画面表示は <code>Math.round()</code> 後の整数円と桁区切りになる</td><td>F001、3.1.3</td><td>R001, R006</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV005</td><td>TA002</td><td>正常系</td><td>現役、退職後、年金受給の各期間で仕様どおりの収入種別と生活費が選ばれる</td><td>F002</td><td>R002</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV006</td><td>TA002</td><td>境界値</td><td><code>age &lt; retirementAge</code>、<code>retirementAge &lt;= age &lt; pensionStartAge</code>、<code>age &gt;= pensionStartAge</code> の境界月で収入種別が切り替わる</td><td>F002</td><td>R002</td><td>由来: 仕様準拠、ケース分解候補: 退職前年/退職年/年金開始年</td></tr>
+<tr><td>TV007</td><td>TA002</td><td>異常系</td><td><code>pensionStartAge &lt;= retirementAge</code> でも給与期間が優先され、退職後は年金収入に切り替わる</td><td>F002 年齢条件</td><td>R002</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV008</td><td>TA002</td><td>状態遷移</td><td><code>startAge</code> から100歳12月まで月次結果が継続生成され、資産枯渇でも停止しない</td><td>F002、5.2</td><td>R002, R003</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV009</td><td>TA002</td><td>計算</td><td>年初1月にのみ投資残高へ年利が適用され、月次処理中は内部値が丸められない</td><td>5.1</td><td>R002, R009</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV010</td><td>TA003</td><td>正常系</td><td>現金不足時、必要額を投資残高から補填し、補填額の20%を税金として投資残高から差し引く</td><td>F005、5.2</td><td>R003</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV011</td><td>TA003</td><td>境界値</td><td>投資残高が十分な場合、ちょうど不足を満たす場合、不足を満たせない場合で補填額と残高が仕様どおりになる</td><td>5.2</td><td>R003</td><td>由来: 仕様準拠、ケース分解候補: 十分/ちょうど/不足</td></tr>
+<tr><td>TV012</td><td>TA003</td><td>異常系</td><td>投資残高が0または不足しても、現金残高と総資産のマイナス表示を許容し計算を継続する</td><td>5.2</td><td>R003</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV013</td><td>TA003</td><td>計算</td><td>最大補填額は <code>investBal / 1.2</code> を基準とし、投資残高を0円未満にしない</td><td>5.2</td><td>R003</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV014</td><td>TA004</td><td>状態遷移</td><td>給与変更設定の表示/非表示、追加、削除がDOM上で正しく反映される</td><td>F008、3.1.2</td><td>R004</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV015</td><td>TA004</td><td>境界値</td><td><code>age &gt;= 1 &amp;&amp; age &lt;= 100 &amp;&amp; salary &gt; 0</code> を満たす給与変更だけが有効になる</td><td>F008、7.2</td><td>R004</td><td>由来: 仕様準拠、ケース分解候補: 年齢0/1/100/101、給与0/正</td></tr>
+<tr><td>TV016</td><td>TA004</td><td>組み合わせ</td><td>開始年齢前、開始年齢同年、退職年齢以降の給与変更が仕様どおり適用または無視される</td><td>F008</td><td>R004</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV017</td><td>TA004</td><td>優先順位</td><td>複数給与変更は年齢降順、同一年齢では最後に追加された設定が優先される</td><td>F008</td><td>R004</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV018</td><td>TA005</td><td>正常系</td><td>イベント発生率0%ではイベントが発生せず、100%では毎月イベント処理が通る</td><td>F004、5.3</td><td>R005</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV019</td><td>TA005</td><td>ランダム性</td><td>イベント種別を固定または <code>Math.random()</code> を差し替えた条件で、イベント費用と出力が再現可能になる</td><td>5.3</td><td>R005</td><td>由来: 仕様準拠、ケース分解候補: 乱数0/選択境界/末尾</td></tr>
+<tr><td>TV020</td><td>TA005</td><td>異常系</td><td><code>eventProb &gt; 0</code> かつイベント種別が空のような実装上危険な条件を扱えるか確認する</td><td>5.3</td><td>R005</td><td>由来: 汎用QA、質問票不要: 仕様は1件以上を前提</td></tr>
+<tr><td>TV021</td><td>TA006</td><td>デフォルト値</td><td>初期表示の入力値が仕様の初期値と一致し、開始操作で結果が表示される</td><td>3.1.2、3.1.3</td><td>R006</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV022</td><td>TA006</td><td>表示</td><td>結果表示は等幅、スクロール可能、最大高さ400px、背景色・ボーダーが仕様に合う</td><td>3.1.3</td><td>R006</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV023</td><td>TA006</td><td>セキュリティ</td><td>結果出力は <code>textContent</code> で行われ、入力値やイベント名がHTMLとして解釈されない</td><td>3.1.3、8.2</td><td>R006</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV024</td><td>TA006</td><td>状態遷移</td><td>入力値を変えて複数回開始しても、古い結果が混入せず新しい結果で置き換わる</td><td>6.2</td><td>R006, R009</td><td>由来: 汎用QA</td></tr>
+<tr><td>TV025</td><td>TA007</td><td>プライバシー</td><td>アプリ起動、入力、開始、給与変更操作中に外部ネットワーク通信が発生しない</td><td>1.3、8.1</td><td>R007</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV026</td><td>TA007</td><td>セキュリティ</td><td>CDNや外部ライブラリに依存せず、単体HTMLとして動作する</td><td>8.1、10.1</td><td>R007</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV027</td><td>TA007</td><td>データ保持</td><td>入力データがlocalStorage、sessionStorage、Cookieなどに永続化されない</td><td>4.2、8.1</td><td>R007</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV028</td><td>TA008</td><td>互換性</td><td>Chromium、Firefox、WebKit代表環境で主要フローが完了し、JavaScript例外がない</td><td>7.3</td><td>R008</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV029</td><td>TA008</td><td>互換性</td><td><code>type=number</code> のブラウザ差異があっても、主要入力が可能で結果生成が止まらない</td><td>7.1、9.4</td><td>R008</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV030</td><td>TA008</td><td>表示</td><td>800×600以上で入力と結果表示が操作可能で、800×600未満はベストエフォートとして観察する</td><td>11.2、13</td><td>R008</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV031</td><td>TA009</td><td>性能</td><td>デフォルト入力、イベント0%、1280×720以上で計算処理95パーセンタイルが100ms以下になる</td><td>6.2</td><td>R009</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV032</td><td>TA009</td><td>性能</td><td>開始操作から <code>#output</code> 更新完了までの描画95パーセンタイルが200ms以下になる</td><td>6.2</td><td>R009</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV033</td><td>TA009</td><td>信頼性</td><td>ウォームアップ後10回連続実行で例外、古い結果混入、明確な表示遅延がない</td><td>6.2</td><td>R009</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV034</td><td>TA010</td><td>ユーザビリティ</td><td>プライバシー、金融助言・税務助言ではないこと、実制度差異の確認必要性が画面上で理解できる</td><td>3.1.4、11.1</td><td>R010</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV035</td><td>TA010</td><td>アクセシビリティ</td><td>キーボードのみで主要入力、給与変更表示、追加、削除、開始、結果確認へ到達できる</td><td>9.4</td><td>R010, R008</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV036</td><td>TA010</td><td>アクセシビリティ</td><td>ラベル、ボタン文言、結果表示が支援技術上も意味を推測できる</td><td>9.4</td><td>R010</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV037</td><td>TA011</td><td>シナリオ</td><td>利用者がデフォルト条件または一般的条件を入力し、開始して月次結果を読み取る基本フローを確認する</td><td>1.2、F006、F007</td><td>R002, R006</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV038</td><td>TA011</td><td>シナリオ</td><td>給与変更を含むキャリアアップ/転職フローで、給与変更後の年収表示と資産推移を確認する</td><td>F008、README 使用例</td><td>R004, R006</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV039</td><td>TA011</td><td>シナリオ</td><td>退職後収入、年金開始、イベント、投資補填が重なる高リスクフローを確認する</td><td>F002、F004、F005</td><td>R002, R003, R005</td><td>由来: 仕様準拠</td></tr>
+<tr><td>TV040</td><td>TA011</td><td>探索的</td><td>利用者が過度に結果を信頼しやすい表示や、制約事項の見落としにつながる導線がないか観察する</td><td>11.1、3.1.4</td><td>R010</td><td>由来: 汎用QA</td></tr>
+<tr><td>TV041</td><td>TA006</td><td>入力検証</td><td>主要数値入力と給与変更入力の <code>min</code>、<code>max</code>、<code>step</code> 属性が仕様の入力フィールド仕様と一致する</td><td>3.1.2、7.1</td><td>R006, R008</td><td>由来: 仕様準拠、ケース分解候補: 固定入力/動的追加入力</td></tr>
+<tr><td>TV042</td><td>TA002</td><td>回帰資産</td><td>仕様で正式な回帰テスト資産とされた <code>sample_app/test_retirement_simulator.html</code> の有無と実行可能性を確認する</td><td>9.4</td><td>R001, R002, R003, R004</td><td>由来: 仕様準拠</td></tr>
+</tbody></table></div>
+<h3>4. テスト計画への追記・更新</h3>
+<p>追記・更新なし。</p>
+<p>分析時点で、既存のプロダクトリスク <code>R001</code> から <code>R010</code> とテストアプローチ <code>TA001</code> から <code>TA011</code> により、仕様準拠、Web UI、単体計算、E2E、プライバシー、性能、互換性、アクセシビリティ、シナリオ確認を計画レベルで追跡できている。</p>
+<h3>5. カバレッジ確認</h3>
+<ul>
+<li>Pass 1として、仕様書、README、テスト計画の全テストアプローチから仕様準拠の観点を抽出した。</li>
+<li>Pass 2として、対象を「スタンドアロンWeb UI」「計算ロジックを含むクライアントサイドアプリ」「ブラウザE2E対象」と分類し、汎用QA観点から入力異常、状態遷移、組み合わせ、XSS/プライバシー、性能、互換性、アクセシビリティ、ランダム性、証跡を補完した。</li>
+<li><code>TA001</code> から <code>TA011</code> の全アプローチに1件以上のテスト観点が紐づいている。</li>
+<li>高リスクの <code>R001</code> から <code>R004</code> は、正常系、境界値、異常系、状態遷移、組み合わせ、表示または計算の観点を複数持つ。</li>
+<li>仕様で正式な回帰資産とされた既存HTMLテストは、存在確認と実行可能性を <code>TV042</code> として後続工程へ渡す。</li>
+<li>実制度との差分、800×600未満、Safari実機固有差異、人間実行テストは、仕様上の制約または本プロセスでの未実行対象として後続工程へ渡す。</li>
+</ul>
+<h3>6. 未決事項</h3>
+<p>仕様書 v1.3 で期待値、境界条件、性能測定方法、互換性代表環境が明記されているため、現時点でテスト分析を進めるうえでの質問待ちはない。</p>
+</body>
+</html>

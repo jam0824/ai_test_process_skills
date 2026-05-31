@@ -1,0 +1,263 @@
+Command: npm run test:codebase
+ExitCode: 1
+Timestamp: 20260531180327
+
+
+> test:codebase
+> node --test tests/codebase/*.test.js
+
+TAP version 13
+# Subtest: TC-CB-001 手取り計算代表値
+ok 1 - TC-CB-001 手取り計算代表値
+  ---
+  duration_ms: 1.9657
+  type: 'test'
+  ...
+# Subtest: TC-CB-002 手取り計算のゼロ・課税所得境界
+ok 2 - TC-CB-002 手取り計算のゼロ・課税所得境界
+  ---
+  duration_ms: 0.656
+  type: 'test'
+  ...
+# Subtest: TC-CB-003 所得税ブラケット境界
+ok 3 - TC-CB-003 所得税ブラケット境界
+  ---
+  duration_ms: 0.6236
+  type: 'test'
+  ...
+# Subtest: TC-CB-004 不正数値のフォールバック方針
+not ok 4 - TC-CB-004 不正数値のフォールバック方針
+  ---
+  duration_ms: 16.5974
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:189:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    non-finite values should fall back to 0
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:194:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-005 内部値と表示丸め
+ok 5 - TC-CB-005 内部値と表示丸め
+  ---
+  duration_ms: 0.5871
+  type: 'test'
+  ...
+# Subtest: TC-CB-006 各期間の収入種別
+ok 6 - TC-CB-006 各期間の収入種別
+  ---
+  duration_ms: 1.7889
+  type: 'test'
+  ...
+# Subtest: TC-CB-007 退職・年金開始境界
+ok 7 - TC-CB-007 退職・年金開始境界
+  ---
+  duration_ms: 1.5902
+  type: 'test'
+  ...
+# Subtest: TC-CB-008 年金開始が退職年齢以前
+ok 8 - TC-CB-008 年金開始が退職年齢以前
+  ---
+  duration_ms: 1.8617
+  type: 'test'
+  ...
+# Subtest: TC-CB-009 100歳までの生成範囲
+ok 9 - TC-CB-009 100歳までの生成範囲
+  ---
+  duration_ms: 4.9273
+  type: 'test'
+  ...
+# Subtest: TC-CB-010 年初利息の適用
+ok 10 - TC-CB-010 年初利息の適用
+  ---
+  duration_ms: 2.6462
+  type: 'test'
+  ...
+# Subtest: TC-CB-011 投資補填代表値
+ok 11 - TC-CB-011 投資補填代表値
+  ---
+  duration_ms: 1.8585
+  type: 'test'
+  ...
+# Subtest: TC-CB-012 投資補填の最大取り崩し
+not ok 12 - TC-CB-012 投資補填の最大取り崩し
+  ---
+  duration_ms: 1.7412
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:307:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /投資から補填: ¥100,000 \(税金: ¥20,000\)/. Input:
+    
+    '-- 65歳1月 --\n' +
+      '  年金: ¥0\n' +
+      '  生活費: ¥200,000\n' +
+      '  🔄 投資から補填: ¥120,000 (税金: ¥24,000)\n' +
+      '  現金: ¥-80,000 投資: ¥-24,000 総資産: ¥-104,000'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    -- 65歳1月 --
+      年金: ¥0
+      生活費: ¥200,000
+      🔄 投資から補填: ¥120,000 (税金: ¥24,000)
+      現金: ¥-80,000 投資: ¥-24,000 総資産: ¥-104,000
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:322:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-013 資産枯渇時の継続
+ok 13 - TC-CB-013 資産枯渇時の継続
+  ---
+  duration_ms: 0.5601
+  type: 'test'
+  ...
+# Subtest: TC-CB-014 給与変更の有効入力条件
+not ok 14 - TC-CB-014 給与変更の有効入力条件
+  ---
+  duration_ms: 7.5211
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:343:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(blockFor(lines, 30, 1).some((line) => line.includes('[年収: ¥4,000,000]')))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:359:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-015 給与変更の適用年齢
+not ok 15 - TC-CB-015 給与変更の適用年齢
+  ---
+  duration_ms: 3.2053
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:362:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(blockFor(lines, 30, 1).some((line) => line.includes('[年収: ¥5,000,000]')))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:379:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-016 同一年齢給与変更の後勝ち
+not ok 16 - TC-CB-016 同一年齢給与変更の後勝ち
+  ---
+  duration_ms: 2.7639
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:383:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(blockFor(lines, 35, 1).some((line) => line.includes('[年収: ¥5,000,000]')))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:399:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-017 イベント確率0%/100%
+ok 17 - TC-CB-017 イベント確率0%/100%
+  ---
+  duration_ms: 0.683
+  type: 'test'
+  ...
+# Subtest: TC-CB-018 乱数固定イベント選択
+ok 18 - TC-CB-018 乱数固定イベント選択
+  ---
+  duration_ms: 0.6117
+  type: 'test'
+  ...
+# Subtest: TC-CB-020 正式回帰資産の存在確認
+not ok 19 - TC-CB-020 正式回帰資産の存在確認
+  ---
+  duration_ms: 0.1288
+  type: 'test'
+  location: 'D:\\codes\\RetirementSimulatorWithAITest\\tests\\codebase\\retirement_simulator.test.js:436:1'
+  failureType: 'testCodeFailure'
+  error: 'sample_app/test_retirement_simulator.html should exist'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (D:\codes\RetirementSimulatorWithAITest\tests\codebase\retirement_simulator.test.js:439:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TC-CB-021 高リスク組み合わせ
+ok 20 - TC-CB-021 高リスク組み合わせ
+  ---
+  duration_ms: 1.8765
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 14
+# fail 6
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 116.6376

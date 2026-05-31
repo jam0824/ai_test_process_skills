@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テストケース（コードベース）</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テストケース（コードベース）</h2>
+<h3>1. 作成対象</h3>
+<ul>
+<li>対象設計: <code>TD001</code> から <code>TD020</code>、<code>TD026</code></li>
+<li>実行想定: <code>node --test tests/codebase/*.test.js</code></li>
+<li>対象コード: <code>sample_app/retirement_simulator.html</code> 内の <code>calculateNetMonthly()</code>、<code>simulateRetirement()</code>、仕様準拠確認用の静的検査</li>
+</ul>
+<h3>2. 参照資料</h3>
+<ul>
+<li><code>spec/仕様書.md</code></li>
+<li><code>sample_app/retirement_simulator.html</code></li>
+<li><code>テスト成果物/テスト設計.md</code></li>
+</ul>
+<h3>3. コードベースで実行するテストケース</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テストケースID</th><th>元テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>実行区分</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストケース名</th><th>前提条件</th><th>入力/データ</th><th>手順</th><th>期待結果</th><th>確認方法/証跡</th><th>関連質問ID</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TC-CB-001</td><td>TD001</td><td>TV001</td><td>TA001</td><td>コードベース</td><td>Unit</td><td>高</td><td>手取り計算代表値</td><td>HTMLから関数を読み込める</td><td>年収3,000,000/4,000,000/10,000,000円</td><td><code>calculateNetMonthly()</code> を呼び、仕様式の独立期待値と比較</td><td>各月手取りが±0.01円以内で一致</td><td>node test結果</td><td>なし</td><td>F001</td><td>R001</td><td>作成済み</td></tr>
+<tr><td>TC-CB-002</td><td>TD002</td><td>TV002</td><td>TA001</td><td>コードベース</td><td>Unit</td><td>高</td><td>手取り計算のゼロ・課税所得境界</td><td>同上</td><td>年収0円、課税所得0円付近</td><td>境界値で関数を呼ぶ</td><td>仕様式どおり課税所得が0未満にならず、月手取りが一致</td><td>node test結果</td><td>なし</td><td>F001</td><td>R001</td><td>作成済み</td></tr>
+<tr><td>TC-CB-003</td><td>TD002</td><td>TV002</td><td>TA001</td><td>コードベース</td><td>Unit</td><td>高</td><td>所得税ブラケット境界</td><td>同上</td><td>課税所得1,950,000/3,300,000/6,950,000円の直前・境界・直後</td><td>年収を逆算して関数を呼ぶ</td><td>税率境界で過不足なく段階課税される</td><td>node test結果</td><td>なし</td><td>F001</td><td>R001</td><td>作成済み</td></tr>
+<tr><td>TC-CB-004</td><td>TD003</td><td>TV003</td><td>TA001</td><td>コードベース</td><td>Unit</td><td>中</td><td>不正数値のフォールバック方針</td><td>DOM取得相当のパースを確認できる</td><td>空欄、文字列、非有限値、負値</td><td>仕様の不正値処理と関数呼び出しを確認</td><td>空欄/文字列/非有限値は0、負値は例外停止なし</td><td>node test結果</td><td>なし</td><td>7.2</td><td>R001</td><td>作成済み</td></tr>
+<tr><td>TC-CB-005</td><td>TD004</td><td>TV004</td><td>TA001</td><td>コードベース</td><td>Unit</td><td>高</td><td>内部値と表示丸め</td><td>HTMLから関数を読み込める</td><td>小数月手取りが発生する年収</td><td>内部値と表示用丸め値を比較</td><td>内部値は±0.01円、表示は整数丸めと桁区切りで判定可能</td><td>node test結果</td><td>なし</td><td>F001、3.1.3</td><td>R001, R006</td><td>作成済み</td></tr>
+<tr><td>TC-CB-006</td><td>TD005</td><td>TV005</td><td>TA002</td><td>コードベース</td><td>Unit</td><td>高</td><td>各期間の収入種別</td><td>イベント発生率0</td><td>現役、退職後、年金受給を含む最小期間</td><td><code>simulateRetirement()</code> を呼ぶ</td><td>給与、退職後収入、年金の行が年齢条件どおり出る</td><td>node test結果</td><td>なし</td><td>F002</td><td>R002</td><td>作成済み</td></tr>
+<tr><td>TC-CB-007</td><td>TD006</td><td>TV006</td><td>TA002</td><td>コードベース</td><td>Unit</td><td>高</td><td>退職・年金開始境界</td><td>イベント発生率0</td><td>退職年齢直前/退職年齢/年金開始年齢</td><td>境界年齢の出力行を確認</td><td>境界の月で収入種別が仕様どおり切り替わる</td><td>node test結果</td><td>なし</td><td>F002</td><td>R002</td><td>作成済み</td></tr>
+<tr><td>TC-CB-008</td><td>TD007</td><td>TV007</td><td>TA002</td><td>コードベース</td><td>Unit</td><td>高</td><td>年金開始が退職年齢以前</td><td>イベント発生率0</td><td><code>retirementAge=65</code>、<code>pensionStartAge=60</code></td><td>退職前後の出力行を確認</td><td>65歳未満は給与、65歳以降は年金になる</td><td>node test結果</td><td>なし</td><td>F002</td><td>R002</td><td>作成済み</td></tr>
+<tr><td>TC-CB-009</td><td>TD008</td><td>TV008</td><td>TA002</td><td>コードベース</td><td>Unit</td><td>中</td><td>100歳までの生成範囲</td><td>イベント発生率0</td><td><code>startAge=30/100/101</code></td><td>出力の月見出し数を数える</td><td>30は852か月、100は12か月、101は0か月で例外なし</td><td>node test結果</td><td>なし</td><td>F002、5.2</td><td>R002, R003</td><td>作成済み</td></tr>
+<tr><td>TC-CB-010</td><td>TD009</td><td>TV009</td><td>TA002</td><td>コードベース</td><td>Unit</td><td>高</td><td>年初利息の適用</td><td>イベント発生率0、生活費0</td><td><code>initialInv=100000</code>、年利10%、複数年</td><td>利息行と投資残高を確認</td><td>開始年齢の翌年以降の1月だけ年利が適用される</td><td>node test結果</td><td>なし</td><td>5.1</td><td>R002, R009</td><td>作成済み</td></tr>
+<tr><td>TC-CB-011</td><td>TD010</td><td>TV010</td><td>TA003</td><td>コードベース</td><td>Unit</td><td>高</td><td>投資補填代表値</td><td>現金不足を作る入力</td><td>不足83,000円、投資残高十分</td><td>出力の補填行と残高を確認</td><td>補填83,000円、税金16,600円、投資は99,600円減る</td><td>node test結果</td><td>なし</td><td>F005、5.2</td><td>R003</td><td>作成済み</td></tr>
+<tr><td>TC-CB-012</td><td>TD011, TD013</td><td>TV011, TV013</td><td>TA003</td><td>コードベース</td><td>Unit</td><td>高</td><td>投資補填の最大取り崩し</td><td>現金不足を作る入力</td><td>投資残高120,000円、不足200,000円</td><td>補填行、現金、投資残高を確認</td><td>補填100,000円、税金20,000円、投資残高0円、現金不足が残る</td><td>node test結果</td><td>なし</td><td>5.2</td><td>R003</td><td>作成済み</td></tr>
+<tr><td>TC-CB-013</td><td>TD012</td><td>TV012</td><td>TA003</td><td>コードベース</td><td>Unit</td><td>高</td><td>資産枯渇時の継続</td><td>投資残高0、現金不足</td><td>高支出、収入0</td><td>出力月数と残高表示を確認</td><td>マイナス現金/総資産を表示し、100歳12月まで継続する</td><td>node test結果</td><td>なし</td><td>5.2</td><td>R003</td><td>作成済み</td></tr>
+<tr><td>TC-CB-014</td><td>TD014</td><td>TV015</td><td>TA004</td><td>コードベース</td><td>Unit</td><td>高</td><td>給与変更の有効入力条件</td><td>給与変更配列を渡せる</td><td>age 0/1/100/101、salary 0/正値</td><td>シミュレーション出力の年収表示を確認</td><td>有効条件を満たす変更だけが反映される</td><td>node test結果</td><td>なし</td><td>F008、7.2</td><td>R004</td><td>作成済み</td></tr>
+<tr><td>TC-CB-015</td><td>TD015</td><td>TV016</td><td>TA004</td><td>コードベース</td><td>Unit</td><td>高</td><td>給与変更の適用年齢</td><td>イベント発生率0</td><td>開始年齢前、開始年齢同年、退職年齢以降</td><td>出力の給与行と年収表示を確認</td><td>開始前は適用済み、開始同年は開始月から、退職後変更は影響なし</td><td>node test結果</td><td>なし</td><td>F008</td><td>R004</td><td>作成済み</td></tr>
+<tr><td>TC-CB-016</td><td>TD016</td><td>TV017</td><td>TA004</td><td>コードベース</td><td>Unit</td><td>高</td><td>同一年齢給与変更の後勝ち</td><td>同一年齢変更を複数渡す</td><td>35歳に4,000,000円後5,000,000円を追加</td><td>出力の年収表示を確認</td><td>最後に追加した5,000,000円が優先される</td><td>node test結果</td><td>なし</td><td>F008</td><td>R004</td><td>作成済み</td></tr>
+<tr><td>TC-CB-017</td><td>TD017</td><td>TV018</td><td>TA005</td><td>コードベース</td><td>Unit</td><td>中</td><td>イベント確率0%/100%</td><td>イベント種別1件</td><td><code>eventProb=0</code> と <code>eventProb=1</code></td><td>出力中のイベント行を確認</td><td>0ではイベントなし、1では毎月イベント行がある</td><td>node test結果</td><td>なし</td><td>F004、5.3</td><td>R005</td><td>作成済み</td></tr>
+<tr><td>TC-CB-018</td><td>TD018</td><td>TV019</td><td>TA005</td><td>コードベース</td><td>Unit</td><td>中</td><td>乱数固定イベント選択</td><td><code>Math.random()</code> を差し替え可能</td><td>固定乱数でイベント配列の特定要素を選択</td><td>出力のイベント名と費用を確認</td><td>固定乱数どおりのイベントが再現される</td><td>node test結果</td><td>なし</td><td>5.3</td><td>R005</td><td>作成済み</td></tr>
+<tr><td>TC-CB-019</td><td>TD019</td><td>TV020</td><td>TA005</td><td>コードベース</td><td>Unit</td><td>低</td><td>イベント種別空配列の観察</td><td>仕様前提外を直接関数へ渡す</td><td><code>eventProb=1</code>、<code>eventTypes=[]</code></td><td>関数実行時の例外有無を観察</td><td>例外が発生する場合は仕様前提外の制約として記録</td><td>node test結果またはissue</td><td>なし</td><td>5.3</td><td>R005</td><td>作成済み</td></tr>
+<tr><td>TC-CB-020</td><td>TD020</td><td>TV042</td><td>TA002</td><td>コードベース</td><td>Regression</td><td>高</td><td>正式回帰資産の存在確認</td><td>ファイルシステム参照可能</td><td><code>sample_app/test_retirement_simulator.html</code></td><td>ファイル存在を確認</td><td>ファイルが存在する。存在しない場合は仕様不一致としてissue化</td><td>node test結果</td><td>なし</td><td>9.4</td><td>R001, R002, R003, R004</td><td>作成済み</td></tr>
+<tr><td>TC-CB-021</td><td>TD026</td><td>TV039</td><td>TA011</td><td>コードベース</td><td>Integration</td><td>高</td><td>高リスク組み合わせ</td><td>イベントを固定可能</td><td>退職後収入、年金開始、イベント100%、投資補填が重なる入力</td><td>出力の期間、イベント、補填、残高を確認</td><td>複数機能が重なっても仕様どおりの順序と残高になる</td><td>node test結果</td><td>なし</td><td>F002、F004、F005</td><td>R002, R003, R005</td><td>作成済み</td></tr>
+</tbody></table></div>
+<h3>4. 上流成果物への追記・更新</h3>
+<p>追記・更新なし。</p>
+<h3>5. カバレッジ確認</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>対応テストケースID</th><th>実行区分</th><th>状態</th><th>出力ファイル</th><th>カバー状況</th></tr></thead>
+<tbody>
+<tr><td>TD001-TD004</td><td>TC-CB-001 - TC-CB-005</td><td>コードベース</td><td>作成済み</td><td>テストケース_コードベース.md</td><td>手取り計算を代表・境界・異常・丸めでカバー</td></tr>
+<tr><td>TD005-TD009</td><td>TC-CB-006 - TC-CB-010</td><td>コードベース</td><td>作成済み</td><td>テストケース_コードベース.md</td><td>ライフサイクル、期間境界、年初利息をカバー</td></tr>
+<tr><td>TD010-TD013</td><td>TC-CB-011 - TC-CB-013</td><td>コードベース</td><td>作成済み</td><td>テストケース_コードベース.md</td><td>投資補填、資産枯渇、最大補填をカバー</td></tr>
+<tr><td>TD014-TD016</td><td>TC-CB-014 - TC-CB-016</td><td>コードベース</td><td>作成済み</td><td>テストケース_コードベース.md</td><td>給与変更の有効条件、年齢適用、優先順位をカバー</td></tr>
+<tr><td>TD017-TD019</td><td>TC-CB-017 - TC-CB-019</td><td>コードベース</td><td>作成済み</td><td>テストケース_コードベース.md</td><td>ランダムイベント端点と固定化をカバー</td></tr>
+<tr><td>TD020</td><td>TC-CB-020</td><td>コードベース</td><td>作成済み</td><td>テストケース_コードベース.md</td><td>正式回帰資産の存在確認をカバー</td></tr>
+<tr><td>TD026</td><td>TC-CB-021</td><td>コードベース</td><td>作成済み</td><td>テストケース_コードベース.md</td><td>高リスク組み合わせをカバー</td></tr>
+</tbody></table></div>
+</body>
+</html>
