@@ -1,13 +1,13 @@
 ---
 name: review-test-cases
-description: Review Japanese Markdown test case artifacts against test design, questionnaires, test analysis, test plans, specifications, and QA execution quality criteria. Use when Codex needs to assess or improve テストケース files, including separate code-based, E2E automated, human-executed, and question-wait Markdown files, traceability from TC-* to TDxxx/TVxxx/TAxxx, question-wait handling, one-TC-one-independently-reportable-judgment readiness, or test-case executability; prioritize findings, fix high-priority issues, re-review until no high-priority fix-worthy issues remain, and save the final review result as Markdown.
+description: Review Japanese Markdown and CSV test case artifacts against test design, questionnaires, test analysis, test plans, specifications, and QA execution quality criteria. Use when Codex needs to assess or improve テストケース files, including separate code-based, E2E automated, human-executed, question-wait Markdown files, the companion human-executed CSV, traceability from TC-* to TDxxx/TVxxx/TAxxx, question-wait handling, one-TC-one-independently-reportable-judgment readiness, or test-case executability; prioritize findings, fix high-priority issues, re-review until no high-priority fix-worthy issues remain, and save the final review result as Markdown.
 ---
 
 # Review Test Cases
 
 ## Overview
 
-Review and improve test case artifacts so they can be handed to implementers or human testers without losing traceability, coverage, or executability. The default artifact set is four Markdown files: code-based, E2E automated, human-executed, and question-wait test cases. Focus on traceability, test design coverage, execution category validity, case granularity, input clarity, step reproducibility, expected-result judgment, question-wait handling, risk alignment, evidence, gaps, and maintainability.
+Review and improve test case artifacts so they can be handed to implementers or human testers without losing traceability, coverage, or executability. The default artifact set is four Markdown files: code-based, E2E automated, human-executed, and question-wait test cases, plus a companion CSV for human-executed cases. Focus on traceability, test design coverage, execution category validity, case granularity, input clarity, step reproducibility, expected-result judgment, question-wait handling, human CSV parity, risk alignment, evidence, gaps, and maintainability.
 
 Default to Japanese output. This skill may edit the reviewed test case files when the user asks for the full review-and-fix workflow. Do not edit product specifications, README files, product code, existing tests, or unrelated artifacts unless the user explicitly asks. Edit upstream QA artifacts only when the test case review uncovers a clear design-, analysis-, or plan-level gap that should be fixed and the user request allows fixing related artifacts.
 
@@ -31,10 +31,11 @@ Apply this gate before treating traceability coverage as sufficient:
    - `テスト成果物/テストケース_E2E自動.md`
    - `テスト成果物/テストケース_人間実行.md`
    - `テスト成果物/テストケース_質問待ち.md`
+   - `テスト成果物/テストケース_人間実行.csv`
    If only a legacy consolidated `テスト成果物/テストケース.md` exists, review it as a legacy artifact and consider missing split files as a structural finding only when the current user request or skill version requires split files.
 2. Gather source material in this order:
    - User-provided review instructions and acceptance criteria.
-   - Test case files, especially every `TC-*` row, file placement, execution category, status, expected result, evidence, and coverage table.
+   - Test case files, especially every `TC-*` row, file placement, execution category, status, expected result, evidence, coverage table, and human CSV row.
    - Test design and design questionnaire, especially every `TDxxx` row and `DQxxx` linked to question-wait cases.
    - Test analysis and analysis questionnaire.
    - Test plan, especially test approaches, product risks, scope, and exit criteria.
@@ -50,8 +51,8 @@ Apply this gate before treating traceability coverage as sufficient:
 
 Use these priorities consistently:
 
-- **P0 - Blocker**: The test cases cannot be used for execution or downstream automation. Examples: missing required test case files, missing test case tables, no `TC-*` IDs, missing execution-category structure, severe Markdown table breakage across an artifact, or coverage tables missing enough information to determine whether `TDxxx` designs are covered.
-- **P1 - High**: The test cases are usable but have a problem that should be fixed before relying on them. Examples: any `TDxxx` from the test design is not covered across the artifact set, missing traceability to `TDxxx`/`TVxxx`/`TAxxx`, high-risk area too thin, impossible or ambiguous execution steps, cross-row shortcuts that make a row non-standalone, inputs that are only internal/derived state with no executable setup, multiple independently meaningful inputs/boundaries/abnormal values/browsers/environments/roles/API statuses/file types/data states compressed into one executable `TC-*` row without an explicit aggregate-judgment rationale, multiple independent expected observations in one row, expected result that cannot be judged and is not marked `要確認`, question-wait case without `DQxxx`, Markdown table row column mismatch, serious execution-category misclassification or wrong file placement, duplicate `TC-*` across files without an explicit duplication policy, or contradiction with test design or plan.
+- **P0 - Blocker**: The test cases cannot be used for execution or downstream automation. Examples: missing required test case files, missing test case tables, no `TC-*` IDs, missing execution-category structure, severe Markdown table breakage across an artifact, CSV that cannot be parsed at all, or coverage tables missing enough information to determine whether `TDxxx` designs are covered.
+- **P1 - High**: The test cases are usable but have a problem that should be fixed before relying on them. Examples: any `TDxxx` from the test design is not covered across the artifact set, missing traceability to `TDxxx`/`TVxxx`/`TAxxx`, high-risk area too thin, impossible or ambiguous execution steps, cross-row shortcuts that make a row non-standalone, inputs that are only internal/derived state with no executable setup, multiple independently meaningful inputs/boundaries/abnormal values/browsers/environments/roles/API statuses/file types/data states compressed into one executable `TC-*` row without an explicit aggregate-judgment rationale, multiple independent expected observations in one row, expected result that cannot be judged and is not marked `要確認`, question-wait case without `DQxxx`, Markdown table row column mismatch, missing required human CSV, human CSV missing or adding `TC-MAN-*` rows compared with the Markdown human file, serious CSV header/quoting errors, serious execution-category misclassification or wrong file placement, duplicate `TC-*` across files without an explicit duplication policy, or contradiction with test design or plan.
 - **P2 - Medium**: The test cases can be used, but clarity, completeness, or maintainability should be improved. Examples: minor duplication, vague preconditions, weak evidence description, inconsistent terminology, non-critical missing reference, low-risk case granularity that is somewhat uneven but still independently reportable, or aggregate-case rationale that is present but weak.
 - **P3 - Low**: Nice-to-have cleanup. Examples: formatting polish, wording consistency, or optional extra examples.
 
@@ -64,6 +65,7 @@ Review from these perspectives:
 - **Traceability**: Confirm each `TC-*` links to a valid `TDxxx`, `TVxxx`, `TAxxx`, specification reference, and risk ID or `なし`.
 - **Test design coverage**: Confirm every `TDxxx` from the test design appears in at least one test case across the split files and in a coverage table.
 - **File structure and placement**: Confirm the artifact set has `テストケース_コードベース.md`, `テストケース_E2E自動.md`, `テストケース_人間実行.md`, and `テストケース_質問待ち.md`, unless the user explicitly requested a legacy consolidated file.
+- **Human CSV parity**: Confirm `テストケース_人間実行.csv` exists, is parseable, has the required header, contains the same non-question-wait `TC-MAN-*` rows as `テストケース_人間実行.md`, and keeps shared field values aligned.
 - **Execution category validity**: Confirm cases are naturally classified as `コードベース`, `E2E自動`, or `人間実行`, and that non-question-wait cases are placed in the matching execution file.
 - **Test case granularity**: Confirm each case is split at a practical execution unit, especially for representative values, boundary values, abnormal values, browser/environment differences, roles, API statuses, file types, data states, and question-wait conditions. A practical unit is one independently reportable Pass/Fail/N/A judgment, not one automation loop, one parameter table, one checklist with hidden sub-results, or one broad row copied from test design.
 - **Row independence**: Confirm every executable row can be executed by reading that row alone. Flag `同上`, `前述と同じ`, `同条件`, `同様`, and references to another row for setup, input, steps, or expected result.
@@ -78,6 +80,7 @@ Review from these perspectives:
 - **Upstream alignment**: Confirm the cases remain consistent with the test design, design questionnaire, test analysis, analysis questionnaire, test plan, product risks, and scope.
 - **Maintainability**: Confirm ID prefixes, numbering, terminology, state values, table structure, and coverage mapping are consistent and easy to update.
 - **Markdown table integrity**: Confirm each table row has the same number of cells as the header and cells do not contain unescaped `|` characters that break parsing.
+- **CSV integrity**: Confirm the human CSV uses valid CSV quoting, has no Markdown table syntax, and includes blank execution-record columns such as `実行日`, `実行者`, `実行環境`, `実結果`, `判定`, `証跡リンク`, and `備考`.
 
 ## Compressed-Condition Scan
 
@@ -93,10 +96,13 @@ In addition to semantic review, scan executable rows for these common smells:
 - Internal-state-only inputs: `need=...`, `cacheHit=...`, `session expired`, `DB is inconsistent`, `already calculated`, or other target states with no setup method.
 - Multiple observation phrases: `最初と最後`, `開始時と終了時`, `前後`, `AとBを確認`, `Xでは...、Yでは...`, multiple screens, multiple output rows, or multiple state transitions.
 - Markdown table hazards: unescaped `|`, raw `||`, shell pipes, regex alternation, TypeScript union syntax, or row column counts that differ from the header.
+- Human CSV hazards: missing `テストケース_人間実行.csv`, CSV row count or `TC-MAN-*` mismatch with the Markdown human file, missing execution-record columns, invalid quote escaping, unquoted embedded commas/newlines, or Markdown table pipes inside CSV cells.
 
 These are not automatically defects inside explanatory text, but they require a review decision. Split when each listed item can pass/fail independently. Keep one row only when the row explicitly defines a single scenario flow or an aggregate judgment, and the evidence can support that aggregate judgment.
 
 For Markdown tables, structural hazards are defects when they affect a table row. Rewrite or escape table-breaking text even when the intended test meaning is otherwise clear.
+
+For the human CSV, parse it as CSV rather than by splitting on commas. Validate the parsed header and `テストケースID` values against the Markdown human-executed rows.
 
 ## Finding Format
 
@@ -120,6 +126,9 @@ Guidelines:
 - Treat input/data that only names internal or derived state, without executable setup, as `P1`.
 - Treat expected results that contain multiple independent observation points as `P1` unless the row explicitly defines an aggregate scenario.
 - Treat Markdown table row column mismatches, or unescaped `|` that breaks a test case row, as `P1`; raise to `P0` when table breakage is widespread enough to prevent reviewing the artifact.
+- Treat a missing `テストケース_人間実行.csv` as `P1` when the current artifact standard or user request expects it.
+- Treat human CSV `TC-MAN-*` row mismatch against `テストケース_人間実行.md` as `P1`.
+- Treat invalid CSV quoting or missing required CSV headers as `P1`; raise to `P0` when the CSV cannot be parsed at all.
 - Treat a `質問待ち` case without a linked `DQxxx` as at least `P1`.
 - Treat an expected result that cannot be used for pass/fail and is not marked `要確認` as at least `P1`.
 - Treat an execution-category mismatch that would send the case to the wrong executor as at least `P1`.
@@ -141,6 +150,8 @@ When fixing artifacts:
 - Replace internal-state-only inputs with executable setup. For example, write the API request, fixture, database record, file content, UI operation, mock response, or clock setting that produces the state.
 - Split rows with multiple independent observation points, or add a clear aggregate-judgment rationale only when the scenario truly must be judged as one flow.
 - Fix Markdown table hazards by escaping `|`, rewriting `||` and pipe-heavy snippets in prose, or moving code examples outside the table. Recheck column counts after editing.
+- Regenerate `テストケース_人間実行.csv` from the Markdown human-executed rows when fixing human case IDs, shared columns, ordering, or wording. Preserve blank execution-record columns.
+- Fix CSV quoting with a real CSV writer or careful RFC 4180 escaping. Do not hand-split CSV by commas.
 - When the reviewed artifact set includes automation mapping, execution-report templates, or implemented test names, align those references with the split `TC-*` IDs. If those files are out of scope for the user request, record the downstream mismatch as a residual risk instead of silently leaving it unmentioned.
 - Do not create suffix IDs such as `TC-CB-001-a` unless the existing project explicitly uses that style; prefer new sequential IDs so each row is independently addressable by tools and reports.
 - When converting a legacy consolidated `テストケース.md` to split files, move rows into `テストケース_コードベース.md`, `テストケース_E2E自動.md`, `テストケース_人間実行.md`, or `テストケース_質問待ち.md` according to `実行区分` and `状態`.
@@ -175,6 +186,7 @@ Final result requirements:
 - Summarize each review/fix iteration.
 - State the result of the one-TC-one-judgment / compressed-condition scan.
 - State the result of row-independence, executable-input, multiple-observation, and Markdown-table-integrity checks.
+- State the result of human CSV parity and CSV integrity checks.
 - State clearly that no `P0` or `P1` findings remain, or explain any remaining high-priority finding that could not be fixed because required information was unavailable.
 - List remaining `P2` and `P3` issues, if any, with recommended next actions.
 - Mention any updates made to the test cases, test design, design questionnaire, test analysis, analysis questionnaire, or test plan.

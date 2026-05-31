@@ -1,6 +1,6 @@
 ---
 name: create-test-cases
-description: Create Japanese Markdown test case tables from test design artifacts, design questionnaires, test analysis, test plans, specifications, README files, existing tests, and implementation notes. Use when Codex needs to expand each TDxxx design pattern into execution-ready, independently reportable TC-* test cases, output separate files for code-based tests, E2E automated tests, human-executed tests, and question-wait cases, and preserve coverage from test design to test cases.
+description: Create Japanese Markdown test case tables from test design artifacts, design questionnaires, test analysis, test plans, specifications, README files, existing tests, and implementation notes. Use when Codex needs to expand each TDxxx design pattern into execution-ready, independently reportable TC-* test cases, output separate files for code-based tests, E2E automated tests, human-executed tests, question-wait cases, and a companion CSV for human-executed cases, and preserve coverage from test design to test cases.
 ---
 
 # Create Test Cases
@@ -46,8 +46,10 @@ Separate test design from executable test cases:
    - `テスト成果物/テストケース_E2E自動.md`
    - `テスト成果物/テストケース_人間実行.md`
    - `テスト成果物/テストケース_質問待ち.md`
+   - `テスト成果物/テストケース_人間実行.csv`
 10. Run the execution-readiness self-check before finishing. Search generated cases for compressed-condition smells such as `/`, `、`, `,`, `・`, `または`, `各`, `すべて`, `複数`, `など`, `付近`, `正常値`, `異常値`, `代表`, `直前`, `境界`, `直後`, browser lists, viewport lists, role lists, and value ranges. Split or mark `要確認` unless the row explicitly documents an aggregate-judgment scenario.
 11. Run the row-independence and table-integrity self-check. Confirm no executable row uses `同上`, `前述と同じ`, `同条件`, `同様`, or cross-row references; no row uses only internal/derived values as input; no expected result contains multiple independent observation points; and every Markdown table row has the same number of cells as its header. Escape or rewrite literal `|`, `||`, shell pipes, regex alternation, and TypeScript union syntax inside table cells.
+12. Run the human CSV parity self-check. Confirm `テストケース_人間実行.csv` contains the same human-executed `TC-MAN-*` rows as `テストケース_人間実行.md`, has valid CSV quoting, and includes blank execution-record columns for human testers.
 
 ## Execution-Ready Case Contract
 
@@ -68,7 +70,7 @@ Do not use broad execution placeholders such as `正常値`, `異常値`, `境�
 
 ## Output: Test Case Files
 
-Use four Markdown files by default. Do not create or update a single combined `テストケース.md` unless the user explicitly asks for a consolidated file.
+Use four Markdown files by default, plus a companion CSV for human-executed cases. Do not create or update a single combined `テストケース.md` unless the user explicitly asks for a consolidated file.
 
 ### Code-Based Test Case File
 
@@ -112,6 +114,8 @@ Save human-executed cases to `テスト成果物/テストケース_人間実行
 ## 5. カバレッジ確認
 ```
 
+Also save the same human-executed cases to `テスト成果物/テストケース_人間実行.csv` for spreadsheet-based execution and recording. Treat the Markdown file as the source of truth and the CSV as a derived companion artifact.
+
 ### Question-Wait Test Case File
 
 Save question-wait cases to `テスト成果物/テストケース_質問待ち.md` using this structure:
@@ -134,6 +138,24 @@ Use the same test case table in every file:
 | テストケースID | 元テスト設計ID | テスト観点ID | テストアプローチID | 実行区分 | テストレベル/タイプ | 優先度 | テストケース名 | 前提条件 | 入力/データ | 手順 | 期待結果 | 確認方法/証跡 | 関連質問ID | 仕様 | リスクID | 状態 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 ```
+
+### Human-Executed CSV File
+
+Save human-executed cases to `テスト成果物/テストケース_人間実行.csv` using CSV headers that mirror the Markdown table and add execution-record fields:
+
+```csv
+テストケースID,元テスト設計ID,テスト観点ID,テストアプローチID,実行区分,テストレベル/タイプ,優先度,テストケース名,前提条件,入力/データ,手順,期待結果,確認方法/証跡,関連質問ID,仕様,リスクID,状態,実行日,実行者,実行環境,実結果,判定,証跡リンク,備考
+```
+
+CSV rules:
+
+- Include only non-question-wait human-executed cases from `テストケース_人間実行.md`.
+- Keep `テストケースID` values and all shared columns identical to the Markdown human-executed rows.
+- Leave `実行日`, `実行者`, `実行環境`, `実結果`, `判定`, `証跡リンク`, and `備考` blank for testers to fill in.
+- Use RFC 4180-style quoting: wrap fields in double quotes when they contain commas, quotes, CR/LF, or leading/trailing spaces; escape inner quotes by doubling them.
+- Prefer UTF-8 with BOM when the target users are likely to open the CSV in Excel; otherwise UTF-8 is acceptable.
+- Do not put Markdown table pipes or Markdown formatting requirements in the CSV.
+- If there are no human-executed cases, still create the CSV with only the header and state that there are no rows.
 
 Column guidance:
 
@@ -263,6 +285,9 @@ Before finishing:
 - Confirm every `質問待ち` test case has a `DQxxx`.
 - Confirm all three execution-category files exist, even if one category has few cases.
 - Confirm the question-wait file exists, even if there are no question-wait cases; in that case, state that there are none.
+- Confirm the human-executed CSV exists, even if there are no human-executed cases; in that case, include only the header.
+- Confirm the human-executed CSV contains the same non-question-wait `TC-MAN-*` rows as `テストケース_人間実行.md`.
+- Confirm CSV fields are correctly quoted and the CSV includes blank execution-record fields for human testers.
 - Confirm test cases are readable by humans and do not contain automation code.
 - Confirm source-supported expected results are concrete, and unsupported expectations are explicitly `要確認`.
 - Confirm no `TC-*` row is duplicated across files unless the user explicitly requested duplication.

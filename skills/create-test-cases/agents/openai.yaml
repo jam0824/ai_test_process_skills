@@ -1,4 +1,4 @@
 interface:
   display_name: "テストケース作成"
-  short_description: "行単独で実行できるMarkdownテストケースを実行区分別に作成する支援"
-  default_prompt: "Use $create-test-cases to create row-independent, execution-ready, independently reportable Markdown test case files for code-based, E2E automated, human-executed, and question-wait cases."
+  short_description: "行単独で実行できるテストケースをMarkdownと人間実行CSVで作成する支援"
+  default_prompt: "Use $create-test-cases to create row-independent, execution-ready, independently reportable Markdown test case files plus a companion CSV for human-executed cases."

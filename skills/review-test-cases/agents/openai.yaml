@@ -1,4 +1,4 @@
 interface:
   display_name: "テストケースレビュー"
-  short_description: "行単独実行性、1ケース1判定、表構造をレビューし改善する支援"
-  default_prompt: "Use $review-test-cases to review separate test case files for row independence, executable inputs, one-TC-one-judgment readiness, Markdown table integrity, traceability, and high-priority issues, then save the final Markdown review result."
+  short_description: "テストケースの行単独実行性、1ケース1判定、CSV整合性をレビューする支援"
+  default_prompt: "Use $review-test-cases to review separate test case files for row independence, executable inputs, one-TC-one-judgment readiness, Markdown table integrity, human CSV parity, traceability, and high-priority issues, then save the final Markdown review result."
