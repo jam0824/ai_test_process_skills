@@ -6,7 +6,9 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import re
+import shutil
 import subprocess
 import sys
 from collections import defaultdict
@@ -120,6 +122,11 @@ def markdown_escape(value: str) -> str:
 
 
 def run_command(command: list[str]) -> CommandResult:
+    executable = command[0]
+    if os.name == "nt" and not Path(executable).suffix:
+        cmd_executable = f"{executable}.cmd"
+        if shutil.which(cmd_executable) is not None:
+            command = [cmd_executable] + command[1:]
     completed = subprocess.run(
         command,
         text=True,
