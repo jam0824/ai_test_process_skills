@@ -1,0 +1,4 @@
+interface:
+  display_name: "テストコード作成"
+  short_description: "コードベース用テストケースから実テストコードと未実装一覧を作成する支援"
+  default_prompt: "Use $create-test-code to create traceable executable test code and a Markdown unimplemented-case list from code-based test cases for the specified target."
