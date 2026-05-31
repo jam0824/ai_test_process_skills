@@ -1,6 +1,6 @@
 ---
 name: review-playwright-e2e-tests
-description: Review Playwright E2E automated test implementations against traceable Markdown E2E test cases, implementation reports, unimplemented-case lists, target pages, and project configuration. Use when Codex needs to assess or improve Playwright tests generated from `テストケース_E2E自動.md` / `TC-E2E-*`; prioritize findings, fix high-priority issues in test code or related QA artifacts, rerun or statically validate, repeat until no high-priority fix-worthy issues remain, and save the final review result as Markdown.
+description: Review Playwright E2E automated test implementations against traceable Markdown E2E test cases, implementation reports, unimplemented-case lists, target pages, and project configuration. Use when Codex needs to assess or improve Playwright tests generated from `テストケース_E2E自動.md` / `TC-E2E-*`; prioritize findings, fix P0/P1/P2 fix-worthy issues in test code or related QA artifacts, rerun or statically validate, repeat until no P0/P1/P2 fix-worthy issues remain, and save the final review result as Markdown.
 ---
 
 # Review Playwright E2E Tests
@@ -39,9 +39,9 @@ Default to Japanese output. This skill may edit Playwright test code, test helpe
 4. Run Playwright tests when dependencies and browsers are already available. If they are unavailable, do not install without approval; run static checks such as JavaScript/TypeScript syntax checks and record the blocker.
 5. Review using the perspectives below.
 6. List findings with priority.
-7. Fix all `P0` and `P1` findings that are actually fixable from available information. Fix `P2` findings only when low-risk and clearly supported.
+7. Fix all `P0`, `P1`, and `P2` findings that are actually fixable from available information. Fix `P3` findings only when low-risk and clearly supported.
 8. Re-run the relevant Playwright command or static checks after changes.
-9. Re-review the edited artifacts. Repeat review/fix/test until no `P0` or `P1` findings remain.
+9. Re-review the edited artifacts. Repeat review/fix/test until no `P0`, `P1`, or `P2` findings remain.
 10. Save the final review result as Markdown. If no path is specified, save `テスト成果物/Playwright_E2Eテストレビュー結果.md`.
 
 ## Priority Rules
@@ -53,7 +53,7 @@ Use these priorities consistently:
 - **P2 - Medium**: The tests can be used but should be improved. Examples: moderate duplication, inconsistent helper style, over-specific display-string assertions, incomplete implementation report, unclear test data names, missing optional evidence, or minor environment portability issue.
 - **P3 - Low**: Nice-to-have cleanup. Examples: formatting polish, wording consistency, optional comments, or small naming refinements.
 
-Treat `P0` and `P1` as high-priority fix-worthy findings. Continue the loop until none remain, except when the issue cannot be fixed because required stakeholder information or environment setup is unavailable; in that case, move or confirm the affected case in the unimplemented-case file with the relevant question ID or blocker.
+Treat `P0`, `P1`, and `P2` as fix-worthy findings. Continue the loop until none remain, except when the issue cannot be fixed because required stakeholder information or environment setup is unavailable; in that case, move or confirm the affected case in the unimplemented-case file with the relevant question ID or blocker. Treat `P3` as optional cleanup.
 
 ## Review Perspectives
 
@@ -135,7 +135,7 @@ Final result requirements:
 - Include reviewed Playwright code, configuration, implementation report, unimplemented-case file, source test cases, target page/app, and final review result path.
 - Include the review perspectives applied.
 - Summarize each review/fix/test iteration.
-- State clearly that no `P0` or `P1` findings remain, or explain any remaining high-priority finding that could not be fixed.
-- List remaining `P2` and `P3` issues, if any, with recommended next actions.
+- State clearly that no `P0`, `P1`, or `P2` findings remain, or explain any remaining fix-worthy finding that could not be fixed.
+- List remaining `P3` issues, if any, with recommended next actions.
 - Mention every file updated during review.
 - Include final implemented/unimplemented counts and final command/result or static validation result.

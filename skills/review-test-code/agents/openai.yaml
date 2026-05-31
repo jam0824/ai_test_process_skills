@@ -1,4 +1,4 @@
 interface:
   display_name: "テストコードレビュー"
-  short_description: "コードベース用テストコードをレビューし高優先度問題を改善する支援"
-  default_prompt: "Use $review-test-code to review traceable code-based test implementations, fix high-priority issues, rerun tests, and save the final Markdown review result."
+  short_description: "コードベース用テストコードをレビューしP2まで改善する支援"
+  default_prompt: "Use $review-test-code to review traceable code-based test implementations, fix P0/P1/P2 fix-worthy issues, rerun tests, and save the final Markdown review result."

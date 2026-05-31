@@ -51,7 +51,7 @@ For each step:
 ## Gates And Continuation Rules
 
 - After each creation step, confirm the expected artifact exists before starting the corresponding review step.
-- Review steps must repeat review/fix/re-review until no fix-worthy `P0` or `P1` findings remain, following each review skill's rules.
+- Review steps must repeat review/fix/re-review until each child review skill's stop condition is met. For review skills that define `P0`, `P1`, and `P2` as fix-worthy, continue until no fix-worthy `P0`, `P1`, or `P2` findings remain.
 - If a review uncovers a clear upstream gap, allow the relevant child review skill to update upstream QA artifacts as defined by that skill.
 - If a question-wait or `要確認` item appears, do not guess. Keep it in the questionnaire, question-wait test cases, or unimplemented test case list.
 - If a codebase or E2E implementation target is missing, skip only that implementation/execution lane, update the unimplemented or unexecuted records, and continue to `$create-test-report`.
@@ -75,10 +75,10 @@ For each step:
 ### Implementation And Execution
 
 - `$create-test-code` implements codebase automated tests for implementable `テストケース_コードベース.md` cases and records unimplemented cases.
-- `$review-test-code` reviews and fixes high-priority issues in the codebase test implementation and saves `テスト成果物/テストコードレビュー結果.md`.
+- `$review-test-code` reviews and fixes `P0`/`P1`/`P2` fix-worthy issues in the codebase test implementation and saves `テスト成果物/テストコードレビュー結果.md`.
 - `$execute-codebase-tests` runs or records codebase tests, producing a timestamped `テスト成果物/report/yyyyMMddHHmmss_コードベーステスト/` folder and `コードベース_発見issue一覧.md`.
 - `$create-playwright-e2e-tests` implements Playwright tests for implementable `テストケース_E2E自動.md` cases and records unimplemented E2E cases.
-- `$review-playwright-e2e-tests` reviews and fixes high-priority issues in the Playwright E2E implementation and saves `テスト成果物/Playwright_E2Eテストレビュー結果.md`.
+- `$review-playwright-e2e-tests` reviews and fixes `P0`/`P1`/`P2` fix-worthy issues in the Playwright E2E implementation and saves `テスト成果物/Playwright_E2Eテストレビュー結果.md`.
 - `$execute-playwright-e2e-tests` runs or records E2E tests, producing a timestamped `テスト成果物/report/yyyyMMddHHmmss_e2e自動テスト/` folder and `e2e_発見issue一覧.md`.
 
 ### Final Report

@@ -1,6 +1,6 @@
 ---
 name: review-test-code
-description: Review executable code-based test implementations against traceable Markdown test cases, implementation reports, unimplemented-case lists, specifications, and target code. Use when Codex needs to assess or improve unit, integration, regression, or code-level automated tests generated from `テストケース_コードベース.md` / `TC-CB-*`; prioritize findings, fix high-priority issues in test code or related QA artifacts, rerun tests, repeat until no high-priority fix-worthy issues remain, and save the final review result as Markdown.
+description: Review executable code-based test implementations against traceable Markdown test cases, implementation reports, unimplemented-case lists, specifications, and target code. Use when Codex needs to assess or improve unit, integration, regression, or code-level automated tests generated from `テストケース_コードベース.md` / `TC-CB-*`; prioritize findings, fix P0/P1/P2 fix-worthy issues in test code or related QA artifacts, rerun tests, repeat until no P0/P1/P2 fix-worthy issues remain, and save the final review result as Markdown.
 ---
 
 # Review Test Code
@@ -37,9 +37,9 @@ Default to Japanese output. This skill may edit test code, test helpers, impleme
 4. Run the relevant tests before or during review when feasible. If tests cannot run, record the blocker and review statically as far as possible.
 5. Review using the perspectives below.
 6. List findings with priority.
-7. Fix all `P0` and `P1` findings that are actually fixable from available information. Fix `P2` findings only when low-risk and clearly supported.
+7. Fix all `P0`, `P1`, and `P2` findings that are actually fixable from available information. Fix `P3` findings only when low-risk and clearly supported.
 8. Re-run the relevant tests after code changes.
-9. Re-review the edited artifacts. Repeat review/fix/test until no `P0` or `P1` findings remain.
+9. Re-review the edited artifacts. Repeat review/fix/test until no `P0`, `P1`, or `P2` findings remain.
 10. Save the final review result as Markdown. If no path is specified, save `テスト成果物/テストコードレビュー結果.md`.
 
 ## Priority Rules
@@ -51,7 +51,7 @@ Use these priorities consistently:
 - **P2 - Medium**: The tests can be used but should be improved. Examples: moderate duplication, inconsistent helper style, brittle display-string assertions where a more semantic assertion is easy, incomplete implementation report, unclear test data names, or minor maintainability issue.
 - **P3 - Low**: Nice-to-have cleanup. Examples: formatting polish, wording consistency, optional comments, or small naming refinements.
 
-Treat `P0` and `P1` as high-priority fix-worthy findings. Continue the loop until none remain, except when the issue cannot be fixed because required stakeholder information is unavailable; in that case, move or confirm the affected case in the unimplemented-case file with the relevant question ID.
+Treat `P0`, `P1`, and `P2` as fix-worthy findings. Continue the loop until none remain, except when the issue cannot be fixed because required stakeholder information or environment setup is unavailable; in that case, move or confirm the affected case in the unimplemented-case file with the relevant question ID or blocker. Treat `P3` as optional cleanup.
 
 ## Review Perspectives
 
@@ -130,7 +130,7 @@ Final result requirements:
 - Include reviewed test code, implementation report, unimplemented-case file, source test cases, target code, and final review result path.
 - Include the review perspectives applied.
 - Summarize each review/fix/test iteration.
-- State clearly that no `P0` or `P1` findings remain, or explain any remaining high-priority finding that could not be fixed.
-- List remaining `P2` and `P3` issues, if any, with recommended next actions.
+- State clearly that no `P0`, `P1`, or `P2` findings remain, or explain any remaining fix-worthy finding that could not be fixed.
+- List remaining `P3` issues, if any, with recommended next actions.
 - Mention every file updated during review.
 - Include final implemented/unimplemented counts and final test command/result.

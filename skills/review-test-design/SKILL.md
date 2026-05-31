@@ -1,6 +1,6 @@
 ---
 name: review-test-design
-description: Review Japanese Markdown test design artifacts and design questionnaires against test analysis, test plans, specifications, and QA design quality criteria. Use when Codex needs to assess or improve テスト設計, traceable test design tables, necessary-and-sufficient design depth, test level/type grouping, or design questionnaires; prioritize findings, fix high-priority issues, re-review until no high-priority fix-worthy issues remain, and save the final review result as Markdown.
+description: Review Japanese Markdown test design artifacts and design questionnaires against test analysis, test plans, specifications, and QA design quality criteria. Use when Codex needs to assess or improve テスト設計, traceable test design tables, necessary-and-sufficient design depth, test level/type grouping, or design questionnaires; prioritize findings, fix P0/P1/P2 fix-worthy issues, re-review until no P0/P1/P2 fix-worthy issues remain, and save the final review result as Markdown.
 ---
 
 # Review Test Design
@@ -26,8 +26,8 @@ Default to Japanese output. This skill may edit the reviewed test design and des
    - README, existing tests, QA artifacts, and implementation files only when they clarify the design.
 4. Review the test design using the review perspectives below.
 5. List findings with priority, grounded in the design and source material.
-6. Fix all `P0` and `P1` findings that are actually fixable from available information. Fix `P2` findings only when the correction is low-risk and clearly supported by the source material.
-7. Re-review the edited artifacts. Repeat review and fix until no `P0` or `P1` findings remain.
+6. Fix all `P0`, `P1`, and `P2` findings that are actually fixable from available information. Fix `P3` findings only when the correction is low-risk and clearly supported by the source material.
+7. Re-review the edited artifacts. Repeat review and fix until no `P0`, `P1`, or `P2` findings remain.
 8. Save the final review result as Markdown. If the user does not specify a path, save it next to the reviewed design as `テスト設計レビュー結果.md`.
 
 ## Priority Rules
@@ -39,7 +39,7 @@ Use these priorities consistently:
 - **P2 - Medium**: The design can be used, but clarity, completeness, or maintainability should be improved. Examples: minor duplication, vague condition/input, weak grouping, inconsistent terminology, or non-critical missing references.
 - **P3 - Low**: Nice-to-have cleanup. Examples: formatting polish, wording consistency, or optional extra examples.
 
-Treat `P0` and `P1` as high-priority fix-worthy findings. Continue the fix/re-review loop until none remain, except when the finding cannot be fixed because required information is unavailable; in that case, record the blocker clearly and add or confirm a questionnaire entry.
+Treat `P0`, `P1`, and `P2` as fix-worthy findings. Continue the fix/re-review loop until none remain, except when the finding cannot be fixed because required information is unavailable; in that case, record the blocker clearly and add or confirm a questionnaire entry. Treat `P3` as optional cleanup.
 
 ## Necessary And Sufficient Design Review
 
@@ -104,7 +104,7 @@ Guidelines:
 When fixing artifacts:
 
 - Preserve existing file names, section order, ID style, `TDxxx` stability, and traceability style unless the issue requires structural correction.
-- Fix high-priority issues directly in the test design or design questionnaire using source-supported content.
+- Fix `P0`, `P1`, and `P2` issues directly in the test design or design questionnaire using source-supported content.
 - Add design IDs sequentially, such as `TD064`, and question IDs sequentially according to the file's existing style, such as `DQ018`.
 - Split broad high-risk design rows into multiple focused `TDxxx` rows when analysis hints, risk, or generic test design techniques require separate partitions.
 - Record the selected design technique or pattern family in `テストパターン` rather than adding new columns.
@@ -139,6 +139,6 @@ Final result requirements:
 - Include a short necessary-and-sufficient design review summary, including high-risk design density and downstream case-yield concerns.
 - Include any typical escaped bugs considered and whether design rows or questionnaire items were added.
 - Summarize each review/fix iteration.
-- State clearly that no `P0` or `P1` findings remain, or explain any remaining high-priority finding that could not be fixed because required information was unavailable.
-- List remaining `P2` and `P3` issues, if any, with recommended next actions.
+- State clearly that no `P0`, `P1`, or `P2` findings remain, or explain any remaining fix-worthy finding that could not be fixed because required information was unavailable.
+- List remaining `P3` issues, if any, with recommended next actions.
 - Mention any updates made to the test design, design questionnaire, test analysis, analysis questionnaire, or test plan.

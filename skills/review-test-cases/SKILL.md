@@ -1,6 +1,6 @@
 ---
 name: review-test-cases
-description: Review Japanese Markdown and CSV test case artifacts against test design, questionnaires, test analysis, test plans, specifications, and QA execution quality criteria. Use when Codex needs to assess or improve テストケース files, including separate code-based, E2E automated, human-executed, question-wait Markdown files, the companion human-executed CSV, traceability from TC-* to TDxxx/TVxxx/TAxxx, question-wait handling, one-TC-one-independently-reportable-judgment readiness, or test-case executability; prioritize findings, fix high-priority issues, re-review until no high-priority fix-worthy issues remain, and save the final review result as Markdown.
+description: Review Japanese Markdown and CSV test case artifacts against test design, questionnaires, test analysis, test plans, specifications, and QA execution quality criteria. Use when Codex needs to assess or improve テストケース files, including separate code-based, E2E automated, human-executed, question-wait Markdown files, the companion human-executed CSV, traceability from TC-* to TDxxx/TVxxx/TAxxx, question-wait handling, one-TC-one-independently-reportable-judgment readiness, or test-case executability; prioritize findings, fix P0/P1/P2 fix-worthy issues, re-review until no P0/P1/P2 fix-worthy issues remain, and save the final review result as Markdown.
 ---
 
 # Review Test Cases
@@ -22,7 +22,7 @@ Apply this gate before treating traceability coverage as sufficient:
 - Cross-row shortcuts such as `同上`, `前述と同じ`, `同条件`, and `同様` are findings because each executable row must stand alone.
 - Inputs that name only internal variables, derived states, or intermediate conditions are findings unless the row also states how to create that state through executable setup, fixtures, API arguments, files, UI operations, database records, mocks, clocks, or dependency responses.
 - Expected results with multiple independent observation points are findings unless the row explicitly defines a single scenario or aggregate judgment.
-- Markdown table integrity is part of executability. Broken column counts or unescaped `|` characters in cells are high-priority findings.
+- Markdown table integrity is part of executability. Broken column counts or unescaped `|` characters in cells are at least `P1` findings.
 
 ## Workflow
 
@@ -43,8 +43,8 @@ Apply this gate before treating traceability coverage as sufficient:
    - README, existing tests, QA artifacts, and implementation files only when they clarify testability, inputs, outputs, or existing coverage.
 3. Review the test cases using the review perspectives below. Run the Core Review Gate and compressed-condition scan before concluding that coverage is acceptable.
 4. List findings with priority, grounded in the test cases and source material.
-5. Fix all `P0` and `P1` findings that are actually fixable from available information. Fix `P2` findings only when the correction is low-risk and clearly supported by the source material.
-6. Re-review the edited artifacts. Repeat review and fix until no `P0` or `P1` findings remain.
+5. Fix all `P0`, `P1`, and `P2` findings that are actually fixable from available information. Fix `P3` findings only when the correction is low-risk and clearly supported by the source material.
+6. Re-review the edited artifacts. Repeat review and fix until no `P0`, `P1`, or `P2` findings remain.
 7. Save the final review result as Markdown. If the user does not specify a path, save it next to the reviewed test case files as `テストケースレビュー結果.md`.
 
 ## Priority Rules
@@ -56,7 +56,7 @@ Use these priorities consistently:
 - **P2 - Medium**: The test cases can be used, but clarity, completeness, or maintainability should be improved. Examples: minor duplication, vague preconditions, weak evidence description, inconsistent terminology, non-critical missing reference, low-risk case granularity that is somewhat uneven but still independently reportable, or aggregate-case rationale that is present but weak.
 - **P3 - Low**: Nice-to-have cleanup. Examples: formatting polish, wording consistency, or optional extra examples.
 
-Treat `P0` and `P1` as high-priority fix-worthy findings. Continue the fix/re-review loop until none remain, except when the finding cannot be fixed because required information is unavailable; in that case, record the blocker clearly and add or confirm a questionnaire entry.
+Treat `P0`, `P1`, and `P2` as fix-worthy findings. Continue the fix/re-review loop until none remain, except when the finding cannot be fixed because required information is unavailable; in that case, record the blocker clearly and add or confirm a questionnaire entry. Treat `P3` as optional cleanup.
 
 ## Review Perspectives
 
@@ -74,7 +74,7 @@ Review from these perspectives:
 - **Step reproducibility**: Confirm a human tester or automation implementer can reproduce the same execution from the written steps without hidden assumptions.
 - **Expected-result judgment clarity**: Confirm pass/fail judgment can be made for one case. If the expected result contains multiple independent observation points, split the row or require an explicit aggregate-judgment rationale. If an expected value, threshold, tolerance, environment, or acceptance rule is unknown, it must be marked `要確認` and linked to a question ID.
 - **Question-wait management**: Confirm every `質問待ち` case has a `DQxxx`, appears in `テストケース_質問待ち.md`, keeps its planned `実行区分`, and is not duplicated into execution files unless the user explicitly requested duplicate listing.
-- **Priority and risk alignment**: Confirm high-risk or high-priority designs lead to sufficient high-priority test cases, and low-risk checks are not over-expanded without reason.
+- **Priority and risk alignment**: Confirm high-risk or priority-marked designs lead to sufficient risk-aligned test cases, and low-risk checks are not over-expanded without reason.
 - **Confirmation method and evidence validity**: Confirm `確認方法/証跡` states suitable evidence such as unit test results, E2E logs, screenshots, browser output, DevTools records, performance measurements, or code review records.
 - **Duplication, gaps, and contradictions**: Confirm there is no harmful duplication, missing valuable case, contradiction between cases and design, or unsupported assumption.
 - **Upstream alignment**: Confirm the cases remain consistent with the test design, design questionnaire, test analysis, analysis questionnaire, test plan, product risks, and scope.
@@ -142,7 +142,7 @@ Guidelines:
 When fixing artifacts:
 
 - Preserve existing file names, section order, ID style, `TC-*` stability, and traceability style unless the issue requires structural correction.
-- Fix high-priority issues directly in the relevant test case files using source-supported content.
+- Fix `P0`, `P1`, and `P2` issues directly in the relevant test case files using source-supported content.
 - Add test case IDs sequentially within the matching execution category, such as `TC-CB-044`, `TC-E2E-083`, or `TC-MAN-035`.
 - When fixing compressed cases, split the row into multiple `TC-*` rows with one concrete input/condition per row. Preserve the original `TDxxx`, `TVxxx`, `TAxxx`, specification, and risk IDs on each split row, and give each row a test name that identifies the specific value or boundary.
 - When a design row intentionally becomes several test cases, update the coverage table so the same `TDxxx` maps to all resulting `TC-*` IDs.
@@ -187,6 +187,6 @@ Final result requirements:
 - State the result of the one-TC-one-judgment / compressed-condition scan.
 - State the result of row-independence, executable-input, multiple-observation, and Markdown-table-integrity checks.
 - State the result of human CSV parity and CSV integrity checks.
-- State clearly that no `P0` or `P1` findings remain, or explain any remaining high-priority finding that could not be fixed because required information was unavailable.
-- List remaining `P2` and `P3` issues, if any, with recommended next actions.
+- State clearly that no `P0`, `P1`, or `P2` findings remain, or explain any remaining fix-worthy finding that could not be fixed because required information was unavailable.
+- List remaining `P3` issues, if any, with recommended next actions.
 - Mention any updates made to the test cases, test design, design questionnaire, test analysis, analysis questionnaire, or test plan.

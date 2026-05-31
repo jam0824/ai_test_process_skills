@@ -1,6 +1,6 @@
 ---
 name: review-test-analysis
-description: Review Japanese Markdown test analysis artifacts and questionnaires against a test plan, product specifications, and QA analysis quality criteria. Use when Codex needs to assess or improve テスト分析, including both missing viewpoints and whether the viewpoints are necessary and sufficient for the product risks, prioritize findings, fix high-priority issues in the analysis artifacts, re-review until no high-priority fix-worthy issues remain, and save the final review result as Markdown.
+description: Review Japanese Markdown test analysis artifacts and questionnaires against a test plan, product specifications, and QA analysis quality criteria. Use when Codex needs to assess or improve テスト分析, including both missing viewpoints and whether the viewpoints are necessary and sufficient for the product risks, prioritize findings, fix P0/P1/P2 fix-worthy issues in the analysis artifacts, re-review until no P0/P1/P2 fix-worthy issues remain, and save the final review result as Markdown.
 ---
 
 # Review Test Analysis
@@ -23,8 +23,8 @@ Default to Japanese output. This skill may edit the reviewed test analysis and q
    - README, existing tests, QA artifacts, and implementation files only when they clarify the analysis.
 4. Review the test analysis using the review perspectives below.
 5. List findings with priority, grounded in the analysis and source material.
-6. Fix all `P0` and `P1` findings that are actually fixable from available information. Fix `P2` findings only when the correction is low-risk and clearly supported by the source material.
-7. Re-review the edited artifacts. Repeat review and fix until no `P0` or `P1` findings remain.
+6. Fix all `P0`, `P1`, and `P2` findings that are actually fixable from available information. Fix `P3` findings only when the correction is low-risk and clearly supported by the source material.
+7. Re-review the edited artifacts. Repeat review and fix until no `P0`, `P1`, or `P2` findings remain.
 8. Save the final review result as Markdown. If the user does not specify a path, save it next to the reviewed analysis as `テスト分析レビュー結果.md`.
 
 ## Priority Rules
@@ -36,7 +36,7 @@ Use these priorities consistently:
 - **P2 - Medium**: The analysis can be used, but clarity, completeness, or maintainability should be improved. Examples: minor duplication, unclear wording, weak categorization, or non-critical missing references.
 - **P3 - Low**: Nice-to-have cleanup. Examples: formatting polish, wording consistency, or optional extra examples.
 
-Treat `P0` and `P1` as high-priority fix-worthy findings. Continue the fix/re-review loop until none remain.
+Treat `P0`, `P1`, and `P2` as fix-worthy findings. Continue the fix/re-review loop until none remain, except when the finding cannot be fixed because required information is unavailable; in that case, record the blocker clearly and add or confirm a questionnaire entry. Treat `P3` as optional cleanup.
 
 ## Necessary And Sufficient Viewpoint Review
 
@@ -103,7 +103,7 @@ Guidelines:
 When fixing the analysis artifacts:
 
 - Preserve existing file names, section order, ID style, and traceability style unless the issue requires structural correction.
-- Fix high-priority issues directly in the test analysis or questionnaire using source-supported content.
+- Fix `P0`, `P1`, and `P2` issues directly in the test analysis or questionnaire using source-supported content.
 - Add viewpoint IDs sequentially, such as `TV064`, and question IDs sequentially, such as `Q018`.
 - Keep analysis at viewpoint level. Do not add detailed test steps or expected results unless explicitly requested.
 - Prefer explicit traceability, `要確認`, or questionnaire entries over vague assumptions.
@@ -134,6 +134,6 @@ Final result requirements:
 - Include the review perspectives applied.
 - Summarize each review/fix iteration.
 - Include a short summary of the necessary/sufficient review, especially high-risk viewpoint density and any bug-escape concerns found.
-- State clearly that no `P0` or `P1` findings remain, or explain any remaining high-priority finding that could not be fixed because required information was unavailable.
-- List remaining `P2` and `P3` issues, if any, with recommended next actions.
+- State clearly that no `P0`, `P1`, or `P2` findings remain, or explain any remaining fix-worthy finding that could not be fixed because required information was unavailable.
+- List remaining `P3` issues, if any, with recommended next actions.
 - Mention any updates made to the test analysis, questionnaire, or test plan.

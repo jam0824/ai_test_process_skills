@@ -1,4 +1,4 @@
 interface:
   display_name: "テスト分析レビュー"
-  short_description: "テスト分析の漏れと必要十分性をレビューし改善して保存する支援"
-  default_prompt: "Use $review-test-analysis to review test analysis coverage, necessary-and-sufficient viewpoint depth, fix high-priority issues, re-review, and save the final Markdown review result."
+  short_description: "テスト分析の漏れと必要十分性をレビューしP2まで改善して保存する支援"
+  default_prompt: "Use $review-test-analysis to review test analysis coverage, necessary-and-sufficient viewpoint depth, fix P0/P1/P2 fix-worthy issues, re-review, and save the final Markdown review result."
