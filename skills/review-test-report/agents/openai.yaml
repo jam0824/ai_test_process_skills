@@ -1,0 +1,4 @@
+interface:
+  display_name: "テストレポートレビュー"
+  short_description: "HTMLテスト実行レポートの集計、証跡、リンク、レビュー反映をP2までレビュー改善する支援"
+  default_prompt: "Use $review-test-report to review the final test execution report for summary accuracy, Fail/issue visibility, unfinished-work visibility, artifact and evidence links, review-result inclusion, traceability, static portability, and P0/P1/P2 fix-worthy issues, then save the final Markdown review result."

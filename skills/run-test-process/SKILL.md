@@ -1,6 +1,6 @@
 ---
 name: run-test-process
-description: Orchestrate the full Japanese QA workflow by invoking existing skills in order, from test plan creation through reviews, analysis, design, test cases, code-based and Playwright E2E test implementation, execution recording, and final HTML report generation. Use when Codex needs to run the whole test artifact lifecycle with provided specifications and test targets while leaving human-executed tests unexecuted and visible in the final report.
+description: Orchestrate the full Japanese QA workflow by invoking existing skills in order, from test plan creation through reviews, analysis, design, test cases, code-based and Playwright E2E test implementation, execution recording, final HTML report generation, and final report review. Use when Codex needs to run the whole test artifact lifecycle with provided specifications and test targets while leaving human-executed tests unexecuted and visible in the final report.
 ---
 
 # Run Test Workflow
@@ -40,6 +40,7 @@ Run these steps in this exact order:
 14. `$review-playwright-e2e-tests`
 15. `$execute-playwright-e2e-tests`
 16. `$create-test-report`
+17. `$review-test-report`
 
 For each step:
 
@@ -84,6 +85,7 @@ For each step:
 ### Final Report
 
 - `$create-test-report` snapshots the current QA artifacts and latest execution folders into `テスト成果物/report/yyyyMMddHHmmss_report/`.
+- `$review-test-report` reviews and fixes `P0`/`P1`/`P2` fix-worthy issues in the generated report and saves `テスト成果物/テストレポートレビュー結果.md`.
 - The final report should make remaining `Fail`, `N/A`, not-yet-executed, question-wait, and unimplemented cases visible.
 - Human-executed tests remain unexecuted in this workflow and should appear as not-yet-executed unless the user separately provides execution results.
 
@@ -97,6 +99,7 @@ At the end, summarize the key artifact paths:
 - Unimplemented test case lists.
 - Codebase and E2E execution result report folders.
 - Final HTML test execution report folder and `index.html`.
+- Final test report review result Markdown file.
 
 ## Safety
 

@@ -1,4 +1,4 @@
 interface:
   display_name: "テストワークフロー通し実行"
-  short_description: "計画から実装・実行・レポートまで既存スキルを順に使う支援"
-  default_prompt: "Use $run-test-process to run the full test planning, review, implementation, execution, and report workflow."
+  short_description: "計画から実装・実行・レポート作成・レポートレビューまで既存スキルを順に使う支援"
+  default_prompt: "Use $run-test-process to run the full test planning, review, implementation, execution, report generation, and report review workflow."
