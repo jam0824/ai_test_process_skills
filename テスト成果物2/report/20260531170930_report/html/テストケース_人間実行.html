@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テストケース（人間実行）</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #666b73;
+      --border: #d9ddd6;
+      --accent: #0f766e;
+      --danger: #b42318;
+      --warn: #b7791f;
+      --ok: #16794c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Meiryo", sans-serif;
+      line-height: 1.65;
+    }
+    header, main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      padding-top: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 { margin-top: 32px; font-size: 24px; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #075985; }
+    code {
+      background: #eef2f0;
+      border: 1px solid #d7ddda;
+      border-radius: 4px;
+      padding: 1px 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .metric .label { color: var(--muted); font-size: 13px; }
+    .metric .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 12px 0;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #eef2f0; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-weight: 700; font-size: 12px; }
+    .pass { color: var(--ok); }
+    .fail { color: var(--danger); }
+    .na { color: var(--warn); }
+  </style>
+</head>
+<body>
+<h2>テストケース（人間実行）</h2>
+<h3>1. 作成対象</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>項目</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>元成果物</td><td><code>テスト成果物/テスト設計.md</code></td></tr>
+<tr><td>対象設計ID</td><td><code>TD031</code>、<code>TD032</code></td></tr>
+<tr><td>テスト対象</td><td><code>sample_app/retirement_simulator.html</code>、<code>sample_app/README.md</code></td></tr>
+<tr><td>作成日</td><td>2026-05-31</td></tr>
+</tbody></table></div>
+<h3>2. 参照資料</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>パス</th><th>参照内容</th></tr></thead>
+<tbody>
+<tr><td><code>spec/仕様書.md</code></td><td>動的HTML安全性、README/配布形態、注意表示</td></tr>
+<tr><td><code>テスト成果物/テスト設計.md</code></td><td>Code review設計</td></tr>
+<tr><td><code>sample_app/retirement_simulator.html</code></td><td><code>innerHTML</code> 使用箇所、外部依存</td></tr>
+<tr><td><code>sample_app/README.md</code></td><td>起動手順、ファイル構成、テスト資産説明</td></tr>
+</tbody></table></div>
+<h3>3. 人間が実行する必要があるテストケース</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テストケースID</th><th>元テスト設計ID</th><th>テスト観点ID</th><th>テストアプローチID</th><th>実行区分</th><th>テストレベル/タイプ</th><th>優先度</th><th>テストケース名</th><th>前提条件</th><th>入力/データ</th><th>手順</th><th>期待結果</th><th>確認方法/証跡</th><th>関連質問ID</th><th>仕様</th><th>リスクID</th><th>状態</th></tr></thead>
+<tbody>
+<tr><td>TC-MAN-001</td><td>TD031</td><td>TV026</td><td>TA007</td><td>人間実行</td><td>Code review</td><td>中</td><td>動的HTMLテンプレート確認</td><td>ソースを閲覧できること</td><td><code>innerHTML</code> 使用箇所</td><td><code>innerHTML</code> にユーザー入力値が埋め込まれていないかレビューする</td><td>静的テンプレートに限定され、ユーザー入力がHTMLとして挿入されない</td><td>コードレビュー記録</td><td>なし</td><td>8.2</td><td>R007</td><td>作成済み</td></tr>
+<tr><td>TC-MAN-002</td><td>TD032</td><td>TV039</td><td>TA012</td><td>人間実行</td><td>Code review</td><td>低</td><td>READMEと実ファイル構成の整合</td><td>ソースを閲覧できること</td><td>README、実ファイル一覧</td><td>READMEの起動手順、ファイル構成、テスト資産説明を実ファイルと照合する</td><td>不一致があればissueとして記録される</td><td>コードレビュー記録</td><td>なし</td><td>sample_app/README.md、10.1</td><td>R008</td><td>作成済み</td></tr>
+</tbody></table></div>
+<h3>4. 上流成果物への追記・更新</h3>
+<p>テストケース作成に伴う上流成果物への追記・更新はない。</p>
+<h3>5. カバレッジ確認</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>テスト設計ID</th><th>対応テストケースID</th><th>実行区分</th><th>状態</th><th>出力ファイル</th><th>カバー状況</th></tr></thead>
+<tbody>
+<tr><td>TD031</td><td>TC-MAN-001</td><td>人間実行</td><td>作成済み</td><td>テストケース_人間実行.md</td><td>カバー済み</td></tr>
+<tr><td>TD032</td><td>TC-MAN-002</td><td>人間実行</td><td>作成済み</td><td>テストケース_人間実行.md</td><td>カバー済み</td></tr>
+</tbody></table></div>
+</body>
+</html>

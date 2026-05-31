@@ -1,6 +1,7 @@
 {
   "private": true,
   "scripts": {
+    "test:codebase": "node --test tests/codebase/*.test.js",
     "test:e2e": "playwright test"
   },
   "devDependencies": {
