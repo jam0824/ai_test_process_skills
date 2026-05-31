@@ -1,0 +1,4 @@
+interface:
+  display_name: "Playwright E2Eテスト実行記録"
+  short_description: "Playwright E2Eテスト結果を記録する"
+  default_prompt: "Use $execute-playwright-e2e-tests to run Playwright E2E tests, record Pass/Fail/N/A results, and save issue artifacts."
