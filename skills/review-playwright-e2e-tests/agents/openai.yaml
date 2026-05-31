@@ -1,0 +1,4 @@
+interface:
+  display_name: "Playwright E2Eテストレビュー"
+  short_description: "Playwright E2Eテストをレビューし改善する"
+  default_prompt: "Use $review-playwright-e2e-tests to review Playwright E2E tests, fix high-priority issues, and save the final review result."

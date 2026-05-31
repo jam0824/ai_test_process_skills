@@ -22,6 +22,7 @@ async function openApp(page) {
   const runtime = {
     errors: [],
     externalRequests: [],
+    networkRequests: [],
   };
 
   page.on('pageerror', (error) => {
@@ -34,6 +35,10 @@ async function openApp(page) {
   });
   page.on('request', (request) => {
     const url = request.url();
+    const protocol = new URL(url).protocol;
+    if (!['about:', 'data:', 'file:'].includes(protocol)) {
+      runtime.networkRequests.push(url);
+    }
     if (!isInternalRequest(url)) {
       runtime.externalRequests.push(url);
     }
@@ -41,6 +46,8 @@ async function openApp(page) {
 
   await page.goto(targetUrl);
   await expect(page.locator('#runBtn')).toBeVisible();
+  runtime.externalRequests.length = 0;
+  runtime.networkRequests.length = 0;
   return runtime;
 }
 
@@ -103,6 +110,23 @@ function expectNoExternalRequests(runtime) {
   expect(runtime.externalRequests, `External requests:\n${runtime.externalRequests.join('\n')}`).toEqual([]);
 }
 
+function expectNoNetworkRequests(runtime) {
+  expect(runtime.networkRequests, `Network requests:\n${runtime.networkRequests.join('\n')}`).toEqual([]);
+  expectNoExternalRequests(runtime);
+}
+
+async function readClientStorage(page) {
+  return page.evaluate(() => ({
+    localStorage: Object.fromEntries(Object.entries(localStorage)),
+    sessionStorage: Object.fromEntries(Object.entries(sessionStorage)),
+    cookie: document.cookie,
+  }));
+}
+
+function expectNoClientStorageChange(before, after) {
+  expect(after).toEqual(before);
+}
+
 function expectNoInvalidNumbers(text) {
   expect(text).not.toMatch(/\bNaN\b|(?:^|[^A-Za-z])-?Infinity\b/);
 }
@@ -115,7 +139,7 @@ function expectHealthyOutput(text) {
 
 test.describe('retirement_simulator.html E2E', () => {
   test('TC-E2E-001 負の年収でも結果表示が破綻しない', async ({ page }) => {
-    // TC: TC-E2E-001 | TD: TD001 | TV: TV001 | TA: TA001 | Risk: R001 | Spec: REQ-001
+    // TC: TC-E2E-001 | TD: TD003 | TV: TV003 | TA: TA001 | Risk: R001, R006 | Spec: spec/仕様書.md 7.2、11.1
     const runtime = await openApp(page);
     const text = await runSimulation(page, { salary: -3000000, eventProb: 0 });
 
@@ -124,7 +148,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-002 年収未入力は0円相当として扱われる', async ({ page }) => {
-    // TC: TC-E2E-002 | TD: TD001 | TV: TV001 | TA: TA001 | Risk: R001 | Spec: REQ-001
+    // TC: TC-E2E-002 | TD: TD003 | TV: TV003 | TA: TA001 | Risk: R001, R006 | Spec: spec/仕様書.md 7.2、11.1
     const runtime = await openApp(page);
     const text = await runSimulation(page, { salary: '', eventProb: 0 });
 
@@ -134,7 +158,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-003 非常に大きい年収でもNaNやInfinityにならない', async ({ page }) => {
-    // TC: TC-E2E-003 | TD: TD001 | TV: TV001 | TA: TA001 | Risk: R001 | Spec: REQ-001
+    // TC: TC-E2E-003 | TD: TD003 | TV: TV003 | TA: TA001 | Risk: R001, R006 | Spec: spec/仕様書.md 7.2、11.1
     const runtime = await openApp(page);
     const text = await runSimulation(page, { salary: 100000000, eventProb: 0 });
 
@@ -143,7 +167,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-008 開始年齢0歳でも100歳まで表示される', async ({ page }) => {
-    // TC: TC-E2E-008 | TD: TD004 | TV: TV004 | TA: TA002 | Risk: R002 | Spec: REQ-001
+    // TC: TC-E2E-008 | TD: TD007 | TV: TV007 | TA: TA002 | Risk: R002, R006 | Spec: spec/仕様書.md 2.2 F002、11.2
     const runtime = await openApp(page);
     const text = await runSimulation(page, { startAge: 0, eventProb: 0 });
 
@@ -154,7 +178,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-009 開始年齢100歳では100歳分のみ表示される', async ({ page }) => {
-    // TC: TC-E2E-009 | TD: TD004 | TV: TV004 | TA: TA002 | Risk: R002 | Spec: REQ-001
+    // TC: TC-E2E-009 | TD: TD007 | TV: TV007 | TA: TA002 | Risk: R002, R006 | Spec: spec/仕様書.md 2.2 F002、11.2
     const runtime = await openApp(page);
     const text = await runSimulation(page, { startAge: 100, eventProb: 0 });
 
@@ -165,7 +189,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-010 開始年齢101歳は操作不能にならず結果表示される', async ({ page }) => {
-    // TC: TC-E2E-010 | TD: TD004 | TV: TV004 | TA: TA002 | Risk: R002 | Spec: REQ-001
+    // TC: TC-E2E-010 | TD: TD007 | TV: TV007 | TA: TA002 | Risk: R002, R006 | Spec: spec/仕様書.md 2.2 F002、11.2
     const runtime = await openApp(page);
     const text = await runSimulation(page, { startAge: 101, eventProb: 0 });
 
@@ -175,7 +199,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-011 負の開始年齢でも処理が停止しない', async ({ page }) => {
-    // TC: TC-E2E-011 | TD: TD004 | TV: TV004 | TA: TA002 | Risk: R002 | Spec: REQ-001
+    // TC: TC-E2E-011 | TD: TD007 | TV: TV007 | TA: TA002 | Risk: R002, R006 | Spec: spec/仕様書.md 2.2 F002、11.2
     const runtime = await openApp(page);
     const text = await runSimulation(page, { startAge: -1, eventProb: 0 });
 
@@ -185,7 +209,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-012 投資割合0%では給与から投資に回さない', async ({ page }) => {
-    // TC: TC-E2E-012 | TD: TD008 | TV: TV008 | TA: TA002 | Risk: R002 | Spec: REQ-001
+    // TC: TC-E2E-012 | TD: TD010 | TV: TV010 | TA: TA003 | Risk: R003, R006 | Spec: spec/仕様書.md 3.1.2、7.2
     const runtime = await openApp(page);
     const text = await runSimulation(page, { salary: 3000000, investRate: 0, eventProb: 0 });
 
@@ -195,7 +219,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-013 投資割合100%では手取り給与全額が投資に回る', async ({ page }) => {
-    // TC: TC-E2E-013 | TD: TD008 | TV: TV008 | TA: TA002 | Risk: R002 | Spec: REQ-001
+    // TC: TC-E2E-013 | TD: TD010 | TV: TV010 | TA: TA003 | Risk: R003, R006 | Spec: spec/仕様書.md 3.1.2、7.2
     const runtime = await openApp(page);
     const text = await runSimulation(page, { salary: 3000000, investRate: 100, eventProb: 0 });
 
@@ -205,7 +229,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-014 投資割合33.3%でも小数を含む割合で計算が破綻しない', async ({ page }) => {
-    // TC: TC-E2E-014 | TD: TD008 | TV: TV008 | TA: TA002 | Risk: R002 | Spec: REQ-001
+    // TC: TC-E2E-014 | TD: TD010 | TV: TV010 | TA: TA003 | Risk: R003, R006 | Spec: spec/仕様書.md 3.1.2、7.2
     const runtime = await openApp(page);
     const text = await runSimulation(page, { salary: 3000000, investRate: 33.3, eventProb: 0 });
 
@@ -215,7 +239,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-015 投資割合150%の直接入力でもNaNやInfinityにならない', async ({ page }) => {
-    // TC: TC-E2E-015 | TD: TD008 | TV: TV008 | TA: TA002 | Risk: R002 | Spec: REQ-001
+    // TC: TC-E2E-015 | TD: TD010 | TV: TV010 | TA: TA003 | Risk: R003, R006 | Spec: spec/仕様書.md 3.1.2、7.2
     const runtime = await openApp(page);
     const text = await runSimulation(page, { investRate: 150, eventProb: 0 }, { rawIds: ['investRate'] });
 
@@ -224,7 +248,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-016 給与変更年齢に到達した月から年収が変更される', async ({ page }) => {
-    // TC: TC-E2E-016 | TD: TD011 | TV: TV011 | TA: TA002 | Risk: R002 | Spec: REQ-002
+    // TC: TC-E2E-016 | TD: TD017 | TV: TV017 | TA: TA005 | Risk: R004 | Spec: spec/仕様書.md 2.2 F008
     const runtime = await openApp(page);
     const text = await runSimulation(page, {
       startAge: 39,
@@ -239,7 +263,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-017 給与変更年齢ちょうどの開始でも変更後年収が使われる', async ({ page }) => {
-    // TC: TC-E2E-017 | TD: TD011 | TV: TV011 | TA: TA002 | Risk: R002 | Spec: REQ-002
+    // TC: TC-E2E-017 | TD: TD017 | TV: TV017 | TA: TA005 | Risk: R004 | Spec: spec/仕様書.md 2.2 F008
     const runtime = await openApp(page);
     const text = await runSimulation(page, {
       startAge: 40,
@@ -254,7 +278,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-018 給与変更トグルで入力欄を表示できる', async ({ page }) => {
-    // TC: TC-E2E-018 | TD: TD012 | TV: TV012 | TA: TA003 | Risk: R004 | Spec: REQ-002
+    // TC: TC-E2E-018 | TD: TD018 | TV: TV018 | TA: TA005 | Risk: R004, R006 | Spec: spec/仕様書.md 2.2 F008、3.1.2
     const runtime = await openApp(page);
 
     await page.locator('#toggleSalaryChanges').click();
@@ -264,7 +288,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-019 給与変更トグルで入力欄を非表示に戻せる', async ({ page }) => {
-    // TC: TC-E2E-019 | TD: TD012 | TV: TV012 | TA: TA003 | Risk: R004 | Spec: REQ-002
+    // TC: TC-E2E-019 | TD: TD018 | TV: TV018 | TA: TA005 | Risk: R004, R006 | Spec: spec/仕様書.md 2.2 F008、3.1.2
     const runtime = await openApp(page);
 
     await page.locator('#toggleSalaryChanges').click();
@@ -275,7 +299,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-020 給与変更を追加してシミュレーションに使える', async ({ page }) => {
-    // TC: TC-E2E-020 | TD: TD013 | TV: TV013 | TA: TA003 | Risk: R004 | Spec: REQ-002
+    // TC: TC-E2E-020 | TD: TD018 | TV: TV018 | TA: TA005 | Risk: R004, R006 | Spec: spec/仕様書.md 2.2 F008、3.1.2
     const runtime = await openApp(page);
     await addSalaryChange(page, 40, 8000000);
 
@@ -287,7 +311,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-021 複数の給与変更を削除して0件に戻せる', async ({ page }) => {
-    // TC: TC-E2E-021 | TD: TD014 | TV: TV014 | TA: TA003 | Risk: R004 | Spec: REQ-002
+    // TC: TC-E2E-021 | TD: TD018 | TV: TV018 | TA: TA005 | Risk: R004, R006 | Spec: spec/仕様書.md 2.2 F008、3.1.2
     const runtime = await openApp(page);
     await addSalaryChange(page, 40, 8000000);
     await addSalaryChange(page, 50, 9000000);
@@ -303,7 +327,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-027 年齢未入力の給与変更は反映されない', async ({ page }) => {
-    // TC: TC-E2E-027 | TD: TD016 | TV: TV016 | TA: TA002 | Risk: R002 | Spec: REQ-002
+    // TC: TC-E2E-027 | TD: TD020 | TV: TV020 | TA: TA005 | Risk: R004, R006 | Spec: spec/仕様書.md 2.2 F008、7.2
     const runtime = await openApp(page);
     const text = await runSimulation(page, { startAge: 39, retirementAge: 41, pensionStartAge: 41, eventProb: 0 }, {
       salaryChanges: [{ age: '', salary: 8000000 }],
@@ -315,7 +339,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-028 年収未入力の給与変更は反映されない', async ({ page }) => {
-    // TC: TC-E2E-028 | TD: TD016 | TV: TV016 | TA: TA002 | Risk: R002 | Spec: REQ-002
+    // TC: TC-E2E-028 | TD: TD020 | TV: TV020 | TA: TA005 | Risk: R004, R006 | Spec: spec/仕様書.md 2.2 F008、7.2
     const runtime = await openApp(page);
     const text = await runSimulation(page, { startAge: 39, retirementAge: 41, pensionStartAge: 41, eventProb: 0 }, {
       salaryChanges: [{ age: 40, salary: '' }],
@@ -327,7 +351,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-029 年収0円の給与変更は反映されない', async ({ page }) => {
-    // TC: TC-E2E-029 | TD: TD016 | TV: TV016 | TA: TA002 | Risk: R002 | Spec: REQ-002
+    // TC: TC-E2E-029 | TD: TD020 | TV: TV020 | TA: TA005 | Risk: R004, R006 | Spec: spec/仕様書.md 2.2 F008、7.2
     const runtime = await openApp(page);
     const text = await runSimulation(page, { startAge: 39, retirementAge: 41, pensionStartAge: 41, eventProb: 0 }, {
       salaryChanges: [{ age: 40, salary: 0 }],
@@ -339,7 +363,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-030 負の年齢の給与変更は反映されない', async ({ page }) => {
-    // TC: TC-E2E-030 | TD: TD016 | TV: TV016 | TA: TA002 | Risk: R002 | Spec: REQ-002
+    // TC: TC-E2E-030 | TD: TD020 | TV: TV020 | TA: TA005 | Risk: R004, R006 | Spec: spec/仕様書.md 2.2 F008、7.2
     const runtime = await openApp(page);
     const text = await runSimulation(page, { startAge: 0, retirementAge: 2, pensionStartAge: 2, eventProb: 0 }, {
       salaryChanges: [{ age: -1, salary: 8000000 }],
@@ -351,7 +375,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-031 イベント確率0%ではランダムイベントが出ない', async ({ page }) => {
-    // TC: TC-E2E-031 | TD: TD018 | TV: TV018 | TA: TA002 | Risk: R002 | Spec: REQ-001
+    // TC: TC-E2E-031 | TD: TD022 | TV: TV022 | TA: TA006 | Risk: R005 | Spec: spec/仕様書.md 5.3
     const runtime = await openApp(page);
     const text = await runSimulation(page, { eventProb: 0 });
 
@@ -361,7 +385,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-032 イベント確率100%ではイベントが出る', async ({ page }) => {
-    // TC: TC-E2E-032 | TD: TD018 | TV: TV018 | TA: TA002 | Risk: R002 | Spec: REQ-001
+    // TC: TC-E2E-032 | TD: TD022 | TV: TV022 | TA: TA006 | Risk: R005 | Spec: spec/仕様書.md 5.3
     const runtime = await openApp(page);
     const text = await runSimulation(page, { eventProb: 100 });
 
@@ -371,7 +395,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-033 デフォルト入力で30歳から100歳まで流れが表示される', async ({ page }) => {
-    // TC: TC-E2E-033 | TD: TD019 | TV: TV019 | TA: TA002 | Risk: R002 | Spec: REQ-001, REQ-002, REQ-003
+    // TC: TC-E2E-033 | TD: TD026 | TV: TV026 | TA: TA007 | Risk: R002 | Spec: spec/仕様書.md 9.2
     const runtime = await openApp(page);
     const text = await runSimulation(page);
 
@@ -384,7 +408,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-036 開始クリックでシミュレーション結果が初回表示される', async ({ page }) => {
-    // TC: TC-E2E-036 | TD: TD020 | TV: TV020 | TA: TA003 | Risk: R004 | Spec: REQ-001
+    // TC: TC-E2E-036 | TD: TD032 | TV: TV032 | TA: TA009 | Risk: R006, R008 | Spec: spec/仕様書.md 3.1.1、3.1.3
     const runtime = await openApp(page);
     const text = await runSimulation(page, { eventProb: 0 });
 
@@ -395,7 +419,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-037 条件変更後の再実行で結果が更新される', async ({ page }) => {
-    // TC: TC-E2E-037 | TD: TD020 | TV: TV020 | TA: TA003 | Risk: R004 | Spec: REQ-001
+    // TC: TC-E2E-037 | TD: TD034 | TV: TV034 | TA: TA009 | Risk: R006, R008 | Spec: spec/仕様書.md 3.1.1、F006
     const runtime = await openApp(page);
     const before = await runSimulation(page, { salary: 3000000, eventProb: 0 });
     const after = await runSimulation(page, { salary: 4000000, eventProb: 0 });
@@ -406,7 +430,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-038 年収変更で結果が変わる', async ({ page }) => {
-    // TC: TC-E2E-038 | TD: TD021 | TV: TV021 | TA: TA003 | Risk: R004 | Spec: REQ-001
+    // TC: TC-E2E-038 | TD: TD035 | TV: TV035 | TA: TA010 | Risk: R006 | Spec: spec/仕様書.md 3.1.2、F007
     const runtime = await openApp(page);
     const before = await runSimulation(page, { salary: 3000000, eventProb: 0 });
     const after = await runSimulation(page, { salary: 4000000, eventProb: 0 });
@@ -416,7 +440,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-039 現在生活費変更で結果が変わる', async ({ page }) => {
-    // TC: TC-E2E-039 | TD: TD021 | TV: TV021 | TA: TA003 | Risk: R004 | Spec: REQ-001
+    // TC: TC-E2E-039 | TD: TD035 | TV: TV035 | TA: TA010 | Risk: R006 | Spec: spec/仕様書.md 3.1.2、F007
     const runtime = await openApp(page);
     const before = await runSimulation(page, { expenseCurrent: 155600, eventProb: 0 });
     const after = await runSimulation(page, { expenseCurrent: 200000, eventProb: 0 });
@@ -426,7 +450,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-040 投資割合変更で結果が変わる', async ({ page }) => {
-    // TC: TC-E2E-040 | TD: TD021 | TV: TV021 | TA: TA003 | Risk: R004 | Spec: REQ-001
+    // TC: TC-E2E-040 | TD: TD035 | TV: TV035 | TA: TA010 | Risk: R006 | Spec: spec/仕様書.md 3.1.2、F007
     const runtime = await openApp(page);
     const before = await runSimulation(page, { investRate: 0, eventProb: 0 });
     const after = await runSimulation(page, { investRate: 50, eventProb: 0 });
@@ -436,7 +460,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-041 利回り変更で結果が変わる', async ({ page }) => {
-    // TC: TC-E2E-041 | TD: TD021 | TV: TV021 | TA: TA003 | Risk: R004 | Spec: REQ-001
+    // TC: TC-E2E-041 | TD: TD035 | TV: TV035 | TA: TA010 | Risk: R006 | Spec: spec/仕様書.md 3.1.2、F007
     const runtime = await openApp(page);
     const common = { startAge: 30, retirementAge: 33, pensionStartAge: 33, initialInv: 1000000, eventProb: 0 };
     const before = await runSimulation(page, { ...common, interest: 0 });
@@ -447,7 +471,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-042 イベント確率変更で結果が変わる', async ({ page }) => {
-    // TC: TC-E2E-042 | TD: TD021 | TV: TV021 | TA: TA003 | Risk: R004 | Spec: REQ-001
+    // TC: TC-E2E-042 | TD: TD035 | TV: TV035 | TA: TA010 | Risk: R006 | Spec: spec/仕様書.md 3.1.2、F007
     const runtime = await openApp(page);
     const before = await runSimulation(page, { eventProb: 0 });
     const after = await runSimulation(page, { eventProb: 100 });
@@ -458,7 +482,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-043 空文字入力が混在しても結果が破綻しない', async ({ page }) => {
-    // TC: TC-E2E-043 | TD: TD022 | TV: TV022 | TA: TA003 | Risk: R004 | Spec: REQ-001
+    // TC: TC-E2E-043 | TD: TD036 | TV: TV036 | TA: TA010 | Risk: R006 | Spec: spec/仕様書.md 7.2
     const runtime = await openApp(page);
     const text = await runSimulation(page, {
       salary: '',
@@ -473,7 +497,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-044 数値欄に非数値が入ってもNaNやInfinityを表示しない', async ({ page }) => {
-    // TC: TC-E2E-044 | TD: TD022 | TV: TV022 | TA: TA003 | Risk: R004 | Spec: REQ-001
+    // TC: TC-E2E-044 | TD: TD036 | TV: TV036 | TA: TA010 | Risk: R006 | Spec: spec/仕様書.md 7.2
     const runtime = await openApp(page);
     const text = await runSimulation(page, { salary: 'abc', eventProb: 0 }, { rawIds: ['salary'] });
 
@@ -482,7 +506,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-045 主要入力が未設定でもシミュレーションが停止しない', async ({ page }) => {
-    // TC: TC-E2E-045 | TD: TD022 | TV: TV022 | TA: TA003 | Risk: R004 | Spec: REQ-001
+    // TC: TC-E2E-045 | TD: TD036 | TV: TV036 | TA: TA010 | Risk: R006 | Spec: spec/仕様書.md 7.2
     const runtime = await openApp(page);
     const text = await runSimulation(page, {
       startAge: '',
@@ -498,7 +522,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-046 給与変更追加後の結果に変更後年収が出る', async ({ page }) => {
-    // TC: TC-E2E-046 | TD: TD023 | TV: TV023 | TA: TA003 | Risk: R004 | Spec: REQ-002
+    // TC: TC-E2E-046 | TD: TD038 | TV: TV038 | TA: TA010 | Risk: R004, R006 | Spec: spec/仕様書.md 2.2 F008
     const runtime = await openApp(page);
     const text = await runSimulation(page, { startAge: 39, retirementAge: 41, pensionStartAge: 41, eventProb: 0 }, {
       salaryChanges: [{ age: 40, salary: 8000000 }],
@@ -509,7 +533,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-047 給与変更削除後は変更後年収が出ない', async ({ page }) => {
-    // TC: TC-E2E-047 | TD: TD023 | TV: TV023 | TA: TA003 | Risk: R004 | Spec: REQ-002
+    // TC: TC-E2E-047 | TD: TD038 | TV: TV038 | TA: TA010 | Risk: R004, R006 | Spec: spec/仕様書.md 2.2 F008
     const runtime = await openApp(page);
     const item = await addSalaryChange(page, 40, 8000000);
     await item.getByRole('button', { name: '削除' }).click();
@@ -520,7 +544,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-048 給与変更削除後の再実行で結果が更新される', async ({ page }) => {
-    // TC: TC-E2E-048 | TD: TD023 | TV: TV023 | TA: TA003 | Risk: R004 | Spec: REQ-002
+    // TC: TC-E2E-048 | TD: TD038 | TV: TV038 | TA: TA010 | Risk: R004, R006 | Spec: spec/仕様書.md 2.2 F008
     const runtime = await openApp(page);
     const item = await addSalaryChange(page, 40, 8000000);
     const before = await runSimulation(page, { startAge: 39, retirementAge: 41, pensionStartAge: 41, eventProb: 0 });
@@ -534,7 +558,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-049 READMEの基本シナリオを画面操作で確認できる', async ({ page }) => {
-    // TC: TC-E2E-049 | TD: TD025 | TV: TV025 | TA: TA006 | Risk: R002 | Spec: README
+    // TC: TC-E2E-049 | TD: TD039 | TV: TV039 | TA: TA011 | Risk: R001, R002, R003, R004 | Spec: sample_app/README.md 使用例
     const runtime = await openApp(page);
     const text = await runSimulation(page, {
       salary: 4000000,
@@ -554,7 +578,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-050 READMEの給与変動シナリオを画面操作で確認できる', async ({ page }) => {
-    // TC: TC-E2E-050 | TD: TD025 | TV: TV025 | TA: TA006 | Risk: R002 | Spec: README
+    // TC: TC-E2E-050 | TD: TD039 | TV: TV039 | TA: TA011 | Risk: R001, R002, R003, R004 | Spec: sample_app/README.md 使用例
     const runtime = await openApp(page);
     const text = await runSimulation(page, {
       salary: 4000000,
@@ -578,7 +602,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-051 READMEの早期退職シナリオを画面操作で確認できる', async ({ page }) => {
-    // TC: TC-E2E-051 | TD: TD025 | TV: TV025 | TA: TA006 | Risk: R002 | Spec: README
+    // TC: TC-E2E-051 | TD: TD039 | TV: TV039 | TA: TA011 | Risk: R001, R002, R003, R004 | Spec: sample_app/README.md 使用例
     const runtime = await openApp(page);
     const text = await runSimulation(page, {
       salary: 6000000,
@@ -598,7 +622,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-052 READMEの高収入・遅め退職シナリオを画面操作で確認できる', async ({ page }) => {
-    // TC: TC-E2E-052 | TD: TD025 | TV: TV025 | TA: TA006 | Risk: R002 | Spec: README
+    // TC: TC-E2E-052 | TD: TD039 | TV: TV039 | TA: TA011 | Risk: R001, R002, R003, R004 | Spec: sample_app/README.md 使用例
     const runtime = await openApp(page);
     const text = await runSimulation(page, {
       salary: 10000000,
@@ -617,71 +641,96 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-053 通常実行で外部通信が発生しない', async ({ page }) => {
-    // TC: TC-E2E-053 | TD: TD026 | TV: TV026 | TA: TA007 | Risk: R005 | Spec: N/A
+    // TC: TC-E2E-053 | TD: TD043 | TV: TV043 | TA: TA012 | Risk: R007 | Spec: spec/仕様書.md 8.1、4.2
     const runtime = await openApp(page);
+    const storageBefore = await readClientStorage(page);
     const text = await runSimulation(page, { eventProb: 0 });
+    const storageAfter = await readClientStorage(page);
 
     expectHealthyOutput(text);
-    expectNoExternalRequests(runtime);
+    expectNoNetworkRequests(runtime);
+    expectNoClientStorageChange(storageBefore, storageAfter);
     expectNoRuntimeErrors(runtime);
   });
 
   test('TC-E2E-054 入力変更後の実行でも外部通信が発生しない', async ({ page }) => {
-    // TC: TC-E2E-054 | TD: TD026 | TV: TV026 | TA: TA007 | Risk: R005 | Spec: N/A
+    // TC: TC-E2E-054 | TD: TD043 | TV: TV043 | TA: TA012 | Risk: R007 | Spec: spec/仕様書.md 8.1、4.2
     const runtime = await openApp(page);
+    const storageBefore = await readClientStorage(page);
     const text = await runSimulation(page, { salary: 5000000, initialCash: 3000000, eventProb: 0 });
+    const storageAfter = await readClientStorage(page);
 
     expectHealthyOutput(text);
-    expectNoExternalRequests(runtime);
+    expectNoNetworkRequests(runtime);
+    expectNoClientStorageChange(storageBefore, storageAfter);
     expectNoRuntimeErrors(runtime);
   });
 
   test('TC-E2E-055 初期表示から実行まで外部通信が発生しない', async ({ page }) => {
-    // TC: TC-E2E-055 | TD: TD026 | TV: TV026 | TA: TA007 | Risk: R005 | Spec: N/A
+    // TC: TC-E2E-055 | TD: TD043 | TV: TV043 | TA: TA012 | Risk: R007 | Spec: spec/仕様書.md 8.1、4.2
     const runtime = await openApp(page);
+    const storageBefore = await readClientStorage(page);
     const text = await runSimulation(page);
+    const storageAfter = await readClientStorage(page);
 
     expectHealthyOutput(text);
-    expectNoExternalRequests(runtime);
+    expectNoNetworkRequests(runtime);
+    expectNoClientStorageChange(storageBefore, storageAfter);
     expectNoRuntimeErrors(runtime);
   });
 
-  test('TC-E2E-061 0歳開始の長期シミュレーションが短時間で完了する', async ({ page }) => {
-    // TC: TC-E2E-061 | TD: TD029 | TV: TV029 | TA: TA008 | Risk: R003 | Spec: N/A
+  test('TC-E2E-061 0歳開始の長期シミュレーションが操作不能にならない', async ({ page }, testInfo) => {
+    // TC: TC-E2E-061 | TD: TD049 | TV: TV049 | TA: TA014 | Risk: R008 | Spec: spec/仕様書.md 6.1、6.2
     const runtime = await openApp(page);
     const startedAt = Date.now();
     const text = await runSimulation(page, { startAge: 0, eventProb: 0 });
+    const elapsedMs = Date.now() - startedAt;
 
-    expect(Date.now() - startedAt).toBeLessThan(5000);
+    await testInfo.attach('TC-E2E-061-performance', {
+      body: `elapsedMs=${elapsedMs}`,
+      contentType: 'text/plain',
+    });
     expect(text).toContain('-- 100歳12月 --');
+    await expect(page.locator('#runBtn')).toBeEnabled();
     expectHealthyOutput(text);
     expectNoRuntimeErrors(runtime);
   });
 
-  test('TC-E2E-062 イベント100%でも長期シミュレーションが短時間で完了する', async ({ page }) => {
-    // TC: TC-E2E-062 | TD: TD029 | TV: TV029 | TA: TA008 | Risk: R003 | Spec: N/A
+  test('TC-E2E-062 イベント100%でも長期シミュレーションが操作不能にならない', async ({ page }, testInfo) => {
+    // TC: TC-E2E-062 | TD: TD049 | TV: TV049 | TA: TA014 | Risk: R008 | Spec: spec/仕様書.md 6.1、6.2
     const runtime = await openApp(page);
     const startedAt = Date.now();
     const text = await runSimulation(page, { startAge: 0, eventProb: 100 });
+    const elapsedMs = Date.now() - startedAt;
 
-    expect(Date.now() - startedAt).toBeLessThan(5000);
+    await testInfo.attach('TC-E2E-062-performance', {
+      body: `elapsedMs=${elapsedMs}`,
+      contentType: 'text/plain',
+    });
     expect(text).toContain('▶');
+    await expect(page.locator('#runBtn')).toBeEnabled();
     expectHealthyOutput(text);
     expectNoRuntimeErrors(runtime);
   });
 
-  test('TC-E2E-063 長期出力が生成されても画面が操作不能にならない', async ({ page }) => {
-    // TC: TC-E2E-063 | TD: TD029 | TV: TV029 | TA: TA008 | Risk: R003 | Spec: N/A
+  test('TC-E2E-063 長期出力が生成されても画面が操作不能にならない', async ({ page }, testInfo) => {
+    // TC: TC-E2E-063 | TD: TD049 | TV: TV049 | TA: TA014 | Risk: R008 | Spec: spec/仕様書.md 6.1、6.2
     const runtime = await openApp(page);
     const text = await runSimulation(page, { startAge: 0, eventProb: 100 });
 
-    expect(text.length).toBeGreaterThan(10000);
+    await testInfo.attach('TC-E2E-063-output-size', {
+      body: `characters=${text.length}`,
+      contentType: 'text/plain',
+    });
+    expect(text).toContain('-- 0歳1月 --');
+    expect(text).toContain('-- 100歳12月 --');
     await expect(page.locator('#runBtn')).toBeEnabled();
+    expectHealthyOutput(text);
     expectNoRuntimeErrors(runtime);
   });
 
   test('TC-E2E-065 投資割合のHTML属性制約を確認できる', async ({ page }) => {
-    // TC: TC-E2E-065 | TD: TD030 | TV: TV030 | TA: TA009 | Risk: R004 | Spec: N/A
+    // TC: TC-E2E-065 | TD: TD037 | TV: TV037 | TA: TA010 | Risk: R006 | Spec: spec/仕様書.md 3.1.2、7.1
     const runtime = await openApp(page);
 
     await expect(page.locator('#investRate')).toHaveAttribute('min', '0');
@@ -693,7 +742,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-066 給与変更年齢のHTML属性制約を確認できる', async ({ page }) => {
-    // TC: TC-E2E-066 | TD: TD030 | TV: TV030 | TA: TA009 | Risk: R004 | Spec: N/A
+    // TC: TC-E2E-066 | TD: TD037 | TV: TV037 | TA: TA010 | Risk: R006 | Spec: spec/仕様書.md 3.1.2、7.1
     const runtime = await openApp(page);
     await addSalaryChange(page, 100, 8000000);
 
@@ -706,7 +755,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-067 属性範囲外の直接入力でも処理が破綻しない', async ({ page }) => {
-    // TC: TC-E2E-067 | TD: TD030 | TV: TV030 | TA: TA009 | Risk: R004 | Spec: N/A
+    // TC: TC-E2E-067 | TD: TD037 | TV: TV037 | TA: TA010 | Risk: R006 | Spec: spec/仕様書.md 3.1.2、7.1
     const runtime = await openApp(page);
     const text = await runSimulation(page, { investRate: 150, eventProb: 0 }, { rawIds: ['investRate'] });
 
@@ -715,7 +764,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-068 ローカルHTMLを直接開いて初期表示できる', async ({ page }) => {
-    // TC: TC-E2E-068 | TD: TD031 | TV: TV031 | TA: TA009 | Risk: R004 | Spec: README
+    // TC: TC-E2E-068 | TD: TD044 | TV: TV044 | TA: TA012 | Risk: R007, R009 | Spec: spec/仕様書.md 10.1
     const runtime = await openApp(page);
 
     await expect(page.locator('h1')).toContainText('老後資金シミュレーター');
@@ -724,7 +773,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-069 ローカルHTMLを直接開いてシミュレーションできる', async ({ page }) => {
-    // TC: TC-E2E-069 | TD: TD031 | TV: TV031 | TA: TA009 | Risk: R004 | Spec: README
+    // TC: TC-E2E-069 | TD: TD044 | TV: TV044 | TA: TA012 | Risk: R007, R009 | Spec: spec/仕様書.md 10.1
     const runtime = await openApp(page);
     const text = await runSimulation(page, { eventProb: 0 });
 
@@ -733,7 +782,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-080 画面と結果に日本語ラベルが表示される', async ({ page }) => {
-    // TC: TC-E2E-080 | TD: TD038 | TV: TV038 | TA: TA009 | Risk: R004 | Spec: README
+    // TC: TC-E2E-080 | TD: TD053 | TV: TV053 | TA: TA015 | Risk: R009 | Spec: spec/仕様書.md 3.1.3、7.3
     const runtime = await openApp(page);
     const text = await runSimulation(page, { eventProb: 0 });
 
@@ -745,7 +794,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-081 結果に円記号つきの金額が表示される', async ({ page }) => {
-    // TC: TC-E2E-081 | TD: TD038 | TV: TV038 | TA: TA009 | Risk: R004 | Spec: README
+    // TC: TC-E2E-081 | TD: TD053 | TV: TV053 | TA: TA015 | Risk: R009 | Spec: spec/仕様書.md 3.1.3、7.3
     const runtime = await openApp(page);
     const text = await runSimulation(page, { eventProb: 0 });
 
@@ -755,7 +804,7 @@ test.describe('retirement_simulator.html E2E', () => {
   });
 
   test('TC-E2E-082 結果の金額が桁区切りで表示される', async ({ page }) => {
-    // TC: TC-E2E-082 | TD: TD038 | TV: TV038 | TA: TA009 | Risk: R004 | Spec: README
+    // TC: TC-E2E-082 | TD: TD053 | TV: TV053 | TA: TA015 | Risk: R009 | Spec: spec/仕様書.md 3.1.3、7.3
     const runtime = await openApp(page);
     const text = await runSimulation(page, { salary: 10000000, initialCash: 10000000, eventProb: 0 });
 

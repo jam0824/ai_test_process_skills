@@ -11,10 +11,10 @@
 
 | 区分 | 内容 |
 |---|---|
-| Playwright最小構成 | `package.json`、`playwright.config.js` を追加 |
+| Playwright最小構成 | `package.json`、`playwright.config.js` を追加。`chromium`、`firefox`、`webkit` の3プロジェクトで実行 |
 | E2E spec | `TC-E2E-001`〜`TC-E2E-003`、`TC-E2E-008`〜`TC-E2E-021`、`TC-E2E-027`〜`TC-E2E-033`、`TC-E2E-036`〜`TC-E2E-055`、`TC-E2E-061`〜`TC-E2E-063`、`TC-E2E-065`〜`TC-E2E-069`、`TC-E2E-080`〜`TC-E2E-082` を実装 |
 | 未実装分離 | 質問待ち・要確認・正式ブラウザ/性能閾値未確定のケースを `テスト成果物/未実装テストケース_E2E自動.md` に分離 |
-| トレーサビリティ | 各 `test()` 名に `TC-E2E-*` と日本語意図を含め、直近コメントに `TD`、`TV`、`TA`、`Risk`、`Spec` を記録 |
+| トレーサビリティ | 各 `test()` 名に `TC-E2E-*` と日本語意図を含め、直近コメントに `テストケース_E2E自動.md` と一致する `TD`、`TV`、`TA`、`Risk`、`Spec` を記録 |
 
 ## 3. 実行方法
 
@@ -53,8 +53,9 @@ npm run test:e2e
 | Playwright設定構文確認 | `node --check playwright.config.js` 成功 |
 | `package.json` JSON確認 | `JSON.parse` 成功 |
 | Playwright実行 | 未実施。依存関係未インストールのため |
+| レビュー後の静的確認 | トレーサビリティコメント55件が `テストケース_E2E自動.md` と一致 |
 
 ## 6. 補足
 
 - `TC-E2E-010` はテストケースの期待どおり「開始年齢101歳でも結果表示される」ことを検証するため、現在実装が空出力になる場合はFailする想定。
-- `TC-E2E-065`〜`TC-E2E-069`、`TC-E2E-080`〜`TC-E2E-082` は現在のPlaywright構成のChromium上で実装した。正式なマルチブラウザ確認は `DQ010`、`DQ011` の回答後に追加する。
+- `TC-E2E-065`〜`TC-E2E-067` は `chromium`、`firefox`、`webkit` プロジェクトでHTML属性境界を確認する。正式な対象ブラウザバージョンやviewport確認は `DQ010`、`DQ011` の回答後に追加する。
