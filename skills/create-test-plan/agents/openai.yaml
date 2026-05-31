@@ -1,4 +1,4 @@
 interface:
   display_name: "テスト計画書作成"
-  short_description: "資料からテスト計画書Markdownを作成する支援"
-  default_prompt: "Use $create-test-plan to draft a Markdown test plan from the project documents."
+  short_description: "資料からリスク、ユースケース、汎用QA方針を含むテスト計画書を作成する支援"
+  default_prompt: "Use $create-test-plan to draft a Markdown test plan with risk-based approaches, use-case/scenario strategy, generic QA coverage, and downstream analysis/design depth expectations."

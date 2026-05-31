@@ -1,4 +1,4 @@
 interface:
   display_name: "テスト計画レビュー"
-  short_description: "テスト計画をレビューし高優先度問題を改善して保存する支援"
-  default_prompt: "Use $review-test-plan to review, fix, re-review, and save the final Markdown review result for a test plan."
+  short_description: "テスト計画のリスク対応、ユースケース方針、必要十分性をレビューする支援"
+  default_prompt: "Use $review-test-plan to review risk coverage, use-case/scenario strategy, generic QA coverage, downstream depth expectations, fix high-priority issues, and save the final Markdown review result."
