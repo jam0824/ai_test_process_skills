@@ -1,6 +1,6 @@
 ---
 name: create-test-plan
-description: Create Japanese Markdown test plan documents from product requirements, README files, specifications, existing tests, implementation notes, and user-provided source data. Use when Codex needs to draft or revise a test plan (テスト計画書) that defines test objectives, referenced documents, test items, scope, exit criteria, product risk scoring, traceable high-level test approaches, use-case/scenario testing strategy, and downstream analysis/design depth expectations.
+description: Create Japanese Markdown test plan documents from product requirements, README files, specifications, existing tests, implementation notes, and user-provided source data. Use when Codex needs to draft or revise a test plan (テスト計画書) that defines test objectives, referenced documents, test items, scope, exit criteria, product risk scoring, traceable high-level test approaches, use-case/scenario testing strategy, formal/regression test asset handling, unresolved assumptions, and downstream analysis/design depth expectations.
 ---
 
 # Create Test Plan
@@ -26,9 +26,10 @@ The plan should decide which testing approaches are needed and how much depth do
    - High-risk product areas and critical user or operator flows.
    - Product types and interfaces such as Web UI, API, CLI, library, batch, data processing, mobile, reports/documents, integrations, or infrastructure tools.
    - Generic QA areas that are relevant at plan level, such as boundary values, abnormal values, state transitions, combinations, security/privacy, performance/reliability, compatibility, accessibility, persistence, concurrency/timing, localization, and observability/logging.
+   - Source-defined formal test assets, regression suites, required fixtures, golden files, seed data, test commands, CI jobs, evidence formats, supported environments, thresholds, and explicit exclusions.
 4. Draft the test plan with every required section below. Add optional sections only when the source material supports them or they reduce ambiguity.
-5. Mark missing information as `未確定` or `要確認`. Do not invent owners, schedules, tools, supported environments, or acceptance thresholds that are not supported by the source material.
-6. Before finalizing, verify that all required sections exist, every product risk has 発生確率, 影響度, and リスク度, and high-risk areas have downstream analysis/design depth expectations.
+5. Mark missing information as `未確定` or `要確認`. Do not invent owners, schedules, tools, supported environments, or acceptance thresholds that are not supported by the source material. If any `未確定` or `要確認` item appears, aggregate it in an optional `未決事項` section or table after the required sections.
+6. Before finalizing, verify that all required sections exist, every product risk has 発生確率, 影響度, and リスク度, high-risk areas have downstream analysis/design depth expectations, source-defined test assets are addressed, and unresolved items are visible in one place.
 
 ## Required Output Structure
 
@@ -50,13 +51,15 @@ Required section guidance:
 
 - **テスト目的**: State why testing is being performed and what confidence the plan should provide.
 - **ドキュメント**: List referenced documents, paths, or data sources. Include each source's role in the plan when useful.
-- **テストアイテム**: List the product, functions, screens, APIs, data flows, calculations, integrations, or artifacts under test.
-- **テストスコープ**: Define what parts of the test items are in scope. If exclusions or boundaries are unclear, state them as `未確定` or `要確認`.
-- **テスト終了条件**: Define completion criteria for test execution, defect handling, regression, unresolved risk, and sign-off. Use source-supported thresholds; otherwise mark thresholds as `要確認`.
+- **テストアイテム**: List the product, functions, screens, APIs, data flows, calculations, integrations, source-defined test assets, regression assets, or artifacts under test.
+- **テストスコープ**: Define what parts of the test items are in scope. If exclusions or boundaries are unclear, state them as `未確定` or `要確認`. If a high-risk item is excluded or best-effort only, state the rationale, residual risk, or alternative confirmation method at plan level.
+- **テスト終了条件**: Define completion criteria for test execution, defect handling, regression, unresolved risk, evidence, and sign-off. Use source-supported thresholds; otherwise mark thresholds as `要確認`.
 - **プロダクトリスク**: Use a Markdown table with numeric risk scoring.
 - **テストアプローチ**: Use a traceability table that links each high-level approach to source specifications and related product risks.
 
 In `テスト終了条件`, include artifact-quality gates when useful, such as no unresolved `P0/P1` findings in test plan, analysis, design, and test case reviews; unresolved high-risk assumptions are approved or explicitly deferred; and residual risks are recorded. Do not invent organizational approval rules when sources do not provide them; mark them `要確認`.
+
+If the source material names formal, required, or bundled test assets (for example regression suites, golden data, contract tests, acceptance test packs, fixture libraries, required CI jobs, or externally supplied validation files), reflect them at planning level. State whether the plan will verify existence, execute them, reuse them as evidence, compare them with independent tests, or record their absence as a risk or unresolved item. Do not assume that a documented asset exists on disk; if existence is unknown, plan an existence/availability check.
 
 ## Product Risk Scoring
 
@@ -101,6 +104,7 @@ Choose approaches by risk and behavior type:
 - **Integration test**: Use for interactions between modules, data persistence, API contracts, background jobs, external services, and cross-component data flow.
 - **E2E test**: Use for critical user journeys, screen-to-result flows, form input/output, browser behavior, and regression paths that must work as a whole.
 - **Use-case/scenario-based test**: Use for important user, operator, or system-to-system goals where preconditions, main flow, alternative flow, exception flow, and postconditions determine confidence. At plan level, identify target use cases and priority; leave detailed scenario decomposition to test analysis and design.
+- **Regression/formal asset test**: Use when source material identifies an existing or required regression suite, certification pack, golden file, sample data set, compatibility matrix, contract test, or formal validation artifact. At plan level, identify the asset, expected usage, evidence, and missing-asset handling.
 - **Security test**: Use for authentication, authorization, input sanitization, XSS/CSRF/injection risks, privacy, secrets, dependencies, and network behavior.
 - **Performance test**: Use for heavy calculations, large datasets, rendering volume, startup time, response time, and resource usage.
 - **Compatibility/accessibility test**: Use when browser/device support, responsive UI, keyboard operation, screen reader behavior, or locale/currency formatting matters.
@@ -115,6 +119,8 @@ Use the plan to set expectations for later analysis and design without doing the
 - For each high-risk product risk, ensure at least one test approach tells downstream skills which kind of depth is expected, such as use-case flow coverage, boundary coverage, abnormal/error coverage, state/transition coverage, combination coverage, security/privacy coverage, performance/reliability coverage, compatibility/accessibility coverage, or observability/evidence coverage.
 - For important use cases, state the target user or actor, goal, and risk at a high level. Downstream analysis should decompose preconditions, main flows, alternative flows, exception flows, and postconditions.
 - For product types with common failure modes, add strategy-level approaches for relevant generic QA areas. Avoid making a mechanical checklist of every QA category when the product context does not justify it.
+- Preserve important source-defined structures at plan level when they affect strategy: critical ranges or thresholds, supported environments, required evidence, formal test assets, and explicit exclusions. Do not list every boundary value or enum unless the plan would otherwise lose a required test direction.
+- When source material or repository metadata exposes test commands, CI jobs, browser/device matrices, or evidence formats, record the intended execution route or evidence expectation at plan level. Leave installation, dependency resolution, and actual run details to execution skills.
 - If an approach depends on unknown environments, thresholds, roles, data volume, supported formats, or acceptance criteria, mark the approach or exit criteria as `要確認`.
 
 ## Generic QA Planning Catalog
@@ -145,6 +151,7 @@ Add these only when useful and supported by the source material:
 - スケジュール
 - 成果物
 - 未決事項
+- 正式テスト資産/回帰資産
 - 後続成果物の品質ゲート
 - 対象ユースケース/主要シナリオ
 
@@ -158,8 +165,11 @@ Before delivering the test plan:
 - Confirm test approaches are listed in a table with テストアプローチID, 内容, 仕様, and リスクID.
 - Confirm test approaches mention appropriate levels such as Unit, Integration, E2E, Security, Performance, Compatibility, Accessibility, or Exploratory when relevant.
 - Confirm use-case/scenario-based testing is considered when important user, operator, or system-to-system flows determine product confidence.
+- Confirm source-defined formal or regression test assets are included as test items, approaches, scope, evidence, or unresolved items.
 - Confirm high-risk risks have downstream depth expectations that can guide test analysis and design without becoming detailed test cases.
 - Confirm relevant generic QA planning areas were considered and either included or reasonably left out based on product context.
 - Confirm exit criteria include review quality gates or residual-risk handling when they matter for the request.
+- Confirm high-risk exclusions or best-effort areas include rationale, residual-risk handling, or alternative confirmation.
+- Confirm source-supported execution routes such as test commands, CI jobs, environments, or evidence formats are reflected when they affect planning.
 - Confirm each test approach links to at least one specification source or is explicitly marked `要確認`, and links to product risks when applicable.
-- Confirm assumptions and unknowns are clearly labeled instead of silently filled in.
+- Confirm assumptions and unknowns are clearly labeled instead of silently filled in, and aggregated in `未決事項` when any exist.

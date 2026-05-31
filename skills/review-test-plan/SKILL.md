@@ -1,6 +1,6 @@
 ---
 name: review-test-plan
-description: Review Japanese Markdown test plans against product specifications and QA planning quality criteria, prioritize findings, fix high-priority issues in the test plan, re-review until no high-priority fix-worthy issues remain, and save the final review result as Markdown. Use when Codex needs to assess or improve a テスト計画書, test strategy document, QA plan, traceable test planning artifact, use-case/scenario testing strategy, generic QA coverage, or downstream analysis/design depth expectations.
+description: Review Japanese Markdown test plans against product specifications and QA planning quality criteria, prioritize findings, fix high-priority issues in the test plan, re-review until no high-priority fix-worthy issues remain, and save the final review result as Markdown. Use when Codex needs to assess or improve a テスト計画書, test strategy document, QA plan, traceable test planning artifact, use-case/scenario testing strategy, generic QA coverage, formal/regression test asset handling, unresolved assumptions, or downstream analysis/design depth expectations.
 ---
 
 # Review Test Plan
@@ -20,7 +20,7 @@ This skill is allowed to edit the test plan being reviewed when the user asks fo
    - User-provided review instructions and acceptance criteria.
    - Product specifications such as `spec/`, `docs/`, files named `仕様書`, requirement IDs, or feature lists.
    - README and user-facing product documentation.
-   - Existing tests, QA artifacts, and implementation files only when they clarify the plan.
+   - Existing tests, QA artifacts, test commands, CI/config files, and implementation files only when they clarify the plan.
 3. Review the test plan using the review perspectives below.
 4. List findings with priority. Include exact section names or file locations where possible.
 5. Fix all `P0` and `P1` findings that are actually fixable from available information. Fix `P2` findings only when the correction is low-risk and clearly supported by the source material.
@@ -46,7 +46,10 @@ Use this review to judge whether the plan gives downstream skills enough directi
 - If user, operator, or system-to-system goals are central to confidence, the plan should include use-case/scenario-based testing or explicitly explain why it is out of scope.
 - Use-case/scenario strategy should identify target flows at a planning level: actor or user class, goal, risk, and rough priority. It should leave preconditions, main flow, alternative flow, exception flow, and postconditions to analysis/design.
 - Relevant generic QA areas should be considered at plan level: input/boundary/abnormal data, state transitions, combinations, security/privacy, performance/reliability, compatibility, accessibility/usability, persistence, concurrency/timing, localization, and observability/logging.
+- Source-defined formal or required test assets should be addressed at plan level when they affect confidence, regression, certification, compatibility, acceptance, or evidence. The plan should state intended usage, evidence, and missing-asset handling without turning into execution details.
+- Important source-defined structures should not disappear from the plan when they change strategy: supported environments, thresholds, required evidence, explicit exclusions, formal assets, and high-risk boundaries.
 - The plan should include exit criteria or residual-risk handling that prevents later artifacts from shipping with unresolved high-priority review findings unless explicitly accepted.
+- Unresolved assumptions should be visible and grouped when practical, especially owners, sign-off, supported environments, thresholds, data volume, acceptance criteria, required assets, and manual confirmation scope.
 - Do not require every QA category for every product. Raise findings when the omission is inconsistent with product risk, user impact, or source material.
 
 ## Review Perspectives
@@ -57,12 +60,16 @@ Review from these perspectives:
 - **Specification traceability**: Confirm test items, risks, scope, and approaches trace back to source specifications, feature IDs, requirement IDs, or document sections.
 - **Risk analysis validity**: Confirm product risks are plausible, scored consistently, and drive the test focus.
 - **Scope clarity**: Confirm in-scope and out-of-scope items are clear, not contradictory, and do not silently exclude important behavior.
+- **Formal/regression asset handling**: Confirm source-defined formal, required, bundled, or regression test assets are reflected as test items, approaches, scope, evidence, or unresolved items.
 - **Test approach appropriateness**: Confirm Unit, Integration, E2E, Security, Performance, Compatibility, Accessibility, Exploratory, or Regression approaches are chosen at the right level and remain strategy-level rather than detailed test cases.
 - **Use-case/scenario strategy**: Confirm important user, operator, or system-to-system flows are covered by use-case/scenario-based testing when those flows drive confidence or risk.
 - **Generic QA planning coverage**: Confirm relevant generic QA areas are considered and tied to risks or scope where appropriate.
 - **Downstream depth guidance**: Confirm high-risk approaches tell later analysis/design what kind of depth is expected, such as boundaries, abnormal paths, state transitions, combinations, security, performance, compatibility, accessibility, recovery, persistence, concurrency, or observability.
 - **Exit criteria measurability**: Confirm completion criteria can be judged and include defect handling, residual risk, regression, and approval where relevant.
 - **Artifact quality gates**: Confirm the plan accounts for review outcomes for downstream artifacts when quality of analysis, design, cases, or automation matters.
+- **Unresolved item management**: Confirm `要確認` or `未確定` items are not scattered invisibly; when present, they are aggregated or clearly traceable.
+- **Exclusion and residual-risk handling**: Confirm high-risk exclusions, best-effort areas, unsupported environments, or manual-only areas have source-supported rationale and residual-risk or alternative-confirmation handling.
+- **Execution route and evidence planning**: Confirm source-supported test commands, CI jobs, environment matrices, evidence formats, and report artifacts are reflected when they affect feasibility or completion criteria.
 - **Execution feasibility**: Confirm the plan can realistically be executed with the stated target files, environments, tools, and existing tests.
 - **Product-specific concerns**: Check for concerns implied by the product, such as randomness/reproducibility, offline behavior, privacy, XSS or dynamic UI generation, performance with large outputs, and risks of users overtrusting decision-support or safety-sensitive results.
 
@@ -81,8 +88,12 @@ Guidelines:
 - Do not create a finding just because an optional detail is absent.
 - Treat a high-risk user or operator flow without a use-case/scenario strategy as `P1` unless the plan explicitly excludes it with a defensible reason.
 - Treat a high-risk product risk with only vague "test this" wording and no downstream depth expectation as `P1`.
+- Treat a source-defined formal or required regression asset that is absent from test items, scope, approaches, evidence, or unresolved items as `P1` when the source positions it as important for confidence or acceptance; otherwise usually `P2`.
 - Treat missing consideration of a relevant generic QA area as `P1` when it affects high-risk behavior and `P2` when the impact is moderate.
 - Treat exit criteria that allow unresolved `P0/P1` downstream artifact review findings without approval or residual-risk handling as `P1` when critical testing depends on those artifacts.
+- Treat a high-risk exclusion or best-effort item without rationale, residual-risk handling, or alternative confirmation as `P1`; use `P2` when the impact is moderate.
+- Treat scattered `要確認` or `未確定` items without an aggregation or clear tracking path as `P2`, unless they hide a high-risk acceptance or sign-off blocker.
+- Treat missing source-supported execution route or evidence planning as `P2`, or `P1` when it makes critical testing infeasible.
 - Mark unavailable source facts as `要確認`; do not invent them.
 - If no findings exist at a priority, say so clearly.
 
@@ -96,7 +107,11 @@ When fixing the test plan:
 - Prefer adding traceability IDs, references, measurable criteria, or explicit `要確認` notes over vague prose.
 - Add use-case/scenario-based approaches at strategy level when critical flows need them; do not decompose detailed scenario steps in the plan.
 - Add downstream depth expectations to high-risk approaches when analysis/design would otherwise be under-directed.
+- Add plan-level handling for formal or regression assets when source material identifies them. Prefer an approach, scope note, evidence requirement, or unresolved-item entry over detailed execution steps.
 - Add generic QA approaches only when product context or risk justifies them.
+- Add or update a `未決事項` section/table when `要確認` or `未確定` items exist and are otherwise easy to miss.
+- Add residual-risk or alternative-confirmation notes when high-risk behavior is excluded, best-effort, unsupported, or manual-only.
+- Add source-supported test commands, CI jobs, environment matrices, or evidence formats to the plan only at strategy level.
 - Add `要確認` for unknown supported environments, thresholds, roles, data volume, acceptance criteria, or artifact quality gates.
 - Record what was changed so the final review result can explain the iteration.
 
@@ -121,6 +136,7 @@ Final result requirements:
 - Include the source documents used.
 - Include the review perspectives applied.
 - Include a short necessary-and-sufficient planning summary, including use-case/scenario strategy, high-risk downstream depth expectations, and generic QA coverage.
+- Include whether source-defined formal/regression assets, unresolved items, exclusions/residual risks, and execution/evidence routes were checked.
 - Summarize each review/fix iteration.
 - State clearly that no `P0` or `P1` findings remain, or explain any remaining high-priority finding that could not be fixed because required information was unavailable.
 - List remaining `P2` and `P3` issues, if any, with recommended next actions.
