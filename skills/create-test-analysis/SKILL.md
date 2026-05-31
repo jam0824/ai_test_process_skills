@@ -95,14 +95,14 @@ For each test approach, derive viewpoints from these categories as applicable:
 
 - **Normal behavior**: Typical user inputs, standard scenarios, expected flows, documented examples.
 - **Default values**: Initial values, default selections, initial display, default output, no-input behavior.
-- **Boundary values**: Min/max values, zero, empty, same-age boundaries, age or date transition points, tax brackets, percentages 0% and 100%.
+- **Boundary values**: Min/max values, zero, empty, same-value boundaries, date/time transition points, tier thresholds, percentages 0% and 100%.
 - **Abnormal values**: Invalid, missing, negative, too large, decimal, non-numeric, inconsistent combinations, impossible ranges.
 - **State transitions**: Before/after actions, add/delete flows, repeated execution, reset-like behavior, data not persisting.
-- **Data and calculation**: Formulas, rounding, ordering, totals, tax handling, random event effects, precision.
+- **Data and calculation**: Formulas, rounding, ordering, totals, business-rule handling, nondeterministic input effects, precision.
 - **Compatibility**: Browsers, devices, screen sizes, locales, file execution mode, JavaScript availability.
 - **Usability/accessibility**: Keyboard operation, focus order, readable output, scrollability, labels, operability at supported resolution.
 - **Security/privacy**: Input sanitization, XSS, external communication, external dependencies, local-only behavior.
-- **Performance/reliability**: Response time, large output, repeated runs, random behavior reproducibility, long simulations.
+- **Performance/reliability**: Response time, large output, repeated runs, nondeterministic behavior reproducibility, long-running operations.
 - **Exploratory concerns**: Combinations likely to surprise users, ambiguous requirements, high-risk workflows, overtrust or misunderstanding.
 
 When one viewpoint contains many meaningful values or conditions, do not turn it into detailed test cases, but add a compact case-splitting hint in `備考`, such as `ケース分解候補: 最小/最大/最大超` or `ケース分解候補: 初回/再実行/削除後`.

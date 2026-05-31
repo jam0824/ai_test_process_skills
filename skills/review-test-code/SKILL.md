@@ -62,13 +62,13 @@ Review from these perspectives:
 - **Unimplemented case management**: Confirm `質問待ち`, `要確認`, technically blocked, or target-mismatch cases are not hidden; reasons and required follow-up are specific.
 - **Actual target verification**: Confirm tests exercise the specified target code, not a copied or reimplemented version of the logic unless the repository intentionally uses an existing harness and documents the limitation.
 - **Expected-value basis**: Confirm numeric and state expectations are supported by test cases, specifications, README, existing tests, or clear contracts.
-- **Assertion strength**: Confirm tests assert meaningful outcomes, not just "result exists", especially for high-risk calculation, transition, investment, random event, and補填 behavior.
+- **Assertion strength**: Confirm tests assert meaningful outcomes, not just "result exists", especially for high-risk calculation, transition, permission, recovery, randomness, or data-integrity behavior.
 - **Independence**: Confirm tests do not rely on execution order, leaked global state, leftover DOM, altered random functions, files, network, clocks, or locale state.
 - **Determinism**: Confirm randomness, time, locale, floating-point tolerance, and environment differences are controlled or explicitly left unimplemented.
 - **Test level/type validity**: Confirm Unit / Integration / Regression cases are implemented at the right level, and E2E/human-only cases are not forced into code-based tests.
 - **Maintainability**: Confirm helpers reduce real duplication, failure messages are useful, test data names are readable, and test organization follows the project style.
 - **Execution readiness**: Confirm commands are clear, dependencies are available or documented, and the tests can run locally and in CI without unnecessary setup.
-- **Failure diagnostics**: Confirm failures show enough context, such as test case ID, input condition, expected value, actual value, or target month/scenario.
+- **Failure diagnostics**: Confirm failures show enough context, such as test case ID, input condition, expected value, actual value, or target condition/scenario.
 - **Test data validity**: Confirm input data matches the source test case and does not accidentally trigger unrelated side effects that invalidate the assertion.
 - **Coupling and brittleness**: Confirm tests avoid unnecessary private implementation details and do not overfit wording/format unless that output is the contract.
 - **Safety**: Confirm tests do not perform external network access, destructive filesystem operations, hidden dependency installation, or environment mutation beyond the test scope.

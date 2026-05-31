@@ -140,15 +140,15 @@ Column guidance:
 Derive design rows using these patterns as applicable. These categories may be used as `テストパターン` values or as part of a more specific pattern label.
 
 - **Representative values**: Typical user scenarios, README examples, default values, common ranges.
-- **Boundary values**: Minimum, maximum, zero, empty, threshold transitions, age boundaries, percentage boundaries, tax brackets.
+- **Boundary values**: Minimum, maximum, zero, empty, threshold transitions, date/time boundaries, percentage boundaries, business-rule tiers.
 - **Abnormal values**: Negative, blank, non-numeric, decimal where integers are expected, too large, inconsistent ranges, impossible combinations.
-- **State and sequence**: Add/delete/update flows, repeated execution, before/after actions, cross-period carryover.
-- **Calculation detail**: Formula inputs, rounding, ordering, tax handling, totals, precision, and expected-value source.
-- **Integration behavior**: Cross-feature combinations, random event plus investment withdrawal, UI input to result output.
+- **State and sequence**: Add/delete/update flows, repeated execution, before/after actions, lifecycle carryover.
+- **Calculation detail**: Formula inputs, rounding, ordering, business-rule handling, totals, precision, and expected-value source.
+- **Integration behavior**: Cross-feature combinations, nondeterministic event plus state update, UI input to result output.
 - **Compatibility**: Browser differences, device or viewport conditions, `file://` execution, locale/currency formatting.
 - **Usability/accessibility**: Keyboard operation, focus, labels, readability, scrollability, warning visibility.
 - **Security/privacy**: XSS/input interpretation, dynamic HTML generation, external communication, local-only behavior.
-- **Performance/reliability**: Runtime, rendering volume, repeated execution, memory growth, long-running simulations.
+- **Performance/reliability**: Runtime, rendering volume, repeated execution, memory growth, long-running operations.
 - **Exploratory**: High-risk combinations, ambiguous requirements, user misunderstanding, overtrust, surprising outputs.
 
 When analysis `備考` contains a decomposition hint, reflect it in separate rows or explain the reason for not splitting in the design narrative or questionnaire. For example, a boundary hint should result in design patterns that distinguish the relevant boundary classes, not a single opaque row.

@@ -96,7 +96,7 @@ Add more browser projects only when the user requests them or the repository alr
 Use JavaScript Playwright test titles with Japanese intent and the source ID:
 
 ```js
-test('TC-E2E-001 年収異常値 - 負の年収', async ({ page }) => {
+test('TC-E2E-001 入力検証 - 不正な数値', async ({ page }) => {
   // TC: TC-E2E-001 | TD: TD003 | TV: TV003 | TA: TA001 | Risk: R001, R006 | Spec: spec/仕様書.md 7.2, 11.1
 });
 ```
@@ -127,7 +127,7 @@ Implementable examples:
 - Result area updates after clicking a start button.
 - Console/page errors do not occur.
 - Output does not contain `NaN` or `Infinity`.
-- A configured salary, pension, event, or asset value appears in the result.
+- A configured input, status, event, or calculated value appears in the result.
 - Network requests are not made during local execution.
 
 Move to unimplemented when:

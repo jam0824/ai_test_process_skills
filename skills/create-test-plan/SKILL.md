@@ -75,7 +75,7 @@ Scoring guidance:
 - 3: Plausible or moderate impact.
 - 1: Rare or low impact.
 - Treat `15-25` as high priority, `8-14` as medium priority, and `1-7` as low priority when prioritizing test focus.
-- Base scores on product context. For example, financial calculations, privacy-sensitive data, irreversible operations, security boundaries, and compliance-sensitive behavior usually deserve higher impact.
+- Base scores on product context. For example, critical calculations, privacy-sensitive data, irreversible operations, security boundaries, and compliance-sensitive behavior usually deserve higher impact.
 
 ## Test Approach Guidance
 

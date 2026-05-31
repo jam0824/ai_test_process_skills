@@ -19,7 +19,7 @@ A valid target is a specific file, module, class, function, component, or packag
 
 - `src/example.html`
 - `src/calc.ts`
-- `app/services/tax_calculator.py`
+- `app/services/rule_engine.py`
 - `calculateNetMonthly()`
 
 If the target is missing or ambiguous, stop before editing files and ask the user to specify the target. Do not infer a target only from the existence of test cases.
@@ -74,7 +74,7 @@ Make test intent readable in Japanese when practical.
 - For frameworks with string test names, put the traceability ID and Japanese intent in the test name:
 
 ```js
-test("TC-CB-001 年収300万円の月手取りを計算できる", () => {
+test("TC-CB-001 有効な入力で合計値を計算できる", () => {
   // ...
 });
 ```

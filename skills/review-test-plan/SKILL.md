@@ -64,7 +64,7 @@ Review from these perspectives:
 - **Exit criteria measurability**: Confirm completion criteria can be judged and include defect handling, residual risk, regression, and approval where relevant.
 - **Artifact quality gates**: Confirm the plan accounts for review outcomes for downstream artifacts when quality of analysis, design, cases, or automation matters.
 - **Execution feasibility**: Confirm the plan can realistically be executed with the stated target files, environments, tools, and existing tests.
-- **Product-specific concerns**: Check for concerns implied by the product, such as randomness/reproducibility, offline behavior, privacy, XSS or dynamic UI generation, performance with large outputs, and risks of users overtrusting financial or safety-sensitive results.
+- **Product-specific concerns**: Check for concerns implied by the product, such as randomness/reproducibility, offline behavior, privacy, XSS or dynamic UI generation, performance with large outputs, and risks of users overtrusting decision-support or safety-sensitive results.
 
 ## Finding Format
 

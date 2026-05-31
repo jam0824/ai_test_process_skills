@@ -67,7 +67,7 @@ Review from these perspectives:
 - **Necessary and sufficient coverage**: Confirm the viewpoint set is neither merely formal nor too shallow to produce effective test design. A single `TVxxx` for a `TAxxx` is not enough when the risk, target type, or behavior complexity requires multiple defect classes.
 - **High-risk viewpoint density**: Confirm high-risk `TAxxx` and `Rxxx` entries have sufficient normal, boundary, abnormal, state/combination, and relevant generic QA coverage.
 - **Generic QA catalog alignment**: Confirm the analysis considered generally expected QA categories for the target type, not only the requirements explicitly written in the specification.
-- **Boundary and abnormal quality**: Confirm values such as zero, empty, negative, maximum, decimal, over-maximum, age transitions, inconsistent ranges, asset depletion, and random behavior are considered when relevant.
+- **Boundary and abnormal quality**: Confirm values such as zero, empty, negative, maximum, decimal, over-maximum, date/time transitions, inconsistent ranges, resource exhaustion, and nondeterministic behavior are considered when relevant.
 - **Boundary and abnormal decomposability**: Confirm broad boundary or abnormal viewpoints include enough detail or `備考` case-splitting hints to be decomposed into meaningful designs later.
 - **Bug escape imagination**: Identify typical bugs that would likely pass undetected if the current analysis were used as-is, then decide whether they require new viewpoints, questions, or plan updates.
 - **Downstream design readiness**: Confirm viewpoints include enough category, condition, origin, and case-splitting information for `create-test-design` to avoid collapsing many cases into one.

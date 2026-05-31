@@ -155,9 +155,9 @@ Classify by what should execute or judge the test:
 
 Use condition-by-condition splitting:
 
-- Split comma-separated or enumerated inputs into separate test cases when they represent different meaningful values, such as `300万円`, `600万円`, and `1000万円`.
-- Split boundary sets when each value may expose a different defect, such as `0%`, `100%`, `100%超`, age boundaries, browser names, or scenario names.
-- Keep one test case when the condition is naturally checked as one sequence or one scenario, such as a long-term simulation or one cross-feature integration flow.
+- Split comma-separated or enumerated inputs into separate test cases when they represent different meaningful values, such as `最小`, `標準`, and `最大`.
+- Split boundary sets when each value may expose a different defect, such as `0`, `上限`, `上限超`, date/time boundaries, browser names, or scenario names.
+- Keep one test case when the condition is naturally checked as one sequence or one scenario, such as a long-running workflow or one cross-feature integration flow.
 - Keep `TDxxx` stable. Do not renumber design IDs; create multiple `TC-*` rows that reference the same `TDxxx`.
 - Avoid inventing precise values that are not supported. Use source values, design values, README examples, or `要確認`.
 
